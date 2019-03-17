@@ -1,0 +1,57 @@
+package com.example.myapplication
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.databinding.ItemGroupMemberBinding
+import kotlinx.android.synthetic.main.activity_main.view.*
+
+class MemberListAdapter : ListAdapter<String, MemberListAdapter.MemberViewHolder> {
+
+    private val memberList: MutableList<String> = ArrayList()
+
+    constructor() : super(object : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = (oldItem == newItem)
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = (oldItem == newItem)
+    })
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder =
+        MemberViewHolder(
+            ItemGroupMemberBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+
+
+    override fun onBindViewHolder(holder: MemberViewHolder, position: Int) {
+        val userTemp: String = memberList[position]
+        holder.bind(userTemp)
+    }
+
+    fun addGroupMember(member: String) {
+        memberList.add(member)
+        submitList(memberList)
+    }
+
+    fun removeGroupMember(member: String) {
+        memberList.remove(member)
+        submitList(memberList)
+    }
+
+    fun clearGroupMember() {
+        memberList.clear()
+        submitList(memberList)
+    }
+
+    inner class MemberViewHolder(itemView: ItemGroupMemberBinding) : RecyclerView.ViewHolder(itemView.root) {
+
+        private val item : ItemGroupMemberBinding = itemView
+
+        fun bind(member: String) {
+            item.member = member
+        }
+    }
+}

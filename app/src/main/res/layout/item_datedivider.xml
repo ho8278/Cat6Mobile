@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        <View
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorGray"
+                android:layout_weight="0.35"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/style_datedivider"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:layout_weight="0.3"
+                tools:text="2019/03/05"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        <View
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorGray"
+                android:layout_weight="0.35"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+
+    </LinearLayout>
+
+</layout>

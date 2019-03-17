@@ -8,4 +8,13 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+
+
+
+    <string name="nav_main_my_page">마이페이지</string>
+    <string name="nav_main_schedule">일정</string>
+    <string name="nav_main_chat">채팅</string>
+    <string name="nav_main_references">자료실</string>
+
+
 </resources>
