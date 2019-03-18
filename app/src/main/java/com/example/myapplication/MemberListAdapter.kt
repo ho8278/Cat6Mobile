@@ -52,6 +52,7 @@ class MemberListAdapter : ListAdapter<String, MemberListAdapter.MemberViewHolder
 
         fun bind(member: String) {
             item.member = member
+            item.url = "https://designshack.net/wp-content/uploads/img-placeholder.jpg"
         }
     }
 }

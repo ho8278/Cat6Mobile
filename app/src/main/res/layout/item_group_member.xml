@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable name="member" type="String"/>
+        <variable name="url" type="String"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,14 +13,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_drawer_item_profile_img"
                 android:layout_width="@dimen/nav_drawer_member_profile_w"
                 android:layout_height="@dimen/nav_drawer_member_profile_h"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_person_black_24dp"
-                imageUrl="https://designshack.net/wp-content/uploads/img-placeholder.jpg"
+                app:imageUrl="@{url}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
