@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemGroupMemberBinding
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MemberListAdapter : ListAdapter<String, MemberListAdapter.MemberViewHolder> {
 

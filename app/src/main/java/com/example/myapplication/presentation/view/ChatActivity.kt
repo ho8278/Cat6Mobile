@@ -1,9 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.myapplication.R
 
-class activity_chat : AppCompatActivity() {
+class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

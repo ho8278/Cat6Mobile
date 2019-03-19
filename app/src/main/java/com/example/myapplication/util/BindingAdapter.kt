@@ -1,9 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.util
 
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.example.myapplication.R
 
 object BindingAdapter {
 
