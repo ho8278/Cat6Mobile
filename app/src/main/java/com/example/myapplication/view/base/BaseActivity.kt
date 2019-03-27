@@ -2,6 +2,7 @@ package com.example.myapplication.view.base
 
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.example.myapplication.data.DataManager
@@ -9,7 +10,7 @@ import com.example.myapplication.data.DataSource
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 
 abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
-    RxAppCompatActivity() {
+    AppCompatActivity() {
     abstract val TAG: String;
     protected lateinit var binding: T
     protected lateinit var viewmodel:M
