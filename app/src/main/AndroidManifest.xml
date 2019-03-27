@@ -12,10 +12,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".presentation.ChatActivity"
+                android:name=".view.chat.ChatActivity"
                 android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-                android:name=".presentation.MainActivity"
+                android:name=".view.main.MainActivity"
                 android:label="@string/title_activity_main"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

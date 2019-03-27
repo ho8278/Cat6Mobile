@@ -1,22 +1,31 @@
-package com.example.myapplication.presentation
+package com.example.myapplication.view.main
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.data.DataManager
+import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.view.base.BaseActivity
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    private lateinit var activityMainBinding: ActivityMainBinding
+class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener {
+    override val TAG: String
+        get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
+
+    override fun getViewModel(dataSource: DataSource): MainViewModel {
+        return MainViewModel(dataSource)
+    }
+
+    override fun getLayoutID(): Int {
+        return R.layout.activity_main
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +46,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initView() {
-        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
