@@ -12,18 +12,17 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 
-abstract class BaseFragment<V:ViewDataBinding, M:BaseViewModel>: Fragment(){
+abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment() {
     abstract val TAG: String;
-    protected lateinit var binding:V
-    protected lateinit var viewModel:M
+    protected lateinit var binding: V
+    protected lateinit var viewModel: M
 
-    abstract fun getViewModel(dataManager: DataSource):M
-    abstract fun getLayoutId():Int
+    abstract fun getViewModel(dataManager: DataSource): M
+    abstract fun getLayoutId(): Int
 
-    fun init(inflater:LayoutInflater, container:ViewGroup?){
-        binding=DataBindingUtil.inflate(inflater,getLayoutId(),container,false)
-        val dataManager:DataSource=DataManager.getInstance(activity!!.applicationContext)
-        viewModel=getViewModel(dataManager)
+    fun init(inflater: LayoutInflater, container: ViewGroup?) {
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
+        viewModel = getViewModel(DataManager.getInstance(activity!!.applicationContext))
     }
 
     override fun onAttach(context: Context?) {
@@ -33,7 +32,7 @@ abstract class BaseFragment<V:ViewDataBinding, M:BaseViewModel>: Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "OnCreateView")
-        init(inflater,container)
+        init(inflater, container)
         return binding.root
     }
 

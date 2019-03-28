@@ -5,9 +5,9 @@ import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import io.reactivex.disposables.CompositeDisposable
 
-open class BaseViewModel(private val dataManager: DataSource):ViewModel(){
+open class BaseViewModel(private val dataManager: DataSource) : ViewModel() {
 
-    private val disposable:CompositeDisposable by lazy{
+    private val disposable: CompositeDisposable by lazy {
         CompositeDisposable()
     }
 
@@ -16,11 +16,7 @@ open class BaseViewModel(private val dataManager: DataSource):ViewModel(){
         super.onCleared()
     }
 
-    fun getCompositeDisposable():CompositeDisposable{
-        return disposable
-    }
+    fun getCompositeDisposable(): CompositeDisposable = disposable
 
-    fun getDataManager():DataSource{
-        return dataManager
-    }
+    fun getDataManager(): DataSource = dataManager
 }

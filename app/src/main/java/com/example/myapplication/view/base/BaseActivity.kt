@@ -7,22 +7,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 
 abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
     AppCompatActivity() {
     abstract val TAG: String;
     protected lateinit var binding: T
-    protected lateinit var viewmodel:M
+    protected lateinit var viewmodel: M
 
     abstract fun getLayoutID(): Int
 
     abstract fun getViewModel(dataSource: DataSource): M
 
-    fun init(){
-        var dataSource:DataSource = DataManager.getInstance(applicationContext)
-        viewmodel=getViewModel(dataSource)
-        binding= DataBindingUtil.setContentView(this, getLayoutID())
+    fun init() {
+        viewmodel = getViewModel(DataManager.getInstance(applicationContext))
+        binding = DataBindingUtil.setContentView(this, getLayoutID())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
