@@ -4,6 +4,6 @@ import androidx.room.Dao
 
 
 @Dao
-class ChatDao{
+interface ChatDao{
 
 }

@@ -55,13 +55,26 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lav_chat_loading"
+                app:layout_constraintTop_toBottomOf="@id/abl_toplayout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/view_line"
+                app:layout_constraintRight_toRightOf="parent"
+                app:lottie_fileName="chat_loading.json"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_chat"
                 app:layout_constraintTop_toBottomOf="@id/abl_toplayout"
                 app:layout_constraintBottom_toTopOf="@id/view_line"
                 android:layout_width="match_parent"
                 tools:listitem="@layout/item_theirchat"
-                android:layout_height="0dp" tools:layout_editor_absoluteX="0dp"/>
+                android:layout_height="0dp"
+                tools:layout_editor_absoluteX="0dp"/>
 
         <View
                 android:id="@+id/view_line"

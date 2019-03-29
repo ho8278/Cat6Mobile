@@ -7,12 +7,12 @@ import com.google.gson.annotations.SerializedName
 @Entity
 data class User(@SerializedName("client_id")
                 @PrimaryKey
-                val id:String,
+                var id:String,
                 @SerializedName("client_password")
-                val password:String,
+                var password:String,
                 @SerializedName("client_name")
-                val name:String,
+                var name:String,
                 @SerializedName("client_nickname")
-                val nickname:String,
+                var nickname:String,
                 @SerializedName("profile_picture")
-                val profileLink:String)
+                var profileLink:String)

@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiHelperImpl {
     private val retrofit: Retrofit
+    private val url="https://google.com"
     val api: ApiHelper
 
     init {
@@ -21,9 +22,9 @@ object ApiHelperImpl {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
+            .baseUrl(url)
             .build()
 
         api = retrofit.create(ApiHelper::class.java)
     }
-
 }

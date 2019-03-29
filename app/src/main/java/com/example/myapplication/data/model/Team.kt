@@ -1,10 +1,12 @@
 package com.example.myapplication.data.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class Team(@SerializedName("team_id")
-                val id:String,
+data class Team(@PrimaryKey
+                @SerializedName("team_id")
+                var id:String,
                 @SerializedName("team_name")
-                val name:String)
+                var name:String)
