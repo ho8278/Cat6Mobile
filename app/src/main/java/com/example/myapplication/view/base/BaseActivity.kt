@@ -12,14 +12,14 @@ abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
     AppCompatActivity() {
     abstract val TAG: String;
     protected lateinit var binding: T
-    protected lateinit var viewmodel: M
+    protected lateinit var viewModel: M
 
     abstract fun getLayoutID(): Int
 
     abstract fun getViewModel(dataSource: DataSource): M
 
     fun init() {
-        viewmodel = getViewModel(DataManager.getInstance(applicationContext))
+        viewModel = getViewModel(DataManager.getInstance(applicationContext))
         binding = DataBindingUtil.setContentView(this, getLayoutID())
     }
 
@@ -56,6 +56,7 @@ abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
 
     override fun onDestroy() {
         Log.d(TAG, "OnDestroy")
+        viewModel.onDestroy()
         super.onDestroy()
     }
 }

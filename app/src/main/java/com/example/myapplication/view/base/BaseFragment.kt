@@ -48,6 +48,7 @@ abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment()
 
     override fun onDestroy() {
         Log.d(TAG, "OnDestroy")
+        viewModel.onDestroy()
         super.onDestroy()
     }
 

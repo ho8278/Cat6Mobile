@@ -5,15 +5,13 @@ import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import io.reactivex.disposables.CompositeDisposable
 
-open class BaseViewModel(private val dataManager: DataSource) : ViewModel() {
+open class BaseViewModel(private val dataManager: DataSource) {
 
     private val disposable: CompositeDisposable by lazy {
         CompositeDisposable()
     }
-
-    override fun onCleared() {
+    fun onDestroy(){
         disposable.dispose()
-        super.onCleared()
     }
 
     fun getCompositeDisposable(): CompositeDisposable = disposable
