@@ -1,5 +1,6 @@
 package com.example.myapplication.data.remote.api
 
-interface ApiHelper{
+import retrofit2.http.POST
 
+interface ApiHelper{
 }

@@ -14,13 +14,15 @@ import com.example.myapplication.util.DateTypeConverter
     Team::class,
     User::class,
     Vote::class,
-    VoteItem::class
+    VoteItem::class,
+    ChatInfo::class
 ],version = 1)
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase:RoomDatabase(){
     abstract val userDao:UserDao
     abstract val chatDao:ChatDao
     abstract val fileDao:FileDao
+    abstract val chatInfoDao:ChatInfoDao
     abstract val noticeDao:NoticeDao
     abstract val teamDao:TeamDao
     abstract val voteDao:VoteDao

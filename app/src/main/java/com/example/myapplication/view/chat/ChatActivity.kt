@@ -1,10 +1,13 @@
 package com.example.myapplication.view.chat
 
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityChatBinding
+import com.example.myapplication.util.PreferenceUtil
 import com.example.myapplication.view.base.BaseActivity
 
 class ChatActivity : BaseActivity<ActivityChatBinding, ChatViewModel>() {
@@ -22,5 +25,16 @@ class ChatActivity : BaseActivity<ActivityChatBinding, ChatViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.viewmodel=viewModel
+        binding.buttonSend.setOnClickListener {
+            viewModel.sendMessage(binding.etMessagebox.text.toString())
+        }
+
+        binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        PreferenceUtil.getUserId(applicationContext)
+            .let {
+                binding.rvChat.adapter = ChatFragmentAdapter(it)
+            }
     }
 }

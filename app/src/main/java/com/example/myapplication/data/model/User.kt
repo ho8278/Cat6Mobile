@@ -14,5 +14,7 @@ data class User(@SerializedName("client_id")
                 var name:String,
                 @SerializedName("client_nickname")
                 var nickname:String,
+                @SerializedName("client_token")
+                var token:String,
                 @SerializedName("profile_picture")
                 var profileLink:String)
