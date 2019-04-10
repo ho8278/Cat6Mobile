@@ -1,5 +1,6 @@
 package com.example.myapplication.data.model
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -21,10 +22,16 @@ class ChatInfo(
     var message: String
 ) {
     companion object {
-        val DIFF_CALLBACK = object:DiffUtil.ItemCallback<ChatInfo>(){
-            override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean = oldItem==newItem
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChatInfo>() {
+            override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
+                Log.e("DIFF", (oldItem == newItem).toString())
+                return oldItem == newItem
+            }
 
-            override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean = oldItem.equals(newItem)
+            override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
+                Log.e("DIFF",oldItem.equals(newItem).toString())
+                return oldItem.equals(newItem)
+            }
         }
     }
 

@@ -10,11 +10,11 @@ import okhttp3.ResponseBody
 
 interface DataSource{
     fun insert(user:User)
-    //fun getChatMessage(chatroomId:String): Single<List<ChatInfo>>
     fun createTable()
     fun sendMessage(chatInfo: ChatInfo):Single<ResponseBody>
     fun receiveMessage(chatInfo:ChatInfo)
     fun receiveMessage(): Observable<ChatInfo>
+    fun loadChatInfoList(roomId:String):Single<List<ChatInfo>>
     fun saveUserId(userId:String)
     //fun getUser(userId:String):Single<User>
     fun getUser():Single<User>

@@ -17,7 +17,8 @@ class PreferenceHelperImpl:PreferenceHelper {
                 INSTANCE?: synchronized(this){
                     INSTANCE?:run{
                         preference=PreferenceManager.getDefaultSharedPreferences(context)
-                        PreferenceHelperImpl()
+                        INSTANCE=PreferenceHelperImpl()
+                        INSTANCE!!
                     }
                 }
     }

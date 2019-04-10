@@ -8,7 +8,7 @@ import io.reactivex.Single
 interface DbHelper {
     fun sendMessage(message:String)
 
-    //fun getChatRoomMessages(chatid:String): Single<List<ChatInfo>>
+    fun loadChatInfoList(roomId:String): Single<List<ChatInfo>>
 
     fun insertUser(user:User)
 

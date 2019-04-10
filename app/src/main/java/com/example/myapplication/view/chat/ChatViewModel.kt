@@ -11,6 +11,7 @@ import java.util.*
 
 class ChatViewModel: BaseViewModel {
 
+    val TAG = ChatViewModel::class.java.simpleName
     val isLoading:ObservableField<Boolean> = ObservableField()
     val chatInfoList:ObservableArrayList<ChatInfo> = ObservableArrayList()
 
@@ -20,14 +21,21 @@ class ChatViewModel: BaseViewModel {
 
     constructor(dataManager: DataSource):super(dataManager)
 
-    fun getChatRoomMessage(chatroomId:String="chat1"){
-    }
-
     fun sendMessage(chatInfo: ChatInfo){
         getCompositeDisposable().add(getDataManager().sendMessage(chatInfo)
             .subscribe { result ->
-                Log.e("fff",result.string())
+                Log.e(TAG,result.string())
             })
+    }
+
+    fun loadChatinfoList(roomId:String="chat1"){
+        getCompositeDisposable().add(getDataManager().loadChatInfoList(roomId)
+            .subscribe({ result->
+                isLoading.set(false)
+                chatInfoList.addAll(result)
+            },{
+                Log.e(TAG,it.message)
+            }))
     }
 
     fun sendMessage(message:String){
@@ -38,16 +46,16 @@ class ChatViewModel: BaseViewModel {
                       sendMessage(it)
                   }
             },{
-                Log.e("aaa",it.message)
+                Log.e(TAG,it.message)
             }))
     }
 
-    fun receiveMessage(chatInfo: ChatInfo){
+    fun receiveMessage(){
         getCompositeDisposable().add(getDataManager().receiveMessage()
             .subscribe({
                 chatInfoList.add(it)
             },{
-               Log.e("error",it.message)
+               Log.e(TAG,it.message)
             }))
     }
 }

@@ -2,31 +2,40 @@ package com.example.myapplication.util
 
 import android.util.Log
 import com.example.myapplication.data.DataManager
+import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.User
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MyFirebaseMessagingService:FirebaseMessagingService(){
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    private val TAG=MyFirebaseMessagingService::class.java.simpleName
+    private val TAG = MyFirebaseMessagingService::class.java.simpleName
 
     override fun onNewToken(token: String?) {
-        Log.d(TAG,"Token: "+token)
-        User("1","123","TestUser1","NickName",token ?: "NULL","")
-            .let{
+        Log.d(TAG, "Token: " + token)
+        User("1", "123", "TestUser1", "NickName", token ?: "NULL", "")
+            .let {
                 DataManager.getInstance(applicationContext).insert(it)
                 DataManager.getInstance(applicationContext).saveUserId(it.id)
             }
     }
 
-    fun sendTokenToServer(token:String){
+    fun sendTokenToServer(token: String) {
         //TODO:서버에 토큰값과 유저 정보 저장 및 ROOM에 저장
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        Log.e("fff",remoteMessage.toString())
-        remoteMessage?.data?.let{
-
-        }
+        val simpleDate = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
+        val dataMap = remoteMessage?.data
+        val info = ChatInfo(
+            "123"
+            , dataMap?.get("sendId") ?: ""
+            , dataMap?.get("roomId") ?: ""
+            , simpleDate.parse(dataMap?.get("sendDate"))
+            , dataMap?.get("message") ?: ""
+        )
+        DataManager.getInstance(applicationContext).receiveMessage(info)
     }
 }

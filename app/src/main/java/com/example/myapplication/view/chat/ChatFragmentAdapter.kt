@@ -1,7 +1,6 @@
 package com.example.myapplication.view.chat
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -17,16 +16,25 @@ import com.example.myapplication.databinding.ItemTheirchatBinding
 import com.example.myapplication.util.PreferenceUtil
 import com.example.myapplication.view.base.BaseViewHolder
 import com.google.firebase.iid.FirebaseInstanceId
+import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, RecyclerView.ViewHolder>(ChatInfo.DIFF_CALLBACK) {
+class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, BaseViewHolder>(ChatInfo.DIFF_CALLBACK) {
 
     private val TAG = ChatFragmentAdapter::class.java.simpleName
     private var chatInfoList: MutableList<ChatInfo> = mutableListOf()
 
     val VIEW_TYPE_ME = 0
     val VIEW_TYPE_YOU = 1
-    val VIEW_TYPE_DIVIDE = 2
+
+    init{
+        chatInfoList.add(ChatInfo("1","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("2","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("3","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("4","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("5","2","chat1",Calendar.getInstance().time,"ffff"))
+        notifyDataSetChanged()
+    }
 
     fun setList(changeList: MutableList<ChatInfo>) {
         submitList(changeList)
@@ -37,7 +45,7 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, RecyclerVi
         submitList(chatInfoList)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         if (viewType == VIEW_TYPE_ME) {
             return DataBindingUtil.inflate<ItemMychatBinding>(
                 LayoutInflater.from(parent.context),
@@ -45,7 +53,7 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, RecyclerVi
                 parent,
                 false
             ).let{
-                MeViewHolder(it,parent.context)
+                MeViewHolder(it)
             }
         }
         else{
@@ -55,15 +63,15 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, RecyclerVi
                 parent,
                 false
             ).let{
-                YouViewHolder(it,parent.context)
+                YouViewHolder(it)
             }
         }
     }
 
     override fun getItemCount(): Int = chatInfoList.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        holder.bind(position)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -74,42 +82,28 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, RecyclerVi
         }
     }
 
-    inner class MeViewHolder(binding: ItemMychatBinding, context: Context) :
-        BaseViewHolder<ItemMychatBinding, ChatListViewModel>(binding, context) {
+    inner class MeViewHolder(val binding: ItemMychatBinding) : BaseViewHolder(binding) {
 
-
-        override fun getViewModel(dataManager: DataSource): ChatListViewModel {
-            return ChatListViewModel(dataManager)
+        override fun bind(position: Int) {
+            val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
+            binding.tvMessageBody.setText(chatInfoList[position].message)
+            binding.tvMessageBody.setText(dateFormat.format(chatInfoList[position].sendDate))
         }
 
-        fun bind(chatInfo: ChatInfo) {
-            //TODO:ChatInfo 바인딩
+    }
+
+    inner class YouViewHolder(val binding: ItemTheirchatBinding) : BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+
+            val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
+            binding.tvMessageBody.setText(chatInfoList[position].message)
+            binding.tvMessageBody.setText(dateFormat.format(chatInfoList[position].sendDate))
         }
     }
 
-    inner class YouViewHolder(binding: ItemTheirchatBinding, context: Context) :
-        BaseViewHolder<ItemTheirchatBinding, ChatListViewModel>(binding, context) {
-
-
-        override fun getViewModel(dataManager: DataSource): ChatListViewModel {
-            return ChatListViewModel(dataManager)
-        }
-
-        fun bind(chatInfo: ChatInfo) {
-            //TODO:ChatInfo 바인딩
-        }
-    }
-
-    inner class DivideViewHolder(binding: ItemDatedividerBinding, context: Context) :
-        BaseViewHolder<ItemDatedividerBinding, DivideViewModel>(binding, context) {
-
-
-        override fun getViewModel(dataManager: DataSource): DivideViewModel {
-            return DivideViewModel(dataManager)
-        }
-
-        fun bind(date: Date) {
-            //TODO:날짜 바인딩
+    inner class DivideViewHolder(val binding: ItemDatedividerBinding) : BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }
 }

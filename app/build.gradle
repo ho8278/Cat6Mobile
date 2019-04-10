@@ -6,6 +6,10 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'io.fabric'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -16,6 +20,7 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -33,6 +38,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.1'
+
+    //stetho
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    //firebase
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.google.firebase:firebase-messaging:17.5.0'
 
     // merterial
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
@@ -59,10 +72,10 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.0.0-beta4'
 
     //ROOM
-    implementation "androidx.room:room-runtime:2.1.0-alpha05"
+    implementation "androidx.room:room-runtime:2.1.0-alpha06"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt "androidx.room:room-compiler:2.1.0-alpha05"
-    implementation "androidx.room:room-rxjava2:2.1.0-alpha05"
+    kapt "androidx.room:room-compiler:2.1.0-alpha06"
+    implementation "androidx.room:room-rxjava2:2.1.0-alpha06"
 
     // databinding
     kapt "com.android.databinding:compiler:3.1.4"

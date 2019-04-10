@@ -3,6 +3,7 @@ package com.example.myapplication.data.local.db
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
+import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -21,9 +22,17 @@ class DbHelperImpl : DbHelper {
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: run {
                     appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, dbName).build()
-                    DbHelperImpl()
+                    INSTANCE=DbHelperImpl()
+                    INSTANCE!!
                 }
             }
+    }
+
+    override fun loadChatInfoList(roomId: String): Single<List<ChatInfo>> {
+        return Single.fromCallable {
+            appDatabase.chatInfoDao.loadChatInfo(roomId)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun sendMessage(message: String) {

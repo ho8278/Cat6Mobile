@@ -1,6 +1,7 @@
 package com.example.myapplication.data
 
 import android.content.Context
+import android.util.Log
 import com.example.myapplication.data.local.db.DbHelper
 import com.example.myapplication.data.local.db.DbHelperImpl
 import com.example.myapplication.data.local.pref.PreferenceHelper
@@ -18,14 +19,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 import okhttp3.Response
 import okhttp3.ResponseBody
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DataManager: DataSource {
 
     private val apiHelper = ApiHelperImpl.api
     private val fcmApiHelper = FCMHelperImpl.api
-    private val receiveSubject = PublishSubject.create<ChatInfo>()
+    private val receiveSubject:Subject<ChatInfo>
+
+    init{
+        receiveSubject=PublishSubject.create()
+        Log.e("DataManager","Init")
+    }
 
     companion object {
         private lateinit var dbHelper: DbHelper
@@ -38,7 +47,8 @@ class DataManager: DataSource {
                 INSTANCE ?: run {
                     dbHelper = DbHelperImpl.getInstance(context)
                     prefHelper= PreferenceHelperImpl.getInstance(context)
-                    DataManager()
+                    INSTANCE=DataManager()
+                    INSTANCE!!
                 }
             }
 
@@ -57,12 +67,17 @@ class DataManager: DataSource {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())*/
         val json = JsonObject().apply{
-            addProperty("to","eP6qivefzZs:APA91bGraQmqJ2JQykq8mAs-ROPxqxcs3r7CNFJvceTjRzuGl2j0hL3CUwOGZWzzkB6lUVhaji2hIVRaxH0tiWtSl8E6DEPcJTwOSx0m8Od1XWe5-CnoayFSetBJHrnLMPP19KT6XW0f")
+            addProperty("to","cFb4b2Weff8:APA91bHqnjHOGgEuILkv9wBV96zVBA6WDc0zotuDDjBS7prwb5Poc-Y1md6bNVGibr8xZ-WvdWJkSOfXzhQRlWg-o2BUNjjoDPV1aeJGcLgt5OGklIxT1M52WxitiPYamp883gelZPEM")
             addProperty("priority","high")
             val element = JsonObject()
-            element.addProperty("ttt","testtest")
+            element.addProperty("message",chatInfo.message)
+            element.addProperty("roomId",chatInfo.roomId)
+            val dateFormat=SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
+            element.addProperty("sendDate",dateFormat.format(chatInfo.sendDate))
+            element.addProperty("sendId",chatInfo.sendUserId)
             add("data",element)
         }
+
         return fcmApiHelper.sendTestMessage(json)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -76,9 +91,13 @@ class DataManager: DataSource {
         return receiveSubject.observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun loadChatInfoList(roomId:String): Single<List<ChatInfo>> {
+        return dbHelper.loadChatInfoList(roomId)
+    }
+
     /*override fun getUser(userId:String): Single<User> {
-        return dbHelper.getUser(userId)
-    }*/
+            return dbHelper.getUser(userId)
+        }*/
     override fun saveUserId(userId: String) {
         prefHelper.saveUserId(userId)
     }

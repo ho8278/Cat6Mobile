@@ -27,6 +27,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding, ChatViewModel>() {
         super.onCreate(savedInstanceState)
 
         binding.viewmodel=viewModel
+        viewModel.loadChatinfoList()    //나중에 채팅방 ID 가져와야함
+        viewModel.receiveMessage()
         binding.buttonSend.setOnClickListener {
             viewModel.sendMessage(binding.etMessagebox.text.toString())
         }
