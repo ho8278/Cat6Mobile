@@ -17,6 +17,11 @@ class ChatViewModel: BaseViewModel {
 
     init{
         isLoading.set(true)
+        chatInfoList.add(ChatInfo("1","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("2","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("3","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("4","2","chat1",Calendar.getInstance().time,"ffff"))
+        chatInfoList.add(ChatInfo("5","2","chat1",Calendar.getInstance().time,"ffff"))
     }
 
     constructor(dataManager: DataSource):super(dataManager)

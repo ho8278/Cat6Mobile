@@ -27,16 +27,8 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, BaseViewHo
     val VIEW_TYPE_ME = 0
     val VIEW_TYPE_YOU = 1
 
-    init{
-        chatInfoList.add(ChatInfo("1","2","chat1",Calendar.getInstance().time,"ffff"))
-        chatInfoList.add(ChatInfo("2","2","chat1",Calendar.getInstance().time,"ffff"))
-        chatInfoList.add(ChatInfo("3","2","chat1",Calendar.getInstance().time,"ffff"))
-        chatInfoList.add(ChatInfo("4","2","chat1",Calendar.getInstance().time,"ffff"))
-        chatInfoList.add(ChatInfo("5","2","chat1",Calendar.getInstance().time,"ffff"))
-        notifyDataSetChanged()
-    }
-
     fun setList(changeList: MutableList<ChatInfo>) {
+        chatInfoList=changeList
         submitList(changeList)
     }
 
@@ -85,6 +77,7 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, BaseViewHo
     inner class MeViewHolder(val binding: ItemMychatBinding) : BaseViewHolder(binding) {
 
         override fun bind(position: Int) {
+            TODO("고쳐야함")
             val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
             binding.tvMessageBody.setText(chatInfoList[position].message)
             binding.tvMessageBody.setText(dateFormat.format(chatInfoList[position].sendDate))
@@ -94,7 +87,7 @@ class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, BaseViewHo
 
     inner class YouViewHolder(val binding: ItemTheirchatBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
-
+            TODO("고쳐야함")
             val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
             binding.tvMessageBody.setText(chatInfoList[position].message)
             binding.tvMessageBody.setText(dateFormat.format(chatInfoList[position].sendDate))
