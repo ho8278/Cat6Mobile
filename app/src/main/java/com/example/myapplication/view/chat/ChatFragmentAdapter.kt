@@ -1,31 +1,38 @@
 package com.example.myapplication.view.chat
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.databinding.ItemDatedividerBinding
 import com.example.myapplication.databinding.ItemMychatBinding
 import com.example.myapplication.databinding.ItemTheirchatBinding
-import com.example.myapplication.util.PreferenceUtil
 import com.example.myapplication.view.base.BaseViewHolder
-import com.google.firebase.iid.FirebaseInstanceId
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatFragmentAdapter(val userId: String) : ListAdapter<ChatInfo, BaseViewHolder>(ChatInfo.DIFF_CALLBACK) {
+class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHolder>(ChatInfo.DIFF_CALLBACK) {
 
     private val TAG = ChatFragmentAdapter::class.java.simpleName
     private var chatInfoList: MutableList<ChatInfo> = mutableListOf()
+    private lateinit var userId:String
 
     val VIEW_TYPE_ME = 0
     val VIEW_TYPE_YOU = 1
+
+    init{
+        DataManager.getInstance(context).getCurrentUser()
+            .subscribe({user->
+                userId=user.id
+            },{
+                Log.e(TAG,it.message)
+            })
+    }
 
     fun setList(changeList: MutableList<ChatInfo>) {
         chatInfoList=changeList

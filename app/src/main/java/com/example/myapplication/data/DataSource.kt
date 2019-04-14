@@ -15,7 +15,8 @@ interface DataSource{
     fun receiveMessage(chatInfo:ChatInfo)
     fun receiveMessage(): Observable<ChatInfo>
     fun loadChatInfoList(roomId:String):Single<List<ChatInfo>>
-    fun saveUserId(userId:String)
+    fun saveString(key:String,text:String)
+    fun getString(key:String):String
     //fun getUser(userId:String):Single<User>
-    fun getUser():Single<User>
+    fun getCurrentUser():Single<User>
 }

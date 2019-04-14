@@ -7,30 +7,31 @@ import androidx.core.content.edit
 
 class PreferenceHelperImpl:PreferenceHelper {
 
-    private val CURRENT_USER_ID="USER_ID"
-
     companion object {
+        val CURRENT_USER_ID="CURRENT_USER_ID"
+        val CHANNEL_ID="CHANNEL_ID"
+        val CHANNEL_NAME="CHANNEL_NAME"
+
         private lateinit var preference:SharedPreferences
         @Volatile
         private var INSTANCE:PreferenceHelperImpl?=null
         fun getInstance(context: Context):PreferenceHelperImpl =
                 INSTANCE?: synchronized(this){
-                    INSTANCE?:run{
+                    INSTANCE?:PreferenceHelperImpl().apply{
                         preference=PreferenceManager.getDefaultSharedPreferences(context)
-                        INSTANCE=PreferenceHelperImpl()
-                        INSTANCE!!
+                        INSTANCE=this
                     }
                 }
     }
 
-    override fun saveUserId(userId: String) {
+    override fun saveString(key:String, userId: String) {
         preference.edit {
-            putString(CURRENT_USER_ID,userId)
+            putString(key,userId)
             apply()
         }
     }
 
-    override fun getUserId(): String {
-        return preference.getString(CURRENT_USER_ID,"") ?: "1"
+    override fun getString(key:String): String {
+        return preference.getString(key,"") ?: "Empty"
     }
 }

@@ -4,10 +4,8 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityChatBinding
-import com.example.myapplication.util.PreferenceUtil
 import com.example.myapplication.view.base.BaseActivity
 
 class ChatActivity : BaseActivity<ActivityChatBinding, ChatViewModel>() {
@@ -30,13 +28,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding, ChatViewModel>() {
         viewModel.loadChatinfoList()    //나중에 채팅방 ID 가져와야함
         viewModel.receiveMessage()
         binding.buttonSend.setOnClickListener {
-            viewModel.sendMessage(binding.etMessagebox.text.toString())
+            viewModel.sendButtonClicked(binding.etMessagebox.text.toString())
         }
 
         binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        PreferenceUtil.getUserId(applicationContext)
-            .let {
-                binding.rvChat.adapter = ChatFragmentAdapter(it)
-            }
+        binding.rvChat.adapter = ChatFragmentAdapter(applicationContext)
     }
 }

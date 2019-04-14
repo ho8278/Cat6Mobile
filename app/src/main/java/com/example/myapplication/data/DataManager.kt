@@ -44,11 +44,10 @@ class DataManager: DataSource {
 
         fun getInstance(context: Context): DataManager =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: run {
+                INSTANCE ?: DataManager().apply {
                     dbHelper = DbHelperImpl.getInstance(context)
                     prefHelper= PreferenceHelperImpl.getInstance(context)
-                    INSTANCE=DataManager()
-                    INSTANCE!!
+                    INSTANCE=this
                 }
             }
 
@@ -98,11 +97,15 @@ class DataManager: DataSource {
     /*override fun getUser(userId:String): Single<User> {
             return dbHelper.getUser(userId)
         }*/
-    override fun saveUserId(userId: String) {
-        prefHelper.saveUserId(userId)
+    override fun saveString(key:String,text: String) {
+        prefHelper.saveString(key,text)
     }
 
-    override fun getUser(): Single<User> {
-        return dbHelper.getUser(prefHelper.getUserId())
+    override fun getString(key: String): String {
+        return prefHelper.getString(key)
+    }
+
+    override fun getCurrentUser(): Single<User> {
+        return dbHelper.getUser(prefHelper.getString(PreferenceHelperImpl.CURRENT_USER_ID))
     }
 }

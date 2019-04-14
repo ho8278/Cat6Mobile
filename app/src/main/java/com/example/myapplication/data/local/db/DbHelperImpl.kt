@@ -20,10 +20,9 @@ class DbHelperImpl : DbHelper {
         private lateinit var appDatabase: AppDatabase
         fun getInstance(context: Context): DbHelperImpl =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: run {
+                INSTANCE ?: DbHelperImpl().apply {
                     appDatabase = Room.databaseBuilder(context, AppDatabase::class.java, dbName).build()
-                    INSTANCE=DbHelperImpl()
-                    INSTANCE!!
+                    INSTANCE=this
                 }
             }
     }
