@@ -21,20 +21,6 @@ class ChatInfo(
     @SerializedName("message")
     var message: String
 ) {
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChatInfo>() {
-            override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-                Log.e("DIFF", (oldItem == newItem).toString())
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-                Log.e("DIFF",oldItem.equals(newItem).toString())
-                return oldItem.equals(newItem)
-            }
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -48,14 +34,5 @@ class ChatInfo(
         if (message != other.message) return false
 
         return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + sendUserId.hashCode()
-        result = 31 * result + roomId.hashCode()
-        result = 31 * result + sendDate.hashCode()
-        result = 31 * result + message.hashCode()
-        return result
     }
 }

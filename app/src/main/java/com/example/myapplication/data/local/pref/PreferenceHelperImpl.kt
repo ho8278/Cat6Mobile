@@ -32,6 +32,6 @@ class PreferenceHelperImpl:PreferenceHelper {
     }
 
     override fun getString(key:String): String {
-        return preference.getString(key,"") ?: "Empty"
+        return preference.getString(key,"")
     }
 }

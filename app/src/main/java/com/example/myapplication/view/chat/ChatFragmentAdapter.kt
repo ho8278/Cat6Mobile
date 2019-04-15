@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myapplication.R
 import com.example.myapplication.data.DataManager
@@ -16,10 +17,19 @@ import com.example.myapplication.view.base.BaseViewHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHolder>(ChatInfo.DIFF_CALLBACK) {
+class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffUtil.ItemCallback<ChatInfo>(){
+    override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
+        Log.e("DIFF",(oldItem==newItem).toString())
+        return false
+    }
+
+    override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
+        Log.e("DIFF",(oldItem==newItem).toString())
+        return false
+    }
+}) {
 
     private val TAG = ChatFragmentAdapter::class.java.simpleName
-    private var chatInfoList: MutableList<ChatInfo> = mutableListOf()
     private lateinit var userId:String
 
     val VIEW_TYPE_ME = 0
@@ -35,13 +45,8 @@ class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHold
     }
 
     fun setList(changeList: MutableList<ChatInfo>) {
-        chatInfoList=changeList
         submitList(changeList)
-    }
-
-    fun addList(chatInfo: ChatInfo) {
-        chatInfoList.add(chatInfo)
-        submitList(chatInfoList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -67,14 +72,12 @@ class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHold
         }
     }
 
-    override fun getItemCount(): Int = chatInfoList.size
-
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.bind(position)
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (userId == chatInfoList.get(position).sendUserId) {
+        if (userId == getItem(position).sendUserId) {
             return VIEW_TYPE_ME
         } else{
             return VIEW_TYPE_YOU
@@ -84,20 +87,20 @@ class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHold
     inner class MeViewHolder(val binding: ItemMychatBinding) : BaseViewHolder(binding) {
 
         override fun bind(position: Int) {
-            TODO("고쳐야함")
+            //TODO("고쳐야함")
             val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
-            binding.tvMessageBody.setText(chatInfoList[position].message)
-            binding.tvMessageBody.setText(dateFormat.format(chatInfoList[position].sendDate))
+            binding.tvMessageBody.setText(getItem(position).message)
+            binding.tvMessageClock.setText(dateFormat.format(getItem(position).sendDate))
         }
 
     }
 
     inner class YouViewHolder(val binding: ItemTheirchatBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
-            TODO("고쳐야함")
+            //TODO("고쳐야함")
             val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
-            binding.tvMessageBody.setText(chatInfoList[position].message)
-            binding.tvMessageBody.setText(dateFormat.format(chatInfoList[position].sendDate))
+            binding.tvMessageBody.setText(getItem(position).message)
+            binding.tvMessageClock.setText(dateFormat.format(getItem(position).sendDate))
         }
     }
 

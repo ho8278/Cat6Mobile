@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.myapplication.R
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
@@ -25,7 +26,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String?) {
         Log.d(TAG, "Token: " + token)
-        User("1", "123", "TestUser1", "NickName", token ?: "NULL", "")
+        User("2", "123", "TestUser1", "NickName", token ?: "NULL", "")
             .let {
                 DataManager.getInstance(applicationContext).insert(it)
                 DataManager.getInstance(applicationContext).saveString(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
@@ -40,7 +41,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val simpleDate = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
         val info = remoteMessage?.data.run {
             ChatInfo(
-                "123"
+                UUID.randomUUID().toString()
                 , this?.get("sendId") ?: ""
                 , this?.get("roomId") ?: ""
                 , simpleDate.parse(this?.get("sendDate"))
@@ -49,7 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         createNotification(info)
         DataManager.getInstance(applicationContext).receiveMessage(info)
-        TODO("ROOM에 채팅정보 저장")
+        //TODO("ROOM에 채팅정보 저장")
     }
 
     fun createNotification(chatInfo: ChatInfo) {
@@ -58,7 +59,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             DataManager.getInstance(applicationContext).let {
                 var channelId = it.getString(PreferenceHelperImpl.CHANNEL_ID)
                 var channelName = it.getString(PreferenceHelperImpl.CHANNEL_NAME)
-                if (channelId == "Empty" || channelName == "Empty") {
+                if (channelId == "" || channelName == "") {
                     it.saveString(PreferenceHelperImpl.CHANNEL_ID, "channel1")
                     it.saveString(PreferenceHelperImpl.CHANNEL_NAME, "channel1")
                     channelId = "channel1"
@@ -79,12 +80,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val pendingIntent=PendingIntent.getActivity(this,1,intent,PendingIntent.FLAG_CANCEL_CURRENT)
         val noti=NotificationCompat.Builder(applicationContext,"channel1")
             .setContentTitle(chatInfo.sendUserId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentText(chatInfo.message)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
 
-        notiManager.notify(1,noti)
+        notiManager.notify(11,noti)
 
     }
 }

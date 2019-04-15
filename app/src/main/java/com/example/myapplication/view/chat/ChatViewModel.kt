@@ -36,8 +36,8 @@ class ChatViewModel : BaseViewModel {
 
     fun sendButtonClicked(message: String) {
         getCompositeDisposable().add(getDataManager().getCurrentUser()
-            .map { user -> ChatInfo("1", user.id, "chat1", Calendar.getInstance().time, message) }
-            .flatMap { chatinfo -> getDataManager().sendMessage(chatinfo) }
+            .map { user -> ChatInfo(UUID.randomUUID().toString(), user.id, "chat1", Calendar.getInstance().time, message) }
+            .flatMap { getDataManager().sendMessage(it) }
             .subscribe({
                 Log.e(TAG,it.string())
             }, {
@@ -51,6 +51,7 @@ class ChatViewModel : BaseViewModel {
             getDataManager().receiveMessage()
                 .subscribe({
                     chatInfoList.add(it)
+                    Log.e(TAG,it.id)
                 }, {
                     Log.e(TAG, it.message)
                 })

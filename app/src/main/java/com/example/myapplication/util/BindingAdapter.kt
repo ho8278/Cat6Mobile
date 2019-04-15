@@ -29,6 +29,7 @@ object BindingAdapter {
     fun setItem(view: RecyclerView, item:MutableList<ChatInfo>){
         val adapter = view.adapter as ChatFragmentAdapter
         adapter.setList(item)
+        view.scrollToPosition(adapter.itemCount-1)
     }
 
     @JvmStatic
