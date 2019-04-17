@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="viewmodel"
+                  type="com.example.myapplication.view.addschedule.AddScheduleViewModel"/>
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_add_schedule"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:text="일정 추가"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="17sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_titleLayout"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar_add_schedule"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:hint="제목"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_titleEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_startContainer"
+                    app:layout_constraintTop_toBottomOf="@id/til_titleLayout"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.5"
+                        android:id="@+id/tv_start"
+                        android:text="시작"
+                        android:paddingLeft="8dp"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorAddScheduleSelectDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.25"
+                        android:gravity="right"
+                        android:textColor="@color/colorBlack"
+                        tools:text="5월 24일    "
+                        android:text="@{viewmodel.startDate}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.25"
+                        android:textColor="@color/colorBlack"
+                        tools:text="오후 8:00"
+                        android:text="@{viewmodel.startClock}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_endContainer"
+                    app:layout_constraintTop_toBottomOf="@id/ll_startContainer"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.5"
+                        android:id="@+id/tv_end"
+                        android:text="종료"
+                        android:paddingLeft="8dp"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.25"
+                        android:gravity="right"
+                        android:textColor="@color/colorBlack"
+                        tools:text="5월 24일    "
+                        android:text="@{viewmodel.endDate}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="0.25"
+                        android:textColor="@color/colorBlack"
+                        tools:text="오후 8:00"
+                        android:text="@{viewmodel.endClock}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/mcv_select_schedule"
+                    app:layout_constraintTop_toBottomOf="@id/ll_endContainer"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    app:mcv_selectionColor="@color/colorSelectedDateBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <View
+                    android:id="@+id/view_divider"
+                    android:background="@color/colorGray"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_select_schedule"
+                    app:layout_constraintBottom_toTopOf="@id/tp_date"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+            <TimePicker
+                    android:id="@+id/tp_date"
+                    app:layout_constraintTop_toBottomOf="@id/mcv_select_schedule"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:timePickerMode="spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</layout>

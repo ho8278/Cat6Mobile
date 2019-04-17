@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Team(@PrimaryKey
-                @SerializedName("team_id")
+                @SerializedName("team_ID")
                 var id:String,
                 @SerializedName("team_name")
                 var name:String)

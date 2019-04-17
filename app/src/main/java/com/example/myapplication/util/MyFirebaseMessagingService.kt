@@ -26,9 +26,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String?) {
         Log.d(TAG, "Token: " + token)
-        User("2", "123", "TestUser1", "NickName", token ?: "NULL", "")
+        User("2", "123", "김기현", "NickName", token ?: "NULL", "")
             .let {
-                DataManager.getInstance(applicationContext).insert(it)
+                DataManager.getInstance(applicationContext).insertUser(it)
                 DataManager.getInstance(applicationContext).saveString(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
             }
     }

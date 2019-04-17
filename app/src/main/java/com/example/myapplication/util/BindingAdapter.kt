@@ -1,14 +1,14 @@
 package com.example.myapplication.util
 
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.databinding.BindingConversion
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.ChatInfo
+import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.chat.ChatFragmentAdapter
 
 object BindingAdapter {
@@ -26,19 +26,16 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("bind_item")
-    fun setItem(view: RecyclerView, item:MutableList<ChatInfo>){
+    fun setChatItem(view: RecyclerView, item:MutableList<ChatInfo>){
         val adapter = view.adapter as ChatFragmentAdapter
         adapter.setList(item)
         view.scrollToPosition(adapter.itemCount-1)
     }
 
     @JvmStatic
-    @BindingConversion
-    fun convertBooleanToInt(isLoading:Boolean):Int{
-        if(isLoading){
-            return View.VISIBLE
-        }
-        else
-            return View.GONE
+    @BindingAdapter("bind_item")
+    fun setScheduleItem(view: RecyclerView, item:MutableList<Schedule>){
+        val adapter = view.adapter as ScheduleListAdapter
+        adapter.setList(item)
     }
 }

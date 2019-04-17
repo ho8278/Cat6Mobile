@@ -11,6 +11,7 @@ class PreferenceHelperImpl:PreferenceHelper {
         val CURRENT_USER_ID="CURRENT_USER_ID"
         val CHANNEL_ID="CHANNEL_ID"
         val CHANNEL_NAME="CHANNEL_NAME"
+        val CURRENT_GROUP_ID="CURRENT_GROUP_ID"
 
         private lateinit var preference:SharedPreferences
         @Volatile

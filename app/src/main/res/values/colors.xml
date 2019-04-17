@@ -3,19 +3,23 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-<<<<<<< HEAD
 
     <color name="drawer_background_color">#631464</color>
     <color name="drawer_text_color">#AAAAAA</color>
-=======
+
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#c1c1c1</color>
     <color name="colorBlack">#000000</color>
     <color name="colorClear">#00000000</color>
-<<<<<<< HEAD
->>>>>>> 71cbe8d... create chat activity
-=======
     <color name="colorLightPurple">#ca5cf2</color>
     <color name="colorSkyBlue">#59c1f2</color>
->>>>>>> f192c31... create chat layout item
+    <color name="colorAddScheduleSelectDate">#543210</color>
+
+    <!-- Calendar Activity -->
+    <color name="colorCalendarBackground">#999999</color>
+    <color name="colorSelectedDateBackground">#8018A558</color>
+    <color name="colorWeekend">#FFFFFF</color>
+    <color name="colorSelectedDateText">#50FF50</color>
+    <color name="colorUnSelectedDateText">#FFFFFF</color>
+    <color name="colorCalendarAdd">#999999</color>
 </resources>

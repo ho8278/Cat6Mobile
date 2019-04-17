@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -24,6 +24,14 @@
 
     <style name="DrawerParticipants" parent="DrawerItemDefault">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="CustomDateTextAppearance" parent="TextAppearance.MaterialCalendarWidget.Date">
+        <item name="android:textColor">@drawable/selector_date_text_color</item>
+    </style>
+
+    <style name="CustomHeaderTextAppearance">
+        <item name="android:textColor">@color/colorWeekend</item>
     </style>
 
 </resources>

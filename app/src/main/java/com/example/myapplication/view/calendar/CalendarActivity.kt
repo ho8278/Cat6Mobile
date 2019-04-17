@@ -1,0 +1,66 @@
+package com.example.myapplication.view.calendar
+
+import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
+import com.example.myapplication.data.DataSource
+import com.example.myapplication.databinding.ActivityCalendarBinding
+import com.example.myapplication.view.base.BaseActivity
+import com.google.android.material.appbar.AppBarLayout
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+
+class CalendarActivity : BaseActivity<ActivityCalendarBinding,CalendarViewModel>() {
+    override val TAG: String
+        get() = CalendarActivity::class.java.simpleName
+
+    override fun getLayoutID(): Int {
+        return R.layout.activity_calendar
+    }
+
+    override fun getViewModel(dataSource: DataSource): CalendarViewModel {
+        return CalendarViewModel(dataSource)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.viewmodel=viewModel
+
+        initCalendarView()
+        initScheduleList()
+    }
+
+    private fun initScheduleList(){
+        binding.rvSchedule.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
+        binding.rvSchedule.adapter= ScheduleListAdapter()
+
+        binding.ablToolbarcontainer.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener{layout:AppBarLayout, offset ->
+            viewModel.offsetChange(Math.abs(offset),layout.totalScrollRange)
+        })
+    }
+
+    private fun initCalendarView(){
+        binding.mcvCalendar.topbarVisible=false
+
+        CalendarDay.today().also{
+            viewModel.loadSchedule(it.year,it.month,it.day)
+            binding.mcvCalendar.selectedDate=it
+        }
+        viewModel.OnMonthChanged(binding.mcvCalendar.currentDate.year,binding.mcvCalendar.currentDate.month)
+
+        binding.mcvCalendar.setOnDateChangedListener{ widget: MaterialCalendarView, date: CalendarDay, selected: Boolean ->
+            viewModel.OnDateChanged(date.year,date.month,date.day)
+        }
+        binding.mcvCalendar.setOnMonthChangedListener { widget, date ->
+            binding.mcvCalendar.selectedDate=CalendarDay.from(date.year,date.month,CalendarDay.today().day)
+            viewModel.OnMonthChanged(date.year,date.month)
+            viewModel.OnDateChanged(date.year,date.month,CalendarDay.today().day)
+        }
+
+        binding.fabAddSchedule.setOnClickListener {
+
+        }
+
+    }
+}

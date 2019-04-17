@@ -11,6 +11,7 @@ import com.example.myapplication.util.DateTypeConverter
     ChatRoom::class,
     File::class,
     Notice::class,
+    Schedule::class,
     Team::class,
     User::class,
     Vote::class,
@@ -24,6 +25,7 @@ abstract class AppDatabase:RoomDatabase(){
     abstract val fileDao:FileDao
     abstract val chatInfoDao:ChatInfoDao
     abstract val noticeDao:NoticeDao
+    abstract val scheduleDao:ScheduleDao
     abstract val teamDao:TeamDao
     abstract val voteDao:VoteDao
 }
