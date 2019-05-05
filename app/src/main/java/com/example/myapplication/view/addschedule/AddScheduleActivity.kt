@@ -24,7 +24,7 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     }
 
     override fun getViewModel(dataSource: DataSource): AddScheduleViewModel {
-        return AddScheduleViewModel(dataSource,this)
+        return AddScheduleViewModel(dataSource, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -34,7 +34,7 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.home -> finish()
+            android.R.id.home -> finish()
             R.id.save_schedule -> viewModel.saveSchedule()
             else -> {
                 Log.e(TAG, this.toString())
@@ -79,7 +79,7 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     }
 
     private fun initTimePicker() {
-        val time= DateTime()
+        val time = DateTime()
         if (Build.VERSION.SDK_INT >= 23) {
             binding.tpDate.hour = time.hourOfDay
             binding.tpDate.minute = time.minuteOfHour
@@ -96,19 +96,19 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
         binding.mcvSelectSchedule.selectedDate = CalendarDay.today()
         binding.mcvSelectSchedule.setOnMonthChangedListener { _, date ->
             binding.mcvSelectSchedule.selectedDate = date
-            viewModel.OnDateChanged(date.month, date.day)
+            viewModel.OnDateChanged(date.year, date.month, date.day)
         }
         binding.mcvSelectSchedule.setOnDateChangedListener { _, date, _ ->
-            viewModel.OnDateChanged(date.month, date.day)
+            viewModel.OnDateChanged(date.year, date.month, date.day)
         }
     }
 
     override fun OnSaveFail(errorCode: ErrorCode) {
-        Toast.makeText(this,errorCode.description,Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, errorCode.description, Toast.LENGTH_SHORT).show()
     }
 
     override fun OnSaveSuccess() {
-        Toast.makeText(this,"성공적으로 저장되었습니다.",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
         finish()
     }
 }

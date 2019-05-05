@@ -13,6 +13,7 @@ import com.example.myapplication.data.model.User
 import com.example.myapplication.data.remote.api.ApiHelper
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
+import com.example.myapplication.view.main.ErrorCode
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.reactivex.Completable
@@ -21,6 +22,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -35,7 +37,7 @@ class DataManager : DataSource {
     private val apiHelper = ApiHelperImpl.api
     private val fcmApiHelper = FCMHelperImpl.api
     private val receiveSubject: Subject<ChatInfo>
-    val TAG=DataManager::class.java.simpleName
+    val TAG = DataManager::class.java.simpleName
 
     init {
         receiveSubject = PublishSubject.create()
@@ -82,7 +84,7 @@ class DataManager : DataSource {
             element.addProperty("roomId", chatInfo.roomId)
             val dateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
             element.addProperty("sendDate", dateFormat.format(chatInfo.sendDate))
-            element.addProperty("sendId", chatInfo.sendUserId+"1")
+            element.addProperty("sendId", chatInfo.sendUserId + "1")
             add("data", element)
         }
 
@@ -103,9 +105,6 @@ class DataManager : DataSource {
         return dbHelper.loadChatInfoList(roomId)
     }
 
-    /*override fun getUser(userId:String): Single<User> {
-            return dbHelper.getUser(userId)
-        }*/
     override fun saveString(key: String, text: String) {
         prefHelper.saveString(key, text)
     }
@@ -125,13 +124,53 @@ class DataManager : DataSource {
     }
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
-        return dbHelper.getSchedules(year,month,day)
+        return dbHelper.getSchedules(year, month, day)
     }
 
     override fun saveSchedule(schedule: Schedule): Single<ServerResponse> {
+        val startDate = schedule.startDate
+        val endDate = schedule.endDate
+
+        if (startDate > endDate) {
+            return Single.create<ServerResponse>{
+                it.onError(Throwable(ErrorCode.LATE_START_DATE.code.toString()))
+            }
+        }
+
+        if(schedule.name.isEmpty()){
+            return Single.create<ServerResponse>{
+                it.onError(Throwable(ErrorCode.EMPTY_TEXT.code.toString()))
+            }
+        }
+        val teamIdObserver=Single.fromCallable {
+            prefHelper.getString(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        }
+
         return apiHelper.insertSchedule(schedule)
-            .doOnSuccess {
-                Log.e(TAG,it.toString())
+            .flatMap {
+                val serverResponse = it
+
+                Single.create<ServerResponse> {
+                    if (serverResponse.responseCode == ErrorCode.SUCCESS.code)
+                        it.onSuccess(serverResponse)
+                    else
+                        it.onError(Throwable(serverResponse.responseCode.toString()))
+                }
+            }.zipWith(teamIdObserver,BiFunction { one:ServerResponse, teamID:String->
+                val jsonObject = one.data.asJsonObject
+                jsonObject.addProperty("teamID",teamID)
+                one.data=jsonObject
+                one
+            }).doOnSuccess {
+                val jsonObject=it.data.asJsonObject
+                val newSchedule=Schedule(
+                    jsonObject.get("id").asString,
+                    schedule.startDate,
+                    schedule.endDate,
+                    schedule.name,
+                    jsonObject.get("teamID").asString
+                )
+                dbHelper.insertSchedule(newSchedule)
             }
     }
 }

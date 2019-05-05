@@ -6,14 +6,17 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.base.BaseViewModel
 import com.example.myapplication.view.main.ErrorCode
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
-class AddScheduleViewModel(dataSource:DataSource, var navigator: AddScheduleNavigator) : BaseViewModel(dataSource) {
-    val TAG=AddScheduleViewModel::class.java.simpleName
+class AddScheduleViewModel(dataSource: DataSource, var navigator: AddScheduleNavigator) : BaseViewModel(dataSource) {
+    val TAG = AddScheduleViewModel::class.java.simpleName
 
     val startDate = ObservableField<DateTime>()
     val endDate = ObservableField<DateTime>()
+    val title = ObservableField<String>()
     var isClicked = true     //true=시작 false=종료
 
     init {
@@ -38,17 +41,17 @@ class AddScheduleViewModel(dataSource:DataSource, var navigator: AddScheduleNavi
         }
     }
 
-    fun OnDateChanged(month: Int, day: Int) {
+    fun OnDateChanged(year: Int, month: Int, day: Int) {
         when (isClicked) {
             true -> {
                 val time = startDate.get() ?: DateTime()
-                val changeTime = DateTime(time.year, month, day, time.hourOfDay, time.minuteOfHour)
+                val changeTime = DateTime(year, month, day, time.hourOfDay, time.minuteOfHour)
                 startDate.set(changeTime)
             }
 
             false -> {
                 val time = endDate.get() ?: DateTime()
-                val changeTime = DateTime(time.year, month, day, time.hourOfDay, time.minuteOfHour)
+                val changeTime = DateTime(year, month, day, time.hourOfDay, time.minuteOfHour)
                 endDate.set(changeTime)
             }
         }
@@ -63,16 +66,24 @@ class AddScheduleViewModel(dataSource:DataSource, var navigator: AddScheduleNavi
     }
 
     fun saveSchedule() {
-        val startTime=startDate.get()
-        val endTime=endDate.get()
-        if(startTime?.compareTo(endTime) == 1){
-            navigator.OnSaveFail(ErrorCode.LATE_START_DATE)
-        }
+        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss")
         getCompositeDisposable().add(
-            getDataManager().saveSchedule(Schedule("","123456","123456","123456","123456"))
-                .subscribeOn(Schedulers.io())
-                .subscribe({},{
-                    Log.e(TAG,it.message)
+            getDataManager().saveSchedule(
+                    Schedule(
+                        "",
+                        startDate.get()!!.toString(formatter),
+                        endDate.get()!!.toString(formatter),
+                        title.get() ?: "",
+                        ""
+                    )
+                ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.e(TAG, "Success")
+                    navigator.OnSaveSuccess()
+                }, {
+                    Log.e(TAG, "ErrorCode: ${it.message}")
+                    navigator.OnSaveFail(ErrorCode.fromCode(it.message!!.toInt()))
                 })
         )
     }

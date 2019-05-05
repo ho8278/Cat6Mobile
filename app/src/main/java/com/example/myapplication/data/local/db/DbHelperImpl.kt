@@ -79,6 +79,7 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.scheduleDao.insertSchedules(schedule)
         }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e("DbHelper",it.message) }
             .subscribe()
     }
 }
