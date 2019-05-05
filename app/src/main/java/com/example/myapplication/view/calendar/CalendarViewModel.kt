@@ -12,7 +12,7 @@ import com.example.myapplication.view.base.BaseViewModel
 class CalendarViewModel : BaseViewModel{
     val TAG=CalendarViewModel::class.java.simpleName
     constructor(dataSource: DataSource):super(dataSource)
-    val alphabetMonth = arrayOf("JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER")
+    private val alphabetMonth = arrayOf("JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER")
     val isLoading=ObservableBoolean()
     val year = ObservableField<String>()
     val month = ObservableField<String>()

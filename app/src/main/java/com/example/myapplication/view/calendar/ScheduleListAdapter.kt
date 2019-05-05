@@ -1,5 +1,6 @@
 package com.example.myapplication.view.calendar
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
@@ -12,10 +13,13 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ItemScheduleBinding
 import com.example.myapplication.view.base.BaseViewHolder
+import com.example.myapplication.view.detailschedule.DetailScheduleActivity
 import java.util.*
 
 class ScheduleListAdapter:RecyclerView.Adapter<BaseViewHolder>(){
     var scheduleList = mutableListOf<Schedule>()
+
+    private val SCHEDULE_INFO="SCHEDULE_INFO"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val binding= ItemScheduleBinding.inflate(
@@ -43,12 +47,18 @@ class ScheduleListAdapter:RecyclerView.Adapter<BaseViewHolder>(){
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.bind(position)
+
     }
 
     inner class ScheduleViewHolder(val binding:ItemScheduleBinding, val dataSource:DataSource): BaseViewHolder(binding){
 
         override fun bind(position: Int) {
             binding.viewmodel=ScheduleItemViewModel(dataSource,scheduleList[position])
+            binding.clScheduleContainer.setOnClickListener {
+                val intent=Intent(binding.root.context,DetailScheduleActivity::class.java)
+                intent.putExtra(SCHEDULE_INFO,scheduleList[position])
+                binding.root.context.startActivity(intent)
+            }
         }
     }
 }

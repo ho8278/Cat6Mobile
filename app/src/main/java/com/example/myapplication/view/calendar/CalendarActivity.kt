@@ -1,11 +1,13 @@
 package com.example.myapplication.view.calendar
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityCalendarBinding
+import com.example.myapplication.view.addschedule.AddScheduleActivity
 import com.example.myapplication.view.base.BaseActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -26,6 +28,10 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding,CalendarViewModel>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewmodel=viewModel
+
+        binding.fabAddSchedule.setOnClickListener {
+            startAddActivity()
+        }
 
         initCalendarView()
         initScheduleList()
@@ -62,5 +68,10 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding,CalendarViewModel>
 
         }
 
+    }
+
+    private fun startAddActivity(){
+        val intent= Intent(this,AddScheduleActivity::class.java)
+        startActivity(intent)
     }
 }
