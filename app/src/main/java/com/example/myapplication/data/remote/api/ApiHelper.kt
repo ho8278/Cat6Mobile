@@ -2,6 +2,7 @@ package com.example.myapplication.data.remote.api
 
 import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.ServerResponse
 import com.example.myapplication.data.model.Team
 import io.reactivex.Single
 import retrofit2.http.*
@@ -17,5 +18,5 @@ interface ApiHelper {
     fun loadChatRooms(@Query("userid") userId: String, @Query("teamid") teamId: String): Single<List<ChatRoom>>
 
     @PUT("schedule")
-    fun insertSchedule(@Body schedule:Schedule):Single<String>
+    fun insertSchedule(@Body schedule:Schedule):Single<ServerResponse>
 }

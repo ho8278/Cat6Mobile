@@ -13,6 +13,7 @@ import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.databinding.ActivityAddShceduleBinding
 import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import org.joda.time.DateTime
 
 class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddScheduleNavigator {
     override val TAG: String
@@ -23,7 +24,7 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     }
 
     override fun getViewModel(dataSource: DataSource): AddScheduleViewModel {
-        return AddScheduleViewModel(dataSource)
+        return AddScheduleViewModel(dataSource,this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -78,12 +79,13 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     }
 
     private fun initTimePicker() {
+        val time= DateTime()
         if (Build.VERSION.SDK_INT >= 23) {
-            binding.tpDate.hour = 8
-            binding.tpDate.minute = 0
+            binding.tpDate.hour = time.hourOfDay
+            binding.tpDate.minute = time.minuteOfHour
         } else {
-            binding.tpDate.currentHour = 8
-            binding.tpDate.currentMinute = 0
+            binding.tpDate.currentHour = time.hourOfDay
+            binding.tpDate.currentMinute = time.minuteOfHour
         }
         binding.tpDate.setOnTimeChangedListener { _, hourOfDay, minute ->
             viewModel.OnTimeChanged(hourOfDay, minute)

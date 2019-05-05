@@ -8,10 +8,12 @@ import com.example.myapplication.data.local.pref.PreferenceHelper
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.ServerResponse
 import com.example.myapplication.data.model.User
 import com.example.myapplication.data.remote.api.ApiHelper
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -24,6 +26,7 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import okhttp3.Response
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +35,7 @@ class DataManager : DataSource {
     private val apiHelper = ApiHelperImpl.api
     private val fcmApiHelper = FCMHelperImpl.api
     private val receiveSubject: Subject<ChatInfo>
+    val TAG=DataManager::class.java.simpleName
 
     init {
         receiveSubject = PublishSubject.create()
@@ -124,7 +128,10 @@ class DataManager : DataSource {
         return dbHelper.getSchedules(year,month,day)
     }
 
-    override fun saveSchedule(): Single<ResponseBody> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun saveSchedule(schedule: Schedule): Single<ServerResponse> {
+        return apiHelper.insertSchedule(schedule)
+            .doOnSuccess {
+                Log.e(TAG,it.toString())
+            }
     }
 }

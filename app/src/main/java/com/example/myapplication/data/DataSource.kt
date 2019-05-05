@@ -2,6 +2,7 @@ package com.example.myapplication.data
 
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.ServerResponse
 import com.example.myapplication.data.model.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -22,5 +23,5 @@ interface DataSource{
     fun getCurrentUser():Single<User>
     fun loadSchedule(groupId:String):Completable
     fun getSchedules(year:Int,month:Int,day:Int):Single<List<Schedule>>
-    fun saveSchedule():Single<ResponseBody>
+    fun saveSchedule(schedule: Schedule):Single<ServerResponse>
 }

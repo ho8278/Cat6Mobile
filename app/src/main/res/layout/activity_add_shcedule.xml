@@ -73,19 +73,11 @@
                         android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="0.25"
-                        android:gravity="right"
+                        android:layout_weight="0.5"
+                        android:gravity="left"
                         android:textColor="@color/colorBlack"
-                        tools:text="5월 24일    "
+                        tools:text="5월 24일    오전 08:00"
                         android:text="@{viewmodel.startDate}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="0.25"
-                        android:textColor="@color/colorBlack"
-                        tools:text="오후 8:00"
-                        android:text="@{viewmodel.startClock}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -114,19 +106,11 @@
                         android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="0.25"
-                        android:gravity="right"
+                        android:layout_weight="0.5"
+                        android:gravity="left"
                         android:textColor="@color/colorBlack"
-                        tools:text="5월 24일    "
+                        tools:text="5월 24일    오전 08:00"
                         android:text="@{viewmodel.endDate}"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="0.25"
-                        android:textColor="@color/colorBlack"
-                        tools:text="오후 8:00"
-                        android:text="@{viewmodel.endClock}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
