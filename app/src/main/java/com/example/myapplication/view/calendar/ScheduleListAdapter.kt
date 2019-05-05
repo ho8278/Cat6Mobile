@@ -21,6 +21,7 @@ class ScheduleListAdapter:RecyclerView.Adapter<BaseViewHolder>(){
 
     private val SCHEDULE_INFO="SCHEDULE_INFO"
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val binding= ItemScheduleBinding.inflate(
             LayoutInflater.from(parent.context), parent,false)

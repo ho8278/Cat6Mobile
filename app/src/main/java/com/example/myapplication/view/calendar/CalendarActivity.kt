@@ -65,7 +65,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding,CalendarViewModel>
         }
 
         binding.fabAddSchedule.setOnClickListener {
-
+            startAddActivity()
         }
 
     }

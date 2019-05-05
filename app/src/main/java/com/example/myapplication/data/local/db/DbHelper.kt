@@ -2,6 +2,7 @@ package com.example.myapplication.data.local.db
 
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.Team
 import com.example.myapplication.data.model.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -24,4 +25,6 @@ interface DbHelper {
     fun deleteAllSchedules():Completable
 
     fun getSchedules(year:Int, month:Int, day:Int):Single<List<Schedule>>
+
+    fun insertTeam(team: Team)
 }

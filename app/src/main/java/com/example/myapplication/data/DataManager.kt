@@ -6,10 +6,7 @@ import com.example.myapplication.data.local.db.DbHelper
 import com.example.myapplication.data.local.db.DbHelperImpl
 import com.example.myapplication.data.local.pref.PreferenceHelper
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
-import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.data.model.Schedule
-import com.example.myapplication.data.model.ServerResponse
-import com.example.myapplication.data.model.User
+import com.example.myapplication.data.model.*
 import com.example.myapplication.data.remote.api.ApiHelper
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
@@ -172,5 +169,9 @@ class DataManager : DataSource {
                 )
                 dbHelper.insertSchedule(newSchedule)
             }
+    }
+
+    override fun insertTeam(team: Team) {
+        dbHelper.insertTeam(team)
     }
 }

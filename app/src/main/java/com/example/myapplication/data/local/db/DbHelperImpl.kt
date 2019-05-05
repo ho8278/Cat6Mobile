@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.Team
 import com.example.myapplication.data.model.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -15,6 +16,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 class DbHelperImpl : DbHelper {
+    private val TAG=DbHelperImpl::class.java.simpleName
     companion object {
         private val dbName = "AppDatabase"
 
@@ -68,7 +70,7 @@ class DbHelperImpl : DbHelper {
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
         val date = "$year-$month-$day"
-        Log.e("DbHelperImpl", date)
+        Log.e(TAG, date)
         return Single.fromCallable {
             appDatabase.scheduleDao.getSchedules(date)
         }.subscribeOn(Schedulers.io())
@@ -79,7 +81,15 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.scheduleDao.insertSchedules(schedule)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e("DbHelper",it.message) }
+            .doOnError { Log.e(TAG,it.message) }
+            .subscribe()
+    }
+
+    override fun insertTeam(team: Team) {
+        Completable.fromAction{
+            appDatabase.teamDao.insertTeam(team)
+        }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG,it.message) }
             .subscribe()
     }
 }
