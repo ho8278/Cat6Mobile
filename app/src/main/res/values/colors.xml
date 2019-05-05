@@ -8,7 +8,7 @@
     <color name="drawer_text_color">#AAAAAA</color>
 
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorGray">#c1c1c1</color>
+    <color name="colorGray">#C1c1c1c1</color>
     <color name="colorBlack">#000000</color>
     <color name="colorClear">#00000000</color>
     <color name="colorLightPurple">#ca5cf2</color>

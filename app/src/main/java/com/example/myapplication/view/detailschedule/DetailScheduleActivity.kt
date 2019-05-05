@@ -24,7 +24,7 @@ class DetailScheduleActivity:BaseActivity<ActivityDetailScheduleBinding,DetailSc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intentData=intent.extras[SCHEDULE_INFO] as Schedule
-        Log.e(TAG,intentData.toString())
+        /*val intentData=intent.extras[SCHEDULE_INFO] as Schedule
+        Log.e(TAG,intentData.toString())*/
     }
 }

@@ -16,7 +16,7 @@ import com.example.myapplication.view.base.BaseViewHolder
 import com.example.myapplication.view.detailschedule.DetailScheduleActivity
 import java.util.*
 
-class ScheduleListAdapter:RecyclerView.Adapter<BaseViewHolder>(){
+class ScheduleListAdapter(val listener: OnItemClickListener):RecyclerView.Adapter<BaseViewHolder>(){
     var scheduleList = mutableListOf<Schedule>()
 
     private val SCHEDULE_INFO="SCHEDULE_INFO"
@@ -56,9 +56,10 @@ class ScheduleListAdapter:RecyclerView.Adapter<BaseViewHolder>(){
         override fun bind(position: Int) {
             binding.viewmodel=ScheduleItemViewModel(dataSource,scheduleList[position])
             binding.clScheduleContainer.setOnClickListener {
-                val intent=Intent(binding.root.context,DetailScheduleActivity::class.java)
+                /*val intent=Intent(binding.root.context,DetailScheduleActivity::class.java)
                 intent.putExtra(SCHEDULE_INFO,scheduleList[position])
-                binding.root.context.startActivity(intent)
+                binding.root.context.startActivity(intent)*/
+                listener.OnClick(scheduleList)
             }
         }
     }
