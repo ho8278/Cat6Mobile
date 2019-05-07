@@ -19,6 +19,6 @@ interface ScheduleDao {
     @Query("delete from Schedule")
     fun deleteAllSchedules()
 
-    @Query("select * from Schedule where Schedule.startDate=:scheduleDate")
+    @Query("select * from Schedule where Schedule.startDate like :scheduleDate")
     fun getSchedules(scheduleDate:String):List<Schedule>
 }

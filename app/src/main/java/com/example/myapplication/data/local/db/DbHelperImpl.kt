@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.joda.time.format.DateTimeFormat
 import java.util.*
 
 class DbHelperImpl : DbHelper {
@@ -69,7 +70,7 @@ class DbHelperImpl : DbHelper {
     }
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
-        val date = "$year-$month-$day"
+        val date = "$year-$month-$day%"
         Log.e(TAG, date)
         return Single.fromCallable {
             appDatabase.scheduleDao.getSchedules(date)

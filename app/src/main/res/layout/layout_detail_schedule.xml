@@ -13,10 +13,14 @@
 
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vp_schedule"
+                android:clipToPadding="false"
+                android:paddingLeft="80dp"
+                android:paddingRight="80dp"
+                bind_item="@{viewmodel.scheduleList}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"/>
+                android:layout_height="250dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

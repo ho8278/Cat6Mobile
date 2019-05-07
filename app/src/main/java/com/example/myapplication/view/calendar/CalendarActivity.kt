@@ -2,8 +2,6 @@ package com.example.myapplication.view.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -12,6 +10,8 @@ import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityCalendarBinding
 import com.example.myapplication.view.addschedule.AddScheduleActivity
 import com.example.myapplication.view.base.BaseActivity
+import com.example.myapplication.view.detailschedule.CustomDialog
+import com.example.myapplication.view.detailschedule.ScheduleChangeListener
 import com.google.android.material.appbar.AppBarLayout
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -78,8 +78,11 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
         startActivity(intent)
     }
 
-    override fun OnClick(list: List<Schedule>) {
-        val customDialog=CustomDialog(this,list,R.style.customStyle)
+    override fun OnClick(list: MutableList<Schedule>) {
+        val deleteListener = binding.rvSchedule.adapter as ScheduleChangeListener
+        val customDialog =
+            CustomDialog(this, list.toMutableList(), deleteListener, R.style.customStyle)
+
         customDialog.show()
     }
 }

@@ -5,15 +5,16 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.calendar.ScheduleListAdapter
+import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatFragmentAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import java.time.format.DateTimeFormatter
 
 object BindingAdapter {
 
@@ -40,6 +41,13 @@ object BindingAdapter {
     @BindingAdapter("bind_item")
     fun setScheduleItem(view: RecyclerView, item: MutableList<Schedule>) {
         val adapter = view.adapter as ScheduleListAdapter
+        adapter.setList(item)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>) {
+        val adapter = view.adapter as ScheduleViewPagerAdapter
         adapter.setList(item)
     }
 

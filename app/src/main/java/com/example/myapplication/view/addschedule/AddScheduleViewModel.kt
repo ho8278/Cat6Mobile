@@ -11,19 +11,30 @@ import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
-class AddScheduleViewModel(dataSource: DataSource, var navigator: AddScheduleNavigator) : BaseViewModel(dataSource) {
-    val TAG = AddScheduleViewModel::class.java.simpleName
+class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
 
+    constructor(dataSource: DataSource, navigator: AddScheduleNavigator) : this(dataSource) {
+        val time = DateTime()
+        this.navigator = navigator
+        startDate.set(time)
+        endDate.set(time)
+    }
+
+    constructor(dataSource: DataSource, navigator: AddScheduleNavigator?, schedule: Schedule) : this(dataSource) {
+        val parser=DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss")
+        val startTime=parser.parseDateTime(schedule.startDate)
+        val endTime=parser.parseDateTime(schedule.endDate)
+        title.set(schedule.name)
+        startDate.set(startTime)
+        endDate.set(endTime)
+    }
+
+    val TAG = AddScheduleViewModel::class.java.simpleName
+    var navigator: AddScheduleNavigator? = null
     val startDate = ObservableField<DateTime>()
     val endDate = ObservableField<DateTime>()
     val title = ObservableField<String>()
     var isClicked = true     //true=시작 false=종료
-
-    init {
-        val time = DateTime()
-        startDate.set(time)
-        endDate.set(time)
-    }
 
     fun OnTimeChanged(hour: Int, minute: Int) {
         when (isClicked) {
@@ -69,22 +80,30 @@ class AddScheduleViewModel(dataSource: DataSource, var navigator: AddScheduleNav
         val formatter = DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss")
         getCompositeDisposable().add(
             getDataManager().saveSchedule(
-                    Schedule(
-                        "",
-                        startDate.get()!!.toString(formatter),
-                        endDate.get()!!.toString(formatter),
-                        title.get() ?: "",
-                        ""
-                    )
-                ).subscribeOn(Schedulers.io())
+                Schedule(
+                    "",
+                    startDate.get()!!.toString(formatter),
+                    endDate.get()!!.toString(formatter),
+                    title.get() ?: "",
+                    ""
+                )
+            ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Log.e(TAG, "Success")
-                    navigator.OnSaveSuccess()
+                    navigator!!.OnSaveSuccess()
                 }, {
                     Log.e(TAG, "ErrorCode: ${it.message}")
-                    navigator.OnSaveFail(ErrorCode.fromCode(it.message!!.toInt()))
+                    navigator!!.OnSaveFail(ErrorCode.fromCode(it.message!!.toInt()))
                 })
         )
+    }
+
+    fun delteSchedule(){
+
+    }
+
+    fun updateSchedule(){
+
     }
 }
