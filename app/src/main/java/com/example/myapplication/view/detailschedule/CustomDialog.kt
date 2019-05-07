@@ -13,7 +13,7 @@ import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.LayoutDetailScheduleBinding
 
-class CustomDialog(context: Context, val list: MutableList<Schedule>, val listener: ScheduleChangeListener, style: Int) :
+class CustomDialog(context: Context, val list: MutableList<Schedule>, val listener: ScheduleChangeListener, style: Int, val position:Int) :
     Dialog(context, style) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,12 +32,13 @@ class CustomDialog(context: Context, val list: MutableList<Schedule>, val listen
         binding.vpSchedule.apply {
             pageMargin = 120
             adapter = ScheduleViewPagerAdapter(list, listener)
+            currentItem=position
             setPageTransformer(false,
                 ViewPagerAnimator(0.8f)
             )
         }
 
-        binding.viewmodel = DetailScheduleViewModel(DataManager.getInstance(context.applicationContext), list)
+        binding.viewmodel = CustomDialogViewModel(DataManager.getInstance(context.applicationContext), list)
 
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.apply {
@@ -47,8 +48,11 @@ class CustomDialog(context: Context, val list: MutableList<Schedule>, val listen
         window.attributes = layoutParams
 
         setContentView(binding.root)
+
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         window.setBackgroundDrawableResource(R.color.colorClear)
+
+
     }
 
     class ViewPagerAnimator(val smallerScale: Float) : ViewPager.PageTransformer {

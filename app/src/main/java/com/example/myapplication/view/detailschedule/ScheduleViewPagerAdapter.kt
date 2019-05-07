@@ -1,6 +1,7 @@
 package com.example.myapplication.view.detailschedule
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,11 @@ import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ItemDetailScheduleBinding
 import com.example.myapplication.view.addschedule.AddScheduleViewModel
+import com.example.myapplication.view.updateschedule.UpdateScheduleActivity
 
 class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: ScheduleChangeListener) : PagerAdapter() {
+
+    val UPDATE_SCHEDULE="UPDATE_SCHEDULE"
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object` as View
@@ -48,11 +52,16 @@ class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: Sc
                     }
             }
             tvUpdate.setOnClickListener {
-                viewModel.updateSchedule()
+                val intent= Intent(container.context,UpdateScheduleActivity::class.java)
+                intent.putExtra(UPDATE_SCHEDULE,list[position])
+                container.context.startActivity(intent)
             }
         }
         container.addView(binding.root)
         return binding.root
+    }
+
+    fun setCurrentPosition(position:Int){
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

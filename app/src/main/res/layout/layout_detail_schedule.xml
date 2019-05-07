@@ -4,7 +4,7 @@
 
     <data>
         <variable name="viewmodel"
-                  type="com.example.myapplication.view.detailschedule.DetailScheduleViewModel"/>
+                  type="com.example.myapplication.view.detailschedule.CustomDialogViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

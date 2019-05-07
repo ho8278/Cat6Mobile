@@ -78,11 +78,10 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
         startActivity(intent)
     }
 
-    override fun OnClick(list: MutableList<Schedule>) {
+    override fun OnClick(list: MutableList<Schedule>, position:Int) {
         val deleteListener = binding.rvSchedule.adapter as ScheduleChangeListener
         val customDialog =
-            CustomDialog(this, list.toMutableList(), deleteListener, R.style.customStyle)
-
+            CustomDialog(this, list.toMutableList(), deleteListener, R.style.customStyle, position)
         customDialog.show()
     }
 }

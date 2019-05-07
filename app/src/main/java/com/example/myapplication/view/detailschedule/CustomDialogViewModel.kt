@@ -5,7 +5,7 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.base.BaseViewModel
 
-class DetailScheduleViewModel:BaseViewModel{
+class CustomDialogViewModel:BaseViewModel{
 
    var scheduleList:ObservableArrayList<Schedule>
 

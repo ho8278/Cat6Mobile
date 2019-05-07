@@ -66,7 +66,7 @@ class ScheduleListAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
         override fun bind(position: Int) {
             binding.viewmodel = ScheduleItemViewModel(dataSource, scheduleList[position])
             binding.clScheduleContainer.setOnClickListener {
-                listener.OnClick(scheduleList)
+                listener.OnClick(scheduleList, position)
             }
         }
     }

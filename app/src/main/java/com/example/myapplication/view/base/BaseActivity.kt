@@ -1,12 +1,14 @@
 package com.example.myapplication.view.base
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.model.Schedule
 
 abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
     AppCompatActivity() {
