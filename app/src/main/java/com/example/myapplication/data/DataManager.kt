@@ -116,7 +116,7 @@ class DataManager : DataSource {
 
     override fun loadSchedule(groupId: String): Completable {
         return apiHelper.loadSchedules(groupId).flatMapCompletable {
-            dbHelper.insertScheduleList(it)
+            dbHelper.insertScheduleList(it.data)
         }.subscribeOn(Schedulers.io())
     }
 
@@ -124,54 +124,52 @@ class DataManager : DataSource {
         return dbHelper.getSchedules(year, month, day)
     }
 
-    override fun saveSchedule(schedule: Schedule): Single<ServerResponse> {
+    override fun saveSchedule(schedule: Schedule): Single<Schedule> {
         val startDate = schedule.startDate
         val endDate = schedule.endDate
 
         if (startDate > endDate) {
-            return Single.create<ServerResponse>{
+            return Single.create<Schedule> {
                 it.onError(Throwable(ErrorCode.LATE_START_DATE.code.toString()))
             }
         }
 
-        if(schedule.name.isEmpty()){
-            return Single.create<ServerResponse>{
+        if (schedule.name.isEmpty()) {
+            return Single.create<Schedule> {
                 it.onError(Throwable(ErrorCode.EMPTY_TEXT.code.toString()))
             }
         }
-        val teamIdObserver=Single.fromCallable {
+        val teamIdObserver = Single.fromCallable {
             prefHelper.getString(PreferenceHelperImpl.CURRENT_GROUP_ID)
         }
 
         return apiHelper.insertSchedule(schedule)
             .flatMap {
                 val serverResponse = it
+                val item = it.data.first()
 
-                Single.create<ServerResponse> {
+                Single.create<Schedule> {
                     if (serverResponse.responseCode == ErrorCode.SUCCESS.code)
-                        it.onSuccess(serverResponse)
+                        it.onSuccess(item)
                     else
                         it.onError(Throwable(serverResponse.responseCode.toString()))
                 }
-            }.zipWith(teamIdObserver,BiFunction { one:ServerResponse, teamID:String->
-                val jsonObject = one.data.asJsonObject
-                jsonObject.addProperty("teamID",teamID)
-                one.data=jsonObject
-                one
+            }.zipWith(teamIdObserver, BiFunction { one: Schedule, teamID: String ->
+                val newSchedule = Schedule(one.id, one.startDate, one.endDate, one.name, teamID)
+                newSchedule
             }).doOnSuccess {
-                val jsonObject=it.data.asJsonObject
-                val newSchedule=Schedule(
-                    jsonObject.get("id").asString,
-                    schedule.startDate,
-                    schedule.endDate,
-                    schedule.name,
-                    jsonObject.get("teamID").asString
-                )
-                dbHelper.insertSchedule(newSchedule)
+                dbHelper.insertSchedule(it)
             }
     }
 
     override fun insertTeam(team: Team) {
         dbHelper.insertTeam(team)
+    }
+
+    override fun loadTeam(user: User): Single<List<Team>> {
+        return apiHelper.loadTeams(user.id)
+            .map { response -> response.data }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }
