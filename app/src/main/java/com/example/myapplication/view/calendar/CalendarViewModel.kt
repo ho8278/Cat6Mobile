@@ -35,7 +35,7 @@ class CalendarViewModel : BaseViewModel{
 
     fun loadSchedule(year:Int, month:Int, day:Int){
         getCompositeDisposable().also {
-            val groupId=getDataManager().getString(PreferenceHelperImpl.CURRENT_GROUP_ID)
+            val groupId=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
             it.add(getDataManager().loadSchedule(groupId)
                 .subscribe({
                     Log.e(TAG,"LoadSuccess")

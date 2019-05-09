@@ -20,6 +20,7 @@ object ApiHelperImpl {
         var client: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(loggingIntercept)
             .addInterceptor(ResponseInterceptor())
+            .addInterceptor(AddCookieInterceptor())
             .build()
 
         retrofit = Retrofit.Builder()

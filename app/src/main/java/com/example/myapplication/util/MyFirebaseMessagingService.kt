@@ -29,7 +29,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         User("2", "123", "김기현", "NickName", token ?: "NULL", "")
             .let {
                 DataManager.getInstance(applicationContext).insertUser(it)
-                DataManager.getInstance(applicationContext).saveString(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
+                DataManager.getInstance(applicationContext).saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
             }
     }
 
@@ -57,11 +57,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notiManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DataManager.getInstance(applicationContext).let {
-                var channelId = it.getString(PreferenceHelperImpl.CHANNEL_ID)
-                var channelName = it.getString(PreferenceHelperImpl.CHANNEL_NAME)
+                var channelId = it.getItem<String>(PreferenceHelperImpl.CHANNEL_ID)
+                var channelName = it.getItem<String>(PreferenceHelperImpl.CHANNEL_NAME)
                 if (channelId == "" || channelName == "") {
-                    it.saveString(PreferenceHelperImpl.CHANNEL_ID, "channel1")
-                    it.saveString(PreferenceHelperImpl.CHANNEL_NAME, "channel1")
+                    it.saveItem(PreferenceHelperImpl.CHANNEL_ID, "channel1")
+                    it.saveItem(PreferenceHelperImpl.CHANNEL_NAME, "channel1")
                     channelId = "channel1"
                     channelName = "channel1"
 

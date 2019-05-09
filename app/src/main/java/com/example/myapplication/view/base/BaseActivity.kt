@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.view.main.AppInitialize
 
 abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
     AppCompatActivity() {
@@ -21,7 +22,7 @@ abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
     abstract fun getViewModel(dataSource: DataSource): M
 
     fun init() {
-        viewModel = getViewModel(DataManager.getInstance(applicationContext))
+        viewModel = getViewModel(AppInitialize.dataSource)
         binding = DataBindingUtil.setContentView(this, getLayoutID())
     }
 

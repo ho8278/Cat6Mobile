@@ -12,6 +12,7 @@ import com.example.myapplication.R
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.LayoutDetailScheduleBinding
+import com.example.myapplication.view.main.AppInitialize
 
 class CustomDialog(context: Context, val list: MutableList<Schedule>, val listener: ScheduleChangeListener, style: Int, val position:Int) :
     Dialog(context, style) {
@@ -38,7 +39,7 @@ class CustomDialog(context: Context, val list: MutableList<Schedule>, val listen
             )
         }
 
-        binding.viewmodel = CustomDialogViewModel(DataManager.getInstance(context.applicationContext), list)
+        binding.viewmodel = CustomDialogViewModel(AppInitialize.dataSource, list)
 
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.apply {

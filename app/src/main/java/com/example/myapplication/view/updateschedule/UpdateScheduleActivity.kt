@@ -15,6 +15,7 @@ import com.example.myapplication.databinding.ActivityAddShceduleBinding
 import com.example.myapplication.view.addschedule.AddScheduleNavigator
 import com.example.myapplication.view.addschedule.AddScheduleViewModel
 import com.example.myapplication.view.base.BaseActivity
+import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import org.joda.time.DateTime
@@ -54,7 +55,7 @@ class UpdateScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSched
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val schedule = intent.getParcelableExtra<Schedule>(UPDATE_SCHEDULE)
-        viewModel = AddScheduleViewModel(DataManager.getInstance(applicationContext), this, schedule)
+        viewModel = AddScheduleViewModel(AppInitialize.dataSource,this, schedule)
         binding.viewmodel = viewModel
 
         initStartEndContainer()

@@ -13,6 +13,7 @@ import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ItemDetailScheduleBinding
 import com.example.myapplication.view.addschedule.AddScheduleViewModel
+import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.updateschedule.UpdateScheduleActivity
 
 class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: ScheduleChangeListener) : PagerAdapter() {
@@ -35,7 +36,7 @@ class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: Sc
             false
         )
         val viewModel =
-            AddScheduleViewModel(DataManager.getInstance(container.context.applicationContext), null, list[position])
+            AddScheduleViewModel(AppInitialize.dataSource, null, list[position])
         binding.viewmodel = viewModel
         binding.apply {
             tvDelete.setOnClickListener {

@@ -13,6 +13,7 @@ import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ItemScheduleBinding
 import com.example.myapplication.view.base.BaseViewHolder
 import com.example.myapplication.view.detailschedule.ScheduleChangeListener
+import com.example.myapplication.view.main.AppInitialize
 import java.util.*
 
 class ScheduleListAdapter(val listener: OnItemClickListener) : RecyclerView.Adapter<BaseViewHolder>(),
@@ -33,7 +34,7 @@ class ScheduleListAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
             //TODO:일정 상세정보 액티비티 생성
         }
 
-        return ScheduleViewHolder(binding, DataManager.getInstance(parent.context))
+        return ScheduleViewHolder(binding, AppInitialize.dataSource)
     }
 
     fun setList(scheduleList: MutableList<Schedule>) {

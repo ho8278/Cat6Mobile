@@ -3,10 +3,11 @@ package com.example.myapplication.data.remote.api
 import android.content.Context
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
+import com.example.myapplication.view.main.AppInitialize
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class ResponseInterceptor(val context:Context):Interceptor{
+class ResponseInterceptor:Interceptor{
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val response=chain.proceed(chain.request())
@@ -17,7 +18,7 @@ class ResponseInterceptor(val context:Context):Interceptor{
             response.headers("Set-Cookie")
                 .forEach { cookies.add(it) }
 
-            DataManager.getInstance(context.applicationContext).saveItem(PreferenceHelperImpl.COOKIES,cookies)
+            AppInitialize.dataSource.saveItem(PreferenceHelperImpl.COOKIES,cookies)
         }
 
         return response

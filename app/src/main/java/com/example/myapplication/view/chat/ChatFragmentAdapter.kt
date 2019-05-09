@@ -14,6 +14,7 @@ import com.example.myapplication.databinding.ItemDatedividerBinding
 import com.example.myapplication.databinding.ItemMychatBinding
 import com.example.myapplication.databinding.ItemTheirchatBinding
 import com.example.myapplication.view.base.BaseViewHolder
+import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +37,7 @@ class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHold
     val VIEW_TYPE_YOU = 1
 
     init{
-        DataManager.getInstance(context).getCurrentUser()
+        AppInitialize.dataSource.getCurrentUser()
             .subscribe({user->
                 userId=user.id
             },{
