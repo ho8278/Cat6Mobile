@@ -1,7 +1,7 @@
 package com.example.myapplication.data.local.pref
 
 interface PreferenceHelper{
-    fun saveString(key:String,userId:String)
+    fun <T:Any> saveItem(key:String,item:T)
 
-    fun getString(key:String):String
+    fun <T:Any> getItem(key:String):T
 }

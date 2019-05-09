@@ -15,8 +15,8 @@ interface DataSource{
     fun receiveMessage(chatInfo:ChatInfo)
     fun receiveMessage(): Observable<ChatInfo>
     fun loadChatInfoList(roomId:String):Single<List<ChatInfo>>
-    fun saveString(key:String,text:String)
-    fun getString(key:String):String
+    fun <T:Any> saveItem(key:String,text:T)
+    fun <T:Any> getItem(key:String):T
     fun getCurrentUser():Single<User>
     fun loadSchedule(groupId:String):Completable
     fun getSchedules(year:Int,month:Int,day:Int):Single<List<Schedule>>

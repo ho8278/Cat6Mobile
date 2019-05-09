@@ -102,16 +102,16 @@ class DataManager : DataSource {
         return dbHelper.loadChatInfoList(roomId)
     }
 
-    override fun saveString(key: String, text: String) {
-        prefHelper.saveString(key, text)
+    override fun <T : Any> saveItem(key: String, text: T) {
+        prefHelper.saveItem(key,text)
     }
 
-    override fun getString(key: String): String {
-        return prefHelper.getString(key)
+    override fun <T : Any> getItem(key: String): T {
+        return prefHelper.getItem(key)
     }
 
     override fun getCurrentUser(): Single<User> {
-        return dbHelper.getUser(prefHelper.getString(PreferenceHelperImpl.CURRENT_USER_ID))
+        return dbHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
     }
 
     override fun loadSchedule(groupId: String): Completable {
@@ -140,7 +140,7 @@ class DataManager : DataSource {
             }
         }
         val teamIdObserver = Single.fromCallable {
-            prefHelper.getString(PreferenceHelperImpl.CURRENT_GROUP_ID)
+            prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         }
 
         return apiHelper.insertSchedule(schedule)
