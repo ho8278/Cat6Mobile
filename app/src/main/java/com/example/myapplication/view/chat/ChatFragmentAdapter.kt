@@ -18,7 +18,7 @@ import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatFragmentAdapter(context: Context) : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffUtil.ItemCallback<ChatInfo>(){
+class ChatFragmentAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffUtil.ItemCallback<ChatInfo>(){
     override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
         Log.e("DIFF",(oldItem==newItem).toString())
         return false
