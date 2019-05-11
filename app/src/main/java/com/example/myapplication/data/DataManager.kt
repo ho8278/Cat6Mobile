@@ -115,7 +115,14 @@ class DataManager : DataSource {
     }
 
     override fun getCurrentUser(): Single<User> {
-        return dbHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
+        //return dbHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
+        return apiHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { response->
+                Log.e(TAG,response.toString())
+                response.data.get(0)
+            }
     }
 
     override fun loadSchedule(groupId: String): Completable {

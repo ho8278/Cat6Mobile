@@ -45,7 +45,7 @@ class PreferenceHelperImpl : PreferenceHelper {
 
                 is MutableSet<*> -> putStringSet(key, item as MutableSet<String>)
             }
-            apply()
+            commit()
         }
     }
 

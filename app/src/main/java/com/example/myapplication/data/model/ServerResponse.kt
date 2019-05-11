@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 data class ServerResponse<T:Any>(
     @SerializedName("result")
-    val responseCode: Int,
+    val responseCode: String,
     @SerializedName("data")
     var data:List<T>
 ){

@@ -12,6 +12,9 @@ interface ApiHelper {
     @GET("viewTeams")
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
 
+    @GET("showClientInfo")
+    fun getUser(@Query("client_ID") userId: String):Single<ServerResponse<User>>
+
     @GET("login")
     fun login(@Query("client_ID")id:String, @Query("client_password")pw:String):Single<ServerResponse<User>>
 
