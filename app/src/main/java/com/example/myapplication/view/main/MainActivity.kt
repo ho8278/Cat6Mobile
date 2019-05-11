@@ -7,12 +7,10 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.view.base.BaseActivity
-import com.example.myapplication.view.chat.ChatFragment
-import com.example.myapplication.view.chat.ChatFragmentAdapter
+import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.chat.ChatViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -78,7 +76,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         }
 
         include_chat.rv_chat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        include_chat.rv_chat.adapter = ChatFragmentAdapter()
+        include_chat.rv_chat.adapter = ChatInfoListAdapter()
 
         memberListAdapter = MemberListAdapter()
         memberListAdapter.addGroupMember("JongSeong")

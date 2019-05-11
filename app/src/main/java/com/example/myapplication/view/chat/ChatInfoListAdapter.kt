@@ -1,6 +1,5 @@
 package com.example.myapplication.view.chat
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myapplication.R
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.databinding.ItemDatedividerBinding
 import com.example.myapplication.databinding.ItemMychatBinding
@@ -18,7 +16,7 @@ import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatFragmentAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffUtil.ItemCallback<ChatInfo>(){
+class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffUtil.ItemCallback<ChatInfo>(){
     override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
         Log.e("DIFF",(oldItem==newItem).toString())
         return false
@@ -30,7 +28,7 @@ class ChatFragmentAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffU
     }
 }) {
 
-    private val TAG = ChatFragmentAdapter::class.java.simpleName
+    private val TAG = ChatInfoListAdapter::class.java.simpleName
     private lateinit var userId:String
 
     val VIEW_TYPE_ME = 0

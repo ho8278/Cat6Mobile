@@ -12,7 +12,7 @@ import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
-import com.example.myapplication.view.chat.ChatFragmentAdapter
+import com.example.myapplication.view.chat.ChatInfoListAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -32,7 +32,7 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("bind_item")
     fun setChatItem(view: RecyclerView, item: MutableList<ChatInfo>) {
-        val adapter = view.adapter as ChatFragmentAdapter
+        val adapter = view.adapter as ChatInfoListAdapter
         adapter.setList(item)
         view.scrollToPosition(adapter.itemCount - 1)
     }
