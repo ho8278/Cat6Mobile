@@ -18,11 +18,11 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
-    NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener,GroupChangeListener {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
+    private lateinit var fragment:TeamListFragment
     private lateinit var chatViewModel: ChatViewModel
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
@@ -43,6 +43,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         includeInit()
 
 
+        fragment=TeamListFragment()
+
+        spinner_show_group.setOnClickListener {
+            val transaction=supportFragmentManager.beginTransaction()
+            transaction.apply {
+                replace(R.id.fragment_show_team,TeamListFragment())
+                commit()
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -125,5 +134,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             //TODO:자료실 화면 이동
         }
 
+    }
+
+    override fun change(groupID: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

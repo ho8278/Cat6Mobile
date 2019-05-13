@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+>
+
+    <data>
+        <variable name="viewmodel"
+                  type="com.example.myapplication.view.main.TeamViewModel"/>
+    </data>
+
+    <LinearLayout
+            android:id="@+id/ll_container"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:text="@{viewmodel.teamName}"
+                android:id="@+id/tv_group_name"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"
+                tools:text="TESTTEST"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</layout>

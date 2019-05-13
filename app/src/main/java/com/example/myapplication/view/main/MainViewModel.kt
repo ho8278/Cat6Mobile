@@ -23,16 +23,4 @@ class MainViewModel: BaseViewModel {
     val userList=ObservableArrayList<User>()
 
     val currentUser= ObservableField<User>()
-
-    fun init(){
-        val userID=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
-        getCompositeDisposable().add(
-            getDataManager().loadTeam(userID)
-                .subscribe({ user->
-                    Log.e(TAG,user.toString())
-                },{
-                    Log.e(TAG,it.toString())
-                })
-        )
-    }
 }

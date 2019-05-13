@@ -2,7 +2,9 @@ package com.example.myapplication.util
 
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.Team
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
@@ -48,6 +51,13 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("bind_item")
     fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>) {
+        val adapter = view.adapter as ScheduleViewPagerAdapter
+        adapter.setList(item)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setTeamList(view: RecyclerView, item: MutableList<Team>) {
         val adapter = view.adapter as ScheduleViewPagerAdapter
         adapter.setList(item)
     }
