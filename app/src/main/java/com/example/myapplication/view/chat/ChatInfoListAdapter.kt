@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myapplication.R
+import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.databinding.ItemDatedividerBinding
 import com.example.myapplication.databinding.ItemMychatBinding
@@ -35,12 +36,7 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffU
     val VIEW_TYPE_YOU = 1
 
     init{
-        AppInitialize.dataSource.getCurrentUser()
-            .subscribe({user->
-                userId=user.id
-            },{
-                Log.e(TAG,it.message)
-            })
+        userId=AppInitialize.dataSource.getItem(PreferenceHelperImpl.CURRENT_USER_ID)
     }
 
     fun setList(changeList: MutableList<ChatInfo>) {

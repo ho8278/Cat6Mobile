@@ -18,7 +18,7 @@ class AppInitialize:Application(){
         super.onCreate()
         Stetho.initializeWithDefaults(this)
         dataSource=DataManager.getInstance(applicationContext)
-        //DataManager.getInstance(applicationContext).saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID,"group1")
+        DataManager.getInstance(applicationContext).saveItem(PreferenceHelperImpl.CURRENT_USER_ID,"ho8278")
         //DataManager.getInstance(this).insertTeam(Team("1234","TestTeam"))
     }
 }
