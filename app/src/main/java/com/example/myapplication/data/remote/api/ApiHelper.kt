@@ -24,4 +24,9 @@ interface ApiHelper {
     @POST("setSchedule")
     fun insertSchedule(@Query("schedule_start_date") startDate: String, @Query("schedule_end_date")endDate:String,
                        @Query("schedule_contents") contents:String, @Query("schedule_team_ID")teamID:String)
+    @POST("schedule")
+    fun insertSchedule(@Body schedule:Schedule):Single<ServerResponse<Schedule>>
+
+    @GET("createTeam")
+    fun createTeam(@Query("team_name")teamName:String):Single<ServerResponse<Team>>
 }

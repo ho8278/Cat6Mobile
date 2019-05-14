@@ -43,6 +43,10 @@
                   android:theme="@style/AppTheme">
         </activity>
 
+        <activity android:name=".view.addteam.AddTeamActivity"
+                  android:theme="@style/AddTeam">
+        </activity>
+
     </application>
 
 </manifest>

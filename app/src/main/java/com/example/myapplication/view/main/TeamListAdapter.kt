@@ -1,5 +1,6 @@
 package com.example.myapplication.view.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -11,6 +12,7 @@ import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Team
 import com.example.myapplication.databinding.ItemAddGroupBinding
 import com.example.myapplication.databinding.ItemTeamBinding
+import com.example.myapplication.view.addteam.AddTeamActivity
 import com.example.myapplication.view.base.BaseViewHolder
 import java.util.*
 
@@ -89,7 +91,8 @@ class TeamListAdapter(val listener: GroupChangeListener) : RecyclerView.Adapter<
     inner class AddTeamViewHolder(val binding: ItemAddGroupBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
             binding.llContainer.setOnClickListener {
-                //TODO:그룹 생성 액티비티 추가
+                val intent=Intent(binding.llContainer.context,AddTeamActivity::class.java)
+                binding.llContainer.context.startActivity(intent)
             }
         }
     }

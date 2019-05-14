@@ -214,4 +214,11 @@ class DataManager : DataSource {
             list.forEach { unsubscribeFromTopic(it.id) }
         }
     }
+
+    override fun createTeam(teamName: String): Single<Int> {
+        return apiHelper.createTeam(teamName)
+            .map { response-> response.responseCode.toInt() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }
