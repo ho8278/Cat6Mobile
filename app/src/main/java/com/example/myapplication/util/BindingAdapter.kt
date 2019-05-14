@@ -17,6 +17,8 @@ import com.example.myapplication.data.model.Team
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
+import com.example.myapplication.view.chat.ChatFragmentAdapter
+import com.example.myapplication.view.main.TeamListAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -35,31 +37,31 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("bind_item")
-    fun setChatItem(view: RecyclerView, item: MutableList<ChatInfo>) {
-        val adapter = view.adapter as ChatInfoListAdapter
-        adapter.setList(item)
+    fun setChatItem(view: RecyclerView, item: MutableList<ChatInfo>?) {
+        val adapter = view.adapter as ChatFragmentAdapter
+        adapter.setList(item ?: mutableListOf())
         view.scrollToPosition(adapter.itemCount - 1)
     }
 
     @JvmStatic
     @BindingAdapter("bind_item")
-    fun setScheduleItem(view: RecyclerView, item: MutableList<Schedule>) {
+    fun setScheduleItem(view: RecyclerView, item: MutableList<Schedule>?) {
         val adapter = view.adapter as ScheduleListAdapter
-        adapter.setList(item)
+        adapter.setList(item ?: mutableListOf())
     }
 
     @JvmStatic
     @BindingAdapter("bind_item")
-    fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>) {
+    fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>?) {
         val adapter = view.adapter as ScheduleViewPagerAdapter
-        adapter.setList(item)
+        adapter.setList(item ?: mutableListOf())
     }
 
     @JvmStatic
     @BindingAdapter("bind_item")
-    fun setTeamList(view: RecyclerView, item: MutableList<Team>) {
-        val adapter = view.adapter as ScheduleViewPagerAdapter
-        adapter.setList(item)
+    fun setTeamList(view: RecyclerView, item: MutableList<Team>?) {
+        val adapter = view.adapter as TeamListAdapter
+        adapter.setList(item ?: mutableListOf())
     }
 
     @JvmStatic

@@ -15,7 +15,7 @@ class TeamListFragment:BaseFragment<FragmentTeamlistBinding,TeamListViewModel>()
     override val TAG: String
         get() = TeamListFragment::class.java.simpleName
 
-    val listener = activity as GroupChangeListener
+    lateinit var listener:GroupChangeListener
 
     override fun getViewModel(dataManager: DataSource): TeamListViewModel {
         return TeamListViewModel(dataManager)
@@ -26,6 +26,9 @@ class TeamListFragment:BaseFragment<FragmentTeamlistBinding,TeamListViewModel>()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        listener=activity as GroupChangeListener
+        binding.rvTeamlist.adapter=TeamListAdapter(listener)
         viewModel.init()
+
     }
 }

@@ -12,14 +12,14 @@ class TeamListViewModel:BaseViewModel{
     private val TAG=TeamListViewModel::class.java.simpleName
     constructor(dataSource: DataSource):super(dataSource)
 
-    val groupList=ObservableArrayList<Team>()
+    val teamList=ObservableArrayList<Team>()
 
     fun init(){
         val userID=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
         getCompositeDisposable().add(
             getDataManager().loadTeam(userID)
                 .subscribe({ list->
-                    groupList.addAll(list)
+                    //teamList.addAll(list)
                     Log.e(TAG,list.toString())
                 },{
                     Log.e(TAG,it.toString())
