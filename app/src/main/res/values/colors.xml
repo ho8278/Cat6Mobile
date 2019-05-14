@@ -22,4 +22,8 @@
     <color name="colorSelectedDateText">#50FF50</color>
     <color name="colorUnSelectedDateText">#FFFFFF</color>
     <color name="colorCalendarAdd">#999999</color>
+
+
+    <!-- -->
+    <color name="colorCurrentGroup">#550C9C03</color>
 </resources>
