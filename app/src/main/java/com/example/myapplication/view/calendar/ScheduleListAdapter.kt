@@ -30,9 +30,6 @@ class ScheduleListAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
         drawable.paint.color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
 
         binding.viewDot.background = drawable
-        binding.clScheduleContainer.setOnClickListener {
-            //TODO:일정 상세정보 액티비티 생성
-        }
 
         return ScheduleViewHolder(binding, AppInitialize.dataSource)
     }

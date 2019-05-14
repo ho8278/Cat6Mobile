@@ -11,20 +11,9 @@ import java.util.*
 
 class TeamListAdapter(val listener:GroupChangeListener):RecyclerView.Adapter<TeamListAdapter.TeamViewHolder>(){
 
-    val groupList=ArrayList<Team>()
+    val groupList= mutableListOf<Team>()
 
-    init{
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST1"))
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST2"))
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST3"))
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST4"))
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST5"))
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST6"))
-        groupList.add(Team(UUID.randomUUID().toString(),"TEST7"))
-        notifyDataSetChanged()
-    }
-
-    fun setList(list:List<Team>){
+    fun setList(list:MutableList<Team>){
         groupList.clear()
         groupList.addAll(list)
         notifyDataSetChanged()

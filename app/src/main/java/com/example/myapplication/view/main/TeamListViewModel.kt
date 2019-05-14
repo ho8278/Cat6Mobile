@@ -6,6 +6,7 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Team
 import com.example.myapplication.view.base.BaseViewModel
+import java.util.*
 
 class TeamListViewModel:BaseViewModel{
 
@@ -13,6 +14,16 @@ class TeamListViewModel:BaseViewModel{
     constructor(dataSource: DataSource):super(dataSource)
 
     val teamList=ObservableArrayList<Team>()
+
+    init {
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST1"))
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST2"))
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST3"))
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST4"))
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST5"))
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST6"))
+        teamList.add(Team(UUID.randomUUID().toString(),"TEST7"))
+    }
 
     fun init(){
         val userID=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)

@@ -48,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         spinner_show_group.setOnClickListener {
             val transaction=supportFragmentManager.beginTransaction()
             transaction.apply {
-                replace(R.id.fragment_show_team,TeamListFragment())
+                replace(R.id.fragment_show_team,fragment)
                 commit()
             }
         }
