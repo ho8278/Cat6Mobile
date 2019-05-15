@@ -34,6 +34,8 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         super.onCreate(savedInstanceState)
 
         initView()
+
+        includeInit()
     }
 
     override fun onBackPressed() {
@@ -57,8 +59,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-        toolbar.setNavigationIcon(R.drawable.ic_add)
-
+        toolbar.setNavigationIcon(R.drawable.ic_menu)
 
         nav_view.setNavigationItemSelectedListener(this)
 
@@ -70,14 +71,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         chatViewModel.receiveMessage()
 
 
-        include_chat.button_send.setOnClickListener {
-            chatViewModel.sendButtonClicked(include_chat.et_messagebox.text.toString())
-            include_chat.et_messagebox.text?.clear()
-        }
-
-        include_chat.rv_chat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        include_chat.rv_chat.adapter = ChatInfoListAdapter()
-
         memberListAdapter = MemberListAdapter()
         memberListAdapter.addGroupMember("JongSeong")
         memberListAdapter.addGroupMember("HyeonUng")
@@ -87,5 +80,26 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
 
         rcv_main_participants.adapter = memberListAdapter
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+    }
+
+    private fun includeInit(){
+        include_chat.apply {
+
+            button_send.setOnClickListener {
+                chatViewModel.sendButtonClicked(et_messagebox.text.toString())
+                et_messagebox.text?.clear()
+            }
+
+            rv_chat.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            rv_chat.adapter = ChatInfoListAdapter()
+
+            iv_show_toolbox.setOnClickListener {
+                chatViewModel.showToolBox()
+            }
+
+        }
+
+
     }
 }

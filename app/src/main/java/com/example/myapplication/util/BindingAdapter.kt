@@ -1,6 +1,7 @@
 package com.example.myapplication.util
 
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
@@ -49,6 +50,16 @@ object BindingAdapter {
     fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>) {
         val adapter = view.adapter as ScheduleViewPagerAdapter
         adapter.setList(item)
+    }
+
+    @JvmStatic
+    @BindingConversion
+    fun convertBooleanToView(status:Boolean):Int{
+        Log.e("BindingAdapter","Convert!")
+        if(status)
+            return View.VISIBLE
+        else
+            return View.GONE
     }
 
     @JvmStatic

@@ -23,6 +23,8 @@ class ChatViewModel : BaseViewModel {
 
     init {
         isLoading.set(true)
+        isNotice.set(false)
+        isToolbox.set(false)
     }
 
     constructor(dataManager: DataSource) : super(dataManager)
@@ -66,5 +68,12 @@ class ChatViewModel : BaseViewModel {
                 Log.e(TAG, it.message)
             })
         )
+    }
+
+    fun showToolBox(){
+        if(isToolbox.get())
+            isToolbox.set(false)
+        else
+            isToolbox.set(true)
     }
 }
