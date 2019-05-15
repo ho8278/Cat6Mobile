@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_contianer"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+        <!-- TODO:아이콘 바까야댐 -->
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_vote"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="16dp"
+                app:srcCompat="@drawable/ic_add"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_vote_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/iv_vote"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="32dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="TEST"
+                android:textColor="@color/colorBlack"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_startDate"
+                app:layout_constraintTop_toBottomOf="@id/tv_vote_name"
+                tools:text="2019-02-02"
+                app:layout_constraintLeft_toLeftOf="@id/tv_vote_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_blar"
+                android:text=" ~ "
+                app:layout_constraintTop_toTopOf="@id/tv_startDate"
+                app:layout_constraintBottom_toBottomOf="@id/tv_startDate"
+                app:layout_constraintLeft_toRightOf="@id/tv_startDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_endDate"
+                app:layout_constraintTop_toTopOf="@id/tv_startDate"
+                app:layout_constraintBottom_toBottomOf="@id/tv_startDate"
+                tools:text="2019-02-02"
+                app:layout_constraintLeft_toRightOf="@id/tv_blar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

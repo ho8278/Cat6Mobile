@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_add_vote"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_vote_name_container"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar_add_vote"
+                    android:hint="투표 제목"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_vote_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_vote"
+                    app:layout_constraintTop_toBottomOf="@id/til_vote_name_container"
+                    tools:listitem="@layout/item_add_vote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                    android:id="@+id/ll_container"
+                    app:layout_constraintTop_toBottomOf="@id/rv_vote"
+                    android:layout_marginTop="8dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:text="복수 선택"
+                        android:gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="17sp"
+                        android:layout_weight="0.7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cb_plural"
+                        android:gravity="center"
+                        android:layout_weight="0.3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_start_container"
+                    android:hint="시작 날짜"
+                    app:layout_constraintTop_toBottomOf="@id/ll_container"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/til_end_container"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_startdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_end_container"
+                    android:hint="종료 날짜"
+                    app:layout_constraintTop_toTopOf="@id/til_start_container"
+                    app:layout_constraintBottom_toBottomOf="@id/til_start_container"
+                    app:layout_constraintLeft_toRightOf="@id/til_start_container"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_enddate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>
