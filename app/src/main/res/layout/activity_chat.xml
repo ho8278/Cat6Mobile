@@ -39,7 +39,7 @@
                         app:layout_constraintTop_toTopOf="@id/iv_profile"
                         app:layout_constraintLeft_toRightOf="@id/iv_profile"
                         android:layout_marginLeft="16dp"
-                        android:text="김기현"
+                        android:text="@{viewmodel.chatName}"
                         android:textSize="16sp"
                         android:textColor="@color/colorBlack"
                         android:layout_width="wrap_content"
@@ -60,11 +60,27 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_notice"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_chatinfo"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="@color/colorGray"
+                android:singleLine="true"
+                android:ellipsize="end"
+                tools:text="TESTTES"
+                android:visibility="@{viewmodel.isNotice}"
+                android:text="@{viewmodel.notice}"
+                android:textSize="18sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
         <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lav_chat_loading"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_chatinfo"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/guideline_chat"
+                app:layout_constraintBottom_toTopOf="@id/mcv_inputText"
                 app:layout_constraintRight_toRightOf="parent"
                 app:lottie_fileName="chat_loading.json"
                 app:lottie_loop="true"
@@ -76,39 +92,86 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_chat"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_chatinfo"
-                app:layout_constraintBottom_toTopOf="@id/guideline_chat"
+                app:layout_constraintBottom_toTopOf="@id/mcv_inputText"
                 android:paddingTop="16dp"
                 android:layout_width="match_parent"
                 tools:listitem="@layout/item_theirchat"
                 android:layout_height="0dp"
                 bind_item="@{viewmodel.chatInfoList}"/>
 
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_chat"
-                app:layout_constraintGuide_percent="0.9"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
         <com.google.android.material.card.MaterialCardView
                 android:id="@+id/mcv_inputText"
-                app:layout_constraintTop_toBottomOf="@id/guideline_chat"
+                app:layout_constraintTop_toBottomOf="@id/rv_chat"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:cardCornerRadius="8dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                    android:orientation="horizontal"
-                    android:weightSum="1"
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                <LinearLayout
+                        android:id="@+id/ll_toolbox"
+                        android:orientation="horizontal"
+                        android:visibility="@{viewmodel.isToolbox}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/et_messagebox"
+                        android:weightSum="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_document"
+                            android:layout_weight="0.25"
+                            app:srcCompat="@drawable/ic_camera"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_vote"
+                            android:layout_weight="0.25"
+                            app:srcCompat="@drawable/ic_vote"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_notice"
+                            android:layout_weight="0.25"
+                            app:srcCompat="@drawable/ic_notice"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_add_friend"
+                            android:layout_weight="0.25"
+                            app:srcCompat="@drawable/ic_person_add"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"/>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_show_toolbox"
+                        app:srcCompat="@drawable/ic_add"
+                        android:background="?attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="@id/et_messagebox"
+                        app:layout_constraintBottom_toBottomOf="@id/et_messagebox"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/et_messagebox"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
+
                 <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/et_messagebox"
+                        app:layout_constraintTop_toBottomOf="@id/ll_toolbox"
+                        app:layout_constraintLeft_toRightOf="@id/iv_show_toolbox"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/button_send"
+                        android:layout_marginRight="16dp"
                         android:hint="Type a Message"
                         android:paddingLeft="16dp"
                         android:inputType="text"
@@ -116,17 +179,22 @@
                         android:background="@color/colorClear"
                         android:layout_weight="0.9"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="50dp"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/button_send"
+                        app:layout_constraintTop_toTopOf="@id/et_messagebox"
+                        app:layout_constraintBottom_toBottomOf="@id/et_messagebox"
+                        app:layout_constraintLeft_toRightOf="@id/et_messagebox"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginRight="16dp"
                         app:srcCompat="@drawable/ic_send"
                         android:layout_gravity="center"
                         android:layout_weight="0.1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

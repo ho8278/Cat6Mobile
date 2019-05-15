@@ -2,6 +2,7 @@ package com.example.myapplication.view.chat
 
 import android.util.Log
 import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
@@ -15,6 +16,10 @@ class ChatViewModel : BaseViewModel {
     val TAG = ChatViewModel::class.java.simpleName
     val isLoading: ObservableField<Boolean> = ObservableField()
     val chatInfoList: ObservableArrayList<ChatInfo> = ObservableArrayList()
+    val isNotice = ObservableBoolean()
+    val notice = ObservableField<String>()
+    val isToolbox = ObservableBoolean()
+    val chatName = ObservableField<String>()
 
     init {
         isLoading.set(true)
