@@ -143,7 +143,7 @@
                         android:text="@string/nav_main_chat"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
+                        app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
 
                 <TextView
                         style="@style/DrawerItemDefault"
@@ -153,7 +153,7 @@
                         android:text="@string/nav_main_references"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_main_chat"/>
+                        app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
 
                 <View
                         style="@style/DrawerItemDefault"
@@ -163,7 +163,7 @@
                         android:layout_marginTop="@dimen/nav_drawer_blank_height"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
+                        app:layout_constraintTop_toBottomOf="@id/btn_main_chat"/>
 
                 <!-- 접속한 사람들 목록 -->
                 <androidx.recyclerview.widget.RecyclerView

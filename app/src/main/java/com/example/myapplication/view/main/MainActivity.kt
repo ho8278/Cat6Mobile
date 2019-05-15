@@ -1,5 +1,6 @@
 package com.example.myapplication.view.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -10,13 +11,15 @@ import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.view.base.BaseActivity
+import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.chat.ChatViewModel
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
-class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
+    NavigationView.OnNavigationItemSelectedListener {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
@@ -33,9 +36,13 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initMenu()
+
         initView()
 
         includeInit()
+
+
     }
 
     override fun onBackPressed() {
@@ -51,21 +58,9 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
     }
 
     private fun initView() {
-        setSupportActionBar(toolbar)
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-        toolbar.setNavigationIcon(R.drawable.ic_menu)
-
-        nav_view.setNavigationItemSelectedListener(this)
 
 
-
-        chatViewModel= ChatViewModel(AppInitialize.dataSource)
+        chatViewModel = ChatViewModel(AppInitialize.dataSource)
         binding.chatviewmodel = chatViewModel
         chatViewModel.loadChatinfoList()    //나중에 채팅방 ID 파라미터 넣어야됨
         chatViewModel.receiveMessage()
@@ -83,7 +78,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
 
     }
 
-    private fun includeInit(){
+    private fun includeInit() {
         include_chat.apply {
 
             button_send.setOnClickListener {
@@ -98,8 +93,38 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
                 chatViewModel.showToolBox()
             }
 
+            iv_notice.setOnClickListener {
+                //TODO:공지사항 visible unvisible
+            }
+
+            iv_vote.setOnClickListener {
+                //TODO:투표화면 이동
+            }
+
+        }
+    }
+
+    private fun initMenu() {
+        setSupportActionBar(toolbar)
+        val toggle = ActionBarDrawerToggle(
+            this, drawer_layout, toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+        toolbar.setNavigationIcon(R.drawable.ic_menu)
+
+        nav_view.setNavigationItemSelectedListener(this)
+
+        btn_main_schedule.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            startActivity(intent)
         }
 
+        btn_main_references.setOnClickListener {
+            //TODO:자료실 화면 이동
+        }
 
     }
 }
