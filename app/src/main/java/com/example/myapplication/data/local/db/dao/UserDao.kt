@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.myapplication.data.model.User
-import io.reactivex.Single
 
 @Dao
 interface UserDao{

@@ -1,9 +1,10 @@
 package com.example.myapplication.data.local.db.dao
 
 import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 import com.example.myapplication.data.model.Schedule
-import io.reactivex.Observable
-import java.util.*
 
 @Dao
 interface ScheduleDao {

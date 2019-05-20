@@ -1,7 +1,5 @@
 package com.example.myapplication.data.model
 
-import android.util.Log
-import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName

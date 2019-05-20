@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable name="viewmodel"
+                  type="com.example.myapplication.view.addvote.AddVoteViewModel"/>
+    </data>
+
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -25,6 +30,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_vote_name"
+                        android:text="@={viewmodel.voteTitle}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -38,8 +44,29 @@
                     android:layout_height="wrap_content"/>
 
             <LinearLayout
-                    android:id="@+id/ll_container"
+                    android:id="@+id/ll_add_container"
+                    android:background="?attr/selectableItemBackground"
                     app:layout_constraintTop_toBottomOf="@id/rv_vote"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:drawableStart="@drawable/ic_add"
+                        android:text="항목 추가하기"
+                        android:textColor="@color/colorBlack"
+                        android:layout_gravity="center"
+                        android:paddingTop="14dp"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/ll_container"
+                    app:layout_constraintTop_toBottomOf="@id/ll_add_container"
                     android:layout_marginTop="8dp"
                     android:weightSum="1"
                     android:orientation="horizontal"
@@ -61,6 +88,7 @@
                         android:gravity="center"
                         android:layout_weight="0.3"
                         android:layout_width="0dp"
+                        android:checked="@={viewmodel.isPlural}"
                         android:layout_height="match_parent"/>
 
             </LinearLayout>
@@ -77,6 +105,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_startdate"
+                        android:text="@={viewmodel.startDate}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -94,6 +123,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_enddate"
+                        android:text="@={viewmodel.endDate}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

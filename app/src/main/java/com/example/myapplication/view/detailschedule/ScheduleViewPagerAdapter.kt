@@ -1,6 +1,5 @@
 package com.example.myapplication.view.detailschedule
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
 import com.example.myapplication.R
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ItemDetailScheduleBinding
 import com.example.myapplication.view.addschedule.AddScheduleViewModel

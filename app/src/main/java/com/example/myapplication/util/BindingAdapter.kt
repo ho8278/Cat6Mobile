@@ -15,10 +15,7 @@ import com.example.myapplication.data.model.*
 import com.example.myapplication.view.addfriends.AddFriendAdapter
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
-import com.example.myapplication.view.chat.ChatInfoListAdapter
-import com.example.myapplication.view.main.ChatListAdapter
-import com.example.myapplication.view.main.MemberListAdapter
-import com.example.myapplication.view.main.TeamListAdapter
+import com.example.myapplication.view.chat.ChatFragmentAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -115,4 +112,6 @@ object BindingAdapter {
             return dateTime.toString(formatter)
         }
     }
+
+
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.core.content.edit
-import java.util.HashSet
 
 class PreferenceHelperImpl : PreferenceHelper {
 

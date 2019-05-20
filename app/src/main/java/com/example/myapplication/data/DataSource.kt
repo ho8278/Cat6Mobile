@@ -2,11 +2,13 @@ package com.example.myapplication.data
 
 import com.example.myapplication.data.model.*
 import com.example.myapplication.view.main.ErrorCode
+import com.example.myapplication.data.model.ChatInfo
+import com.example.myapplication.data.model.Schedule
+import com.example.myapplication.data.model.Team
+import com.example.myapplication.data.model.User
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
-import okhttp3.Response
 import okhttp3.ResponseBody
 
 interface DataSource{

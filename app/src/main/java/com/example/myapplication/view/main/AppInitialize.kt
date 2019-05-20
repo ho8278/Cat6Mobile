@@ -9,7 +9,6 @@ import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.data.model.Team
 import com.facebook.stetho.Stetho
-import com.google.firebase.messaging.FirebaseMessaging
 
 class AppInitialize:Application(){
     companion object {

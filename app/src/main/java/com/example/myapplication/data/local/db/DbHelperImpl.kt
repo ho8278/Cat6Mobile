@@ -5,13 +5,9 @@ import android.util.Log
 import androidx.room.Room
 import com.example.myapplication.data.model.*
 import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.joda.time.format.DateTimeFormat
-import java.util.*
 
 class DbHelperImpl : DbHelper {
     private val TAG = DbHelperImpl::class.java.simpleName

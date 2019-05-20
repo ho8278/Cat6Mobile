@@ -1,7 +1,5 @@
 package com.example.myapplication.view.base
 
-import androidx.lifecycle.ViewModel
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import io.reactivex.disposables.CompositeDisposable
 

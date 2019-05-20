@@ -9,7 +9,6 @@ import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.R
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.LayoutDetailScheduleBinding
 import com.example.myapplication.view.main.AppInitialize

@@ -1,8 +1,6 @@
 package com.example.myapplication.data.model
 
-import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
-import org.json.JSONObject
 
 data class ServerResponse<T:Any>(
     @SerializedName("result")

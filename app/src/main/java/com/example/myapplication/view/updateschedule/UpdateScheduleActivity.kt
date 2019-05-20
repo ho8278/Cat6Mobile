@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityAddShceduleBinding
@@ -18,7 +17,6 @@ import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 class UpdateScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddScheduleNavigator {

@@ -2,8 +2,6 @@ package com.example.myapplication.data.local.db
 
 import com.example.myapplication.data.model.*
 import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.Single
 
 interface DbHelper {
