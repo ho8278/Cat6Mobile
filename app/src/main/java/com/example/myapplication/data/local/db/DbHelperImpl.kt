@@ -109,7 +109,16 @@ class DbHelperImpl : DbHelper {
 
     override fun insertChatRoomList(list: List<ChatRoom>) {
         Completable.fromAction{
-            appDatabase.chatDao.insertChatRoom(list)
+            appDatabase.chatDao.updateChatRoom(list)
+        }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG,it.message) }
+            .subscribe()
+    }
+
+
+    override fun insertChatRoom(chatRoom: ChatRoom) {
+        Completable.fromAction{
+            appDatabase.chatDao.insertChatRoom(chatRoom)
         }.subscribeOn(Schedulers.io())
             .doOnError { Log.e(TAG,it.message) }
             .subscribe()

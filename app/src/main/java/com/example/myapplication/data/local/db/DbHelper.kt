@@ -29,4 +29,5 @@ interface DbHelper {
     fun insertTeam(listTeam:List<Team>)
 
     fun insertChatRoomList(list:List<ChatRoom>)
+    fun insertChatRoom(chatRoom: ChatRoom)
 }

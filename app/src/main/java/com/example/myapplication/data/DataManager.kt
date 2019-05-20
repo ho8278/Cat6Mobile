@@ -143,12 +143,14 @@ class DataManager : DataSource {
                 it.onError(Throwable(ErrorCode.EMPTY_TEXT.code.toString()))
             }
         }
-        val teamIdObserver = Single.fromCallable {
-            prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
-        }
         dbHelper.insertSchedule(schedule)
-        return Single.create {
+        TODO("승표한테 리턴값으로 ID 달라 하기")
+        Completable.fromAction {
             apiHelper.insertSchedule(startDate,endDate,schedule.name,schedule.teamID)
+        }.subscribeOn(Schedulers.io())
+            .subscribe()
+        return Single.create<Schedule> {
+            it.onSuccess(schedule)
         }
     }
 
@@ -167,7 +169,9 @@ class DataManager : DataSource {
     override fun loadChatRoom(): Single<List<ChatRoom>> {
         return apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
             .map { response -> response.data }
-            .doOnSuccess { dbHelper.insertChatRoomList(it) }
+            .doOnSuccess {
+                dbHelper.insertChatRoomList(it)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -184,6 +188,7 @@ class DataManager : DataSource {
                 apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
             }
             .subscribe({ it ->
+                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,it.data[0].id)
                 subscribeTopic(it.data)
                 Log.e(TAG, it.toString())
             }, {

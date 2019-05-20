@@ -62,7 +62,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         chatViewModel = ChatViewModel(AppInitialize.dataSource)
         binding.chatviewmodel = chatViewModel
-        chatViewModel.loadChatinfoList()    //나중에 채팅방 ID 파라미터 넣어야됨
         chatViewModel.receiveMessage()
 
 

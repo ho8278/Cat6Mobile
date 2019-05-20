@@ -32,16 +32,23 @@ class ChatViewModel(dataManager: DataSource) : BaseViewModel(dataManager) {
         isSending.set(true)
         getCompositeDisposable().add(
             getDataManager().loadChatRoom()
-                .subscribe({ list ->
+                .flatMap { list ->
                     chatRoom = list[0]
                     chatName.set(list[0].name)
+                    getDataManager().loadChatInfoList(chatRoom.id)
+                }
+                .subscribe({ result ->
+                    isLoading.set(false)
+                    chatInfoList.addAll(result)
+                }, {
+                    Log.e(TAG, it.message)
                 })
         )
     }
 
-    fun loadChatinfoList(roomId: String = "chat1") {
+    fun loadChatinfoList() {
         getCompositeDisposable().add(
-            getDataManager().loadChatInfoList(roomId)
+            getDataManager().loadChatInfoList(chatRoom.id)
                 .subscribe({ result ->
                     isLoading.set(false)
                     chatInfoList.addAll(result)
