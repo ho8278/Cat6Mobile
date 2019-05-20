@@ -1,9 +1,6 @@
 package com.example.myapplication.data.local.db
 
-import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.data.model.Schedule
-import com.example.myapplication.data.model.Team
-import com.example.myapplication.data.model.User
+import com.example.myapplication.data.model.*
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -13,6 +10,8 @@ interface DbHelper {
     fun sendMessage(message:String)
 
     fun loadChatInfoList(roomId:String): Single<List<ChatInfo>>
+
+    fun insertChatInfo(info:ChatInfo)
 
     fun insertUser(user:User)
 
@@ -27,4 +26,7 @@ interface DbHelper {
     fun getSchedules(year:Int, month:Int, day:Int):Single<List<Schedule>>
 
     fun insertTeam(team: Team)
+    fun insertTeam(listTeam:List<Team>)
+
+    fun insertChatRoomList(list:List<ChatRoom>)
 }

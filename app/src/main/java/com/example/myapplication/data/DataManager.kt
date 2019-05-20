@@ -26,6 +26,7 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import okhttp3.Response
 import okhttp3.ResponseBody
+import org.joda.time.format.DateTimeFormat
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,6 +89,7 @@ class DataManager : DataSource {
         }
 
         return fcmApiHelper.sendTestMessage(json)
+            .doOnSuccess { dbHelper.insertChatInfo(chatInfo) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -144,24 +146,10 @@ class DataManager : DataSource {
         val teamIdObserver = Single.fromCallable {
             prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         }
-
-        return apiHelper.insertSchedule(schedule)
-            .flatMap {
-                val serverResponse = it
-                val item = it.data.first()
-
-                Single.create<Schedule> {
-                    if (serverResponse.responseCode == ErrorCode.SUCCESS.code)
-                        it.onSuccess(item)
-                    else
-                        it.onError(Throwable(serverResponse.responseCode.toString()))
-                }
-            }.zipWith(teamIdObserver, BiFunction { one: Schedule, teamID: String ->
-                val newSchedule = Schedule(one.id, one.startDate, one.endDate, one.name, teamID)
-                newSchedule
-            }).doOnSuccess {
-                dbHelper.insertSchedule(it)
-            }
+        dbHelper.insertSchedule(schedule)
+        return Single.create {
+            apiHelper.insertSchedule(startDate,endDate,schedule.name,schedule.teamID)
+        }
     }
 
     override fun insertTeam(team: Team) {
@@ -171,6 +159,7 @@ class DataManager : DataSource {
     override fun loadTeam(userID: String): Single<List<Team>> {
         return apiHelper.loadTeams(userID)
             .map { response -> response.data }
+            .doOnSuccess { dbHelper.insertTeam(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -178,6 +167,7 @@ class DataManager : DataSource {
     override fun loadChatRoom(): Single<List<ChatRoom>> {
         return apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
             .map { response -> response.data }
+            .doOnSuccess { dbHelper.insertChatRoomList(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

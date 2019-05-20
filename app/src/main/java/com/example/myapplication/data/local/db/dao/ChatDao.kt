@@ -9,4 +9,7 @@ import com.example.myapplication.data.model.ChatRoom
 interface ChatDao{
     @Insert
     fun insertChatRoom(chatRoom: ChatRoom)
+
+    @Insert
+    fun insertChatRoom(list: List<ChatRoom>)
 }

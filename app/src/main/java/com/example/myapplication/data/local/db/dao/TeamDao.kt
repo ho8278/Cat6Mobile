@@ -8,4 +8,7 @@ import com.example.myapplication.data.model.Team
 interface TeamDao{
     @Insert
     fun insertTeam(team:Team)
+
+    @Insert
+    fun insertTeam(listTeam:List<Team>)
 }

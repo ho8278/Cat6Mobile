@@ -3,6 +3,7 @@ package com.example.myapplication.view.addschedule
 import android.util.Log
 import androidx.databinding.ObservableField
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.base.BaseViewModel
 import com.example.myapplication.view.main.ErrorCode
@@ -78,23 +79,24 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
 
     fun saveSchedule() {
         val formatter = DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss")
+        val currentGroupID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         getCompositeDisposable().add(
             getDataManager().saveSchedule(
                 Schedule(
                     "",
-                    startDate.get()!!.toString(formatter),
-                    endDate.get()!!.toString(formatter),
+                    startDate.get()?.toString(formatter) ?: "",
+                    endDate.get()?.toString(formatter) ?: "",
                     title.get() ?: "",
-                    ""
+                    currentGroupID
                 )
             ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Log.e(TAG, "Success")
-                    navigator!!.OnSaveSuccess()
+                    navigator?.OnSaveSuccess()
                 }, {
                     Log.e(TAG, "ErrorCode: ${it.message}")
-                    navigator!!.OnSaveFail(ErrorCode.fromCode(it.message!!.toInt()))
+                    navigator?.OnSaveFail(ErrorCode.fromCode(it.message!!.toInt()))
                 })
         )
     }

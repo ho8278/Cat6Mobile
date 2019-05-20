@@ -3,10 +3,7 @@ package com.example.myapplication.data.local.db
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.data.model.Schedule
-import com.example.myapplication.data.model.Team
-import com.example.myapplication.data.model.User
+import com.example.myapplication.data.model.*
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -38,6 +35,14 @@ class DbHelperImpl : DbHelper {
             appDatabase.chatInfoDao.loadChatInfo(roomId)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun insertChatInfo(info: ChatInfo) {
+        Completable.fromAction{
+            appDatabase.chatInfoDao.insertChatInfo(info)
+        }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG,it.message) }
+            .subscribe()
     }
 
     override fun sendMessage(message: String) {
@@ -89,6 +94,22 @@ class DbHelperImpl : DbHelper {
     override fun insertTeam(team: Team) {
         Completable.fromAction{
             appDatabase.teamDao.insertTeam(team)
+        }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG,it.message) }
+            .subscribe()
+    }
+
+    override fun insertTeam(listTeam: List<Team>) {
+        Completable.fromAction{
+            appDatabase.teamDao.insertTeam(listTeam)
+        }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG,it.message) }
+            .subscribe()
+    }
+
+    override fun insertChatRoomList(list: List<ChatRoom>) {
+        Completable.fromAction{
+            appDatabase.chatDao.insertChatRoom(list)
         }.subscribeOn(Schedulers.io())
             .doOnError { Log.e(TAG,it.message) }
             .subscribe()
