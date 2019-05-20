@@ -138,7 +138,6 @@
                         android:hint="Type a Message"
                         android:paddingLeft="16dp"
                         android:inputType="text"
-                        android:imeOptions="actionSend"
                         android:background="@color/colorClear"
                         android:layout_weight="0.9"
                         android:layout_width="0dp"

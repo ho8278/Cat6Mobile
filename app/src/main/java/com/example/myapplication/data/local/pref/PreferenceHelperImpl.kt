@@ -14,6 +14,8 @@ class PreferenceHelperImpl : PreferenceHelper {
         val CHANNEL_NAME = "CHANNEL_NAME"
         val CURRENT_GROUP_ID = "CURRENT_GROUP_ID"
         val COOKIES = "COOKIES"
+        val CURRENT_CHAT_ROOM_ID="CURRENT_CHAT_ROOM_ID"
+        val RECENT_CHATINFO_ID = "RECENT_CHATINFO_ID"
 
         private lateinit var preference: SharedPreferences
         @Volatile
@@ -53,6 +55,8 @@ class PreferenceHelperImpl : PreferenceHelper {
         CURRENT_GROUP_ID -> preference.getString(key, "") as T
         CHANNEL_ID -> preference.getString(key, "") as T
         CHANNEL_NAME -> preference.getString(key, "") as T
+        RECENT_CHATINFO_ID -> preference.getString(key,"") as T
+        CURRENT_CHAT_ROOM_ID -> preference.getString(key,"") as T
         else -> "" as T
     }
 }

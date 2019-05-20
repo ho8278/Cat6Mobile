@@ -5,9 +5,11 @@
     <LinearLayout
             android:gravity="end"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="50dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:paddingRight="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -16,13 +18,15 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/mcv_message_container"
+                    android:layout_marginRight="4dp"
                     tools:text="오후 2:30"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_message_container"
+                    app:cardBackgroundColor="@color/colorGray"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/tv_message_clock"
                     app:layout_constraintRight_toRightOf="parent"
@@ -30,9 +34,9 @@
                     android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                        android:padding="4dp"
                         android:id="@+id/tv_message_body"
                         tools:text="TESTTESTTESTTEST"
+                        android:padding="8dp"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

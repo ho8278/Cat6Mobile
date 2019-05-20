@@ -8,6 +8,7 @@
             android:layout_height="60dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -38,13 +39,14 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/mcv_message_container"
                     tools:text="오후 2:30"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_message_container"
                     android:layout_marginTop="2dp"
+                    app:cardBackgroundColor="@color/colorGray"
                     app:layout_constraintTop_toBottomOf="@id/tv_theirname"
                     app:layout_constraintRight_toLeftOf="@id/tv_message_clock"
                     app:layout_constraintLeft_toRightOf="@id/iv_theirimage"

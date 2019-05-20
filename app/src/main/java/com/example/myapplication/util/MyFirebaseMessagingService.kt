@@ -26,11 +26,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String?) {
         Log.d(TAG, "Token: " + token)
-        User("2", "123", "김기현", "NickName", token ?: "NULL", "")
-            .let {
-                DataManager.getInstance(applicationContext).insertUser(it)
-                DataManager.getInstance(applicationContext).saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
-            }
     }
 
     fun sendTokenToServer(token: String) {
@@ -39,6 +34,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         val simpleDate = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
+        val chatinfoID =
+            DataManager.getInstance(applicationContext).getItem<String>(PreferenceHelperImpl.RECENT_CHATINFO_ID)
+
+        val remoteInfoID = remoteMessage?.data?.get("id") ?: "null"
+        if (chatinfoID == remoteInfoID)
+            return
+
         val info = remoteMessage?.data.run {
             ChatInfo(
                 UUID.randomUUID().toString()
@@ -76,9 +78,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
             }
         }
-        val intent=Intent(this,MainActivity::class.java)
-        val pendingIntent=PendingIntent.getActivity(this,1,intent,PendingIntent.FLAG_CANCEL_CURRENT)
-        val noti=NotificationCompat.Builder(applicationContext,"channel1")
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val noti = NotificationCompat.Builder(applicationContext, "channel1")
             .setContentTitle(chatInfo.sendUserId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentText(chatInfo.message)
@@ -86,7 +88,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
             .build()
 
-        notiManager.notify(11,noti)
+        notiManager.notify(11, noti)
 
     }
 }

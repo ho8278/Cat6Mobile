@@ -11,6 +11,7 @@ import com.example.myapplication.data.remote.api.ApiHelper
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
 import com.example.myapplication.view.main.ErrorCode
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.reactivex.Completable
@@ -73,15 +74,16 @@ class DataManager : DataSource {
         val json = JsonObject().apply {
             addProperty(
                 "to",
-                "e7xae2T1rw0:APA91bFkUkDJ6-LtSRnyYR8JybUb0oldoon1167K8k8Ky2ydIt4TqDTgSykhZppgiKVfwS1uX1M39HQU2qSwTpKqg3YktGJiEChXgtDRltxbyzLvuKNtGVQVbP_mBiteC2VTOFqXBk0H"
+                "/topics/${chatInfo.roomId}"
             )
             addProperty("priority", "high")
             val element = JsonObject()
+            element.addProperty("id", chatInfo.id)
             element.addProperty("message", chatInfo.message)
             element.addProperty("roomId", chatInfo.roomId)
             val dateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
             element.addProperty("sendDate", dateFormat.format(chatInfo.sendDate))
-            element.addProperty("sendId", chatInfo.sendUserId + "1")
+            element.addProperty("sendId", chatInfo.sendUserId)
             add("data", element)
         }
 
@@ -103,7 +105,7 @@ class DataManager : DataSource {
     }
 
     override fun <T : Any> saveItem(key: String, text: T) {
-        prefHelper.saveItem(key,text)
+        prefHelper.saveItem(key, text)
     }
 
     override fun <T : Any> getItem(key: String): T {
@@ -173,13 +175,41 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun login() {
-        apiHelper.login("ho8278","123")
+    override fun loadChatRoom(): Single<List<ChatRoom>> {
+        return apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
+            .map { response -> response.data }
             .subscribeOn(Schedulers.io())
-            .subscribe({it->
-                Log.e(TAG,it.toString())
-            },{
-                Log.e(TAG,it.message)
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun login() {
+        apiHelper.login("test3", "123")
+            .subscribeOn(Schedulers.io())
+            .flatMap {
+                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.data[0].id)
+                apiHelper.loadTeams(it.data[0].id)
+            }
+            .flatMap {
+                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
+                apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
+            }
+            .subscribe({ it ->
+                subscribeTopic(it.data)
+                Log.e(TAG, it.toString())
+            }, {
+                Log.e(TAG, it.message)
             })
+    }
+
+    override fun subscribeTopic(list: List<ChatRoom>) {
+        FirebaseMessaging.getInstance().apply {
+            list.forEach { subscribeToTopic(it.id) }
+        }
+    }
+
+    override fun unSubscribeTopic(list: List<ChatRoom>) {
+        FirebaseMessaging.getInstance().apply {
+            list.forEach { unsubscribeFromTopic(it.id) }
+        }
     }
 }

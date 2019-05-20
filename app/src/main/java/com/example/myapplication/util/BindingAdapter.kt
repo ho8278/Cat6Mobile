@@ -55,7 +55,6 @@ object BindingAdapter {
     @JvmStatic
     @BindingConversion
     fun convertBooleanToView(status:Boolean):Int{
-        Log.e("BindingAdapter","Convert!")
         if(status)
             return View.VISIBLE
         else

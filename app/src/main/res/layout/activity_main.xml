@@ -47,7 +47,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 android:layout_marginTop="8dp"
-                                android:text="김기현"
+                                android:text="@{chatviewmodel.chatName}"
                                 android:textSize="16sp"
                                 android:textColor="@color/colorBlack"
                                 android:layout_width="wrap_content"

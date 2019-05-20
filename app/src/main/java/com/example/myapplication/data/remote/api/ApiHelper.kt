@@ -14,8 +14,8 @@ interface ApiHelper {
     @GET("login")
     fun login(@Query("client_ID")id:String, @Query("client_password")pw:String):Single<ServerResponse<User>>
 
-    @GET("chatroom")
-    fun loadChatRooms(@Query("userid") userId: String, @Query("teamid") teamId: String): Single<ServerResponse<ChatRoom>>
+    @GET("viewChatRooms")
+    fun loadChatRooms(@Query("team_ID") teamId: String): Single<ServerResponse<ChatRoom>>
 
     @PUT("schedule")
     fun insertSchedule(@Body schedule:Schedule):Single<ServerResponse<Schedule>>

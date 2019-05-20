@@ -25,4 +25,8 @@ interface DataSource{
     fun loadTeam(userID:String):Single<List<Team>>
 
     fun login()
+    fun subscribeTopic(list:List<ChatRoom>)
+    fun unSubscribeTopic(list:List<ChatRoom>)
+
+    fun loadChatRoom():Single<List<ChatRoom>>
 }

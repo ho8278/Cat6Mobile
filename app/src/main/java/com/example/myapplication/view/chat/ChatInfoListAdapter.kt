@@ -17,26 +17,26 @@ import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffUtil.ItemCallback<ChatInfo>(){
+class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object : DiffUtil.ItemCallback<ChatInfo>() {
     override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-        Log.e("DIFF",(oldItem==newItem).toString())
+        Log.e("DIFF", (oldItem == newItem).toString())
         return false
     }
 
     override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-        Log.e("DIFF",(oldItem==newItem).toString())
+        Log.e("DIFF", (oldItem == newItem).toString())
         return false
     }
 }) {
 
     private val TAG = ChatInfoListAdapter::class.java.simpleName
-    private lateinit var userId:String
+    private lateinit var userId: String
 
     val VIEW_TYPE_ME = 0
     val VIEW_TYPE_YOU = 1
 
-    init{
-        userId=AppInitialize.dataSource.getItem(PreferenceHelperImpl.CURRENT_USER_ID)
+    init {
+        userId = AppInitialize.dataSource.getItem(PreferenceHelperImpl.CURRENT_USER_ID)
     }
 
     fun setList(changeList: MutableList<ChatInfo>) {
@@ -51,17 +51,16 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffU
                 R.layout.item_mychat,
                 parent,
                 false
-            ).let{
+            ).let {
                 MeViewHolder(it)
             }
-        }
-        else{
+        } else {
             return DataBindingUtil.inflate<ItemTheirchatBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.item_theirchat,
                 parent,
                 false
-            ).let{
+            ).let {
                 YouViewHolder(it)
             }
         }
@@ -74,7 +73,7 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffU
     override fun getItemViewType(position: Int): Int {
         if (userId == getItem(position).sendUserId) {
             return VIEW_TYPE_ME
-        } else{
+        } else {
             return VIEW_TYPE_YOU
         }
     }
@@ -83,9 +82,22 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffU
 
         override fun bind(position: Int) {
             //TODO("고쳐야함")
-            val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
+            val calendar = Calendar.getInstance()
+            calendar.time = getItem(position).sendDate
+
+            val date:String = when (calendar.get(Calendar.AM_PM)) {
+                Calendar.AM -> {
+                    val dateFormat = SimpleDateFormat("오전 hh-mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                Calendar.PM->{
+                    val dateFormat = SimpleDateFormat("오후 hh-mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                else ->""
+            }
             binding.tvMessageBody.setText(getItem(position).message)
-            binding.tvMessageClock.setText(dateFormat.format(getItem(position).sendDate))
+            binding.tvMessageClock.setText(date)
         }
 
     }
@@ -93,9 +105,22 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object:DiffU
     inner class YouViewHolder(val binding: ItemTheirchatBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
             //TODO("고쳐야함")
-            val dateFormat=SimpleDateFormat("hh-mm-ss",Locale.KOREA)
+            val calendar = Calendar.getInstance()
+            calendar.time = getItem(position).sendDate
+
+            val date:String = when (calendar.get(Calendar.AM_PM)) {
+                Calendar.AM -> {
+                    val dateFormat = SimpleDateFormat("오전 hh-mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                Calendar.PM->{
+                    val dateFormat = SimpleDateFormat("오후 hh-mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                else ->""
+            }
             binding.tvMessageBody.setText(getItem(position).message)
-            binding.tvMessageClock.setText(dateFormat.format(getItem(position).sendDate))
+            binding.tvMessageClock.setText(date)
         }
     }
 
