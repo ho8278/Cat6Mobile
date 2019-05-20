@@ -150,6 +150,7 @@
                         app:layout_constraintLeft_toRightOf="@id/et_messagebox"
                         app:layout_constraintRight_toRightOf="parent"
                         android:background="?attr/selectableItemBackground"
+                        android:visibility="@{viewmodel.isSending ? View.VISIBLE : View.GONE}"
                         android:layout_marginRight="16dp"
                         app:srcCompat="@drawable/ic_send"
                         android:layout_gravity="center"

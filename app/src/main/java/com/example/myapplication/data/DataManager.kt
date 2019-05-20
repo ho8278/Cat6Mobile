@@ -182,8 +182,8 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun login() {
-        apiHelper.login("test3", "123")
+    override fun login(id:String, pw:String) {
+        apiHelper.login(id,pw)
             .subscribeOn(Schedulers.io())
             .flatMap {
                 prefHelper.saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.data[0].id)

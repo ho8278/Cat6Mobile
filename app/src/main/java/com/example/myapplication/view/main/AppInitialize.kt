@@ -20,6 +20,6 @@ class AppInitialize:Application(){
         super.onCreate()
         Stetho.initializeWithDefaults(this)
         dataSource = DataManager.getInstance(applicationContext)
-        DataManager.getInstance(this).login()
+        DataManager.getInstance(this).login("ho8278","123")
     }
 }
