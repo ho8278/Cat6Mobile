@@ -166,10 +166,20 @@ class DataManager : DataSource {
         dbHelper.insertTeam(team)
     }
 
-    override fun loadTeam(user: User): Single<List<Team>> {
-        return apiHelper.loadTeams(user.id)
+    override fun loadTeam(userID: String): Single<List<Team>> {
+        return apiHelper.loadTeams(userID)
             .map { response -> response.data }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun login() {
+        apiHelper.login("ho8278","123")
+            .subscribeOn(Schedulers.io())
+            .subscribe({it->
+                Log.e(TAG,it.toString())
+            },{
+                Log.e(TAG,it.message)
+            })
     }
 }

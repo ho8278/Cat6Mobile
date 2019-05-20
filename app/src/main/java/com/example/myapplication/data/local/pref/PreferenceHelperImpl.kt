@@ -31,17 +31,17 @@ class PreferenceHelperImpl : PreferenceHelper {
     override fun <T : Any> saveItem(key: String, item: T) {
         preference.edit {
             when (item) {
-                item is String -> putString(key, item as String)
+                is String -> putString(key, item as String)
 
-                item is Boolean -> putBoolean(key, item as Boolean)
+                is Boolean -> putBoolean(key, item as Boolean)
 
-                item is Int -> putInt(key, item as Int)
+                is Int -> putInt(key, item as Int)
 
-                item is Float -> putFloat(key, item as Float)
+                is Float -> putFloat(key, item as Float)
 
-                item is Long -> putLong(key, item as Long)
+                is Long -> putLong(key, item as Long)
 
-                item is MutableSet<*> -> putStringSet(key, item as MutableSet<String>)
+                is MutableSet<*> -> putStringSet(key, item as MutableSet<String>)
             }
             apply()
         }

@@ -22,5 +22,7 @@ interface DataSource{
     fun getSchedules(year:Int,month:Int,day:Int):Single<List<Schedule>>
     fun saveSchedule(schedule: Schedule):Single<Schedule>
     fun insertTeam(team: Team)
-    fun loadTeam(user:User):Single<List<Team>>
+    fun loadTeam(userID:String):Single<List<Team>>
+
+    fun login()
 }

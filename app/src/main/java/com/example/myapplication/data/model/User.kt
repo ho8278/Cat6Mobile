@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-data class User(@SerializedName("client_id")
+data class User(@SerializedName("client_ID")
                 @PrimaryKey
                 var id:String,
                 @SerializedName("client_password")

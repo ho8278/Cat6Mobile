@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiHelperImpl {
     private val retrofit: Retrofit
     //http://180.71.228.163:8080
-    private val url="https://d5ff796c-012c-48be-ac57-8d1ed5524cb1.mock.pstmn.io/"
+    private val url="http://180.71.228.163:8080/"
     val api: ApiHelper
 
     init {
@@ -19,8 +19,8 @@ object ApiHelperImpl {
 
         var client: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(loggingIntercept)
-            .addInterceptor(ResponseInterceptor())
             .addInterceptor(AddCookieInterceptor())
+            .addInterceptor(ResponseInterceptor())
             .build()
 
         retrofit = Retrofit.Builder()
