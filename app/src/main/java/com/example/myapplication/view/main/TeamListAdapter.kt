@@ -81,7 +81,7 @@ class TeamListAdapter(val listener: GroupChangeListener) : RecyclerView.Adapter<
                 isCurrent = true
             } else if (currentGroupID == groupList[position].id && isCurrent == false) {
                 binding.llContainer.setOnClickListener {
-                    listener.change(groupList[position].id)
+                    listener.groupChanged(groupList[position].id)
                 }
                 isCurrent = true
             }

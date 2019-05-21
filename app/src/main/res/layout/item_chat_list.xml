@@ -2,6 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+            android:id="@+id/ll_container"
+            android:background="?attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="25dp">
 
@@ -9,7 +11,7 @@
                 android:id="@+id/tv_chat_name"
                 android:paddingLeft="16dp"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
 

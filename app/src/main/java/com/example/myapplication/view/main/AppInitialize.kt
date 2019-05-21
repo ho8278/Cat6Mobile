@@ -21,5 +21,10 @@ class AppInitialize:Application(){
         Stetho.initializeWithDefaults(this)
         dataSource = DataManager.getInstance(applicationContext)
         DataManager.getInstance(this).login("ho8278","123")
+            .subscribe({ it ->
+                Log.e("APP",it.data.toString())
+            },{
+                Log.e("APP",it.message)
+            })
     }
 }

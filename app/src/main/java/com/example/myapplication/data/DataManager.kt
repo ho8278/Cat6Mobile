@@ -82,7 +82,7 @@ class DataManager : DataSource {
 
         return fcmApiHelper.sendTestMessage(json)
             .doOnSuccess { dbHelper.insertChatInfo(chatInfo) }
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -111,23 +111,23 @@ class DataManager : DataSource {
         return dbHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
     }
 
-    override fun loadSchedule(groupId: String):Single<ErrorCode> {
+    override fun loadSchedule(groupId: String): Single<ErrorCode> {
         return apiHelper.loadSchedules(groupId)
-            .doOnSuccess{
+            .doOnSuccess {
                 Log.e(TAG, it.data.toString())
                 dbHelper.updateSchedule(it.data)
             }
-            .doOnError { Log.e(TAG,it.message) }
-            .flatMap { it->
+            .doOnError { Log.e(TAG, it.message) }
+            .flatMap { it ->
                 val code = it.responseCode.toInt()
-                Single.create<ErrorCode>{
-                    if(code == ErrorCode.WRONG_PARAMETER.code)
+                Single.create<ErrorCode> {
+                    if (code == ErrorCode.WRONG_PARAMETER.code)
                         it.onError(Throwable(ErrorCode.WRONG_PARAMETER.description))
                     else
                         it.onSuccess(ErrorCode.SUCCESS)
                 }
             }
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribeOn(Schedulers.io())
     }
 
@@ -151,9 +151,19 @@ class DataManager : DataSource {
             }
         }
 
-        return apiHelper.insertSchedule(startDate,endDate,schedule.name,schedule.teamID)
-            .doOnSuccess {it -> dbHelper.insertSchedule(Schedule(it,schedule.startDate,schedule.endDate,schedule.name,schedule.teamID)) }
-            .doOnError { Log.e(TAG,it.message) }
+        return apiHelper.insertSchedule(startDate, endDate, schedule.name, schedule.teamID)
+            .doOnSuccess { it ->
+                dbHelper.insertSchedule(
+                    Schedule(
+                        it,
+                        schedule.startDate,
+                        schedule.endDate,
+                        schedule.name,
+                        schedule.teamID
+                    )
+                )
+            }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -165,7 +175,7 @@ class DataManager : DataSource {
     override fun loadTeam(userID: String): Single<List<Team>> {
         return apiHelper.loadTeams(userID)
             .map { response -> response.data }
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .doOnSuccess { dbHelper.updateTeam(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -179,26 +189,21 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun login(id:String, pw:String) {
-        apiHelper.login(id,pw)
+    override fun login(id: String, pw: String): Single<ServerResponse<Team>> {
+        return apiHelper.login(id, pw)
             .map { response ->
                 val userData = response.data[0]
                 userData.run {
                     User(this.id, password, name, nickname, profileLink ?: "")
                 }
             }
-            .doOnSuccess { dbHelper.updateUser(it) }
-            .subscribeOn(Schedulers.io())
-            .flatMap {
+            .doOnSuccess {
                 prefHelper.saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
-                apiHelper.loadTeams(it.id)
+                dbHelper.updateUser(it)
             }
-            .subscribe({ it ->
-                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
-                Log.e(TAG, it.toString())
-            }, {
-                Log.e(TAG, it.message)
-            })
+            .subscribeOn(Schedulers.io())
+            .flatMap { apiHelper.loadTeams(it.id) }
+            .doOnSuccess { prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id) }
     }
 
     override fun subscribeTopic(list: List<ChatRoom>) {
@@ -215,8 +220,8 @@ class DataManager : DataSource {
 
     override fun createTeam(teamName: String): Single<String> {
         return apiHelper.createTeam(teamName)
-            .doOnError { Log.e(TAG,it.message) }
-            .doOnSuccess { dbHelper.insertTeam(Team(it,teamName)) }
+            .doOnError { Log.e(TAG, it.message) }
+            .doOnSuccess { dbHelper.insertTeam(Team(it, teamName)) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

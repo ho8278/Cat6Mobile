@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.calendar.CalendarActivity
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
-    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener {
+    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener,ChatRoomChangeListener {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
@@ -85,7 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         rcv_main_participants.adapter = memberListAdapter
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvChat.adapter = ChatListAdapter()
+        binding.rvChat.adapter = ChatListAdapter(this)
 
         viewModel.init()
 
@@ -141,7 +142,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     }
 
-    override fun change(groupID: String) {
+    override fun groupChanged(groupID: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun chatRoomChagned(chatRoom: ChatRoom) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

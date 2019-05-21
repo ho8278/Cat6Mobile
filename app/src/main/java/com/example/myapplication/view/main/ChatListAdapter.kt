@@ -9,7 +9,7 @@ import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.databinding.ItemChatListBinding
 import com.example.myapplication.view.base.BaseViewHolder
 
-class ChatListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+class ChatListAdapter(val listener:ChatRoomChangeListener) : RecyclerView.Adapter<BaseViewHolder>() {
 
     val chatList = mutableListOf<ChatRoom>()
 
@@ -37,6 +37,9 @@ class ChatListAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     inner class ChatListViewHolder(val binding: ItemChatListBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
             binding.tvChatName.setText(chatList[position].name)
+            binding.llContainer.setOnClickListener {
+                listener.chatRoomChagned(chatList[position])
+            }
         }
     }
 }

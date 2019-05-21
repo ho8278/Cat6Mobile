@@ -13,18 +13,23 @@ interface ApiHelper {
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
 
     @GET("showClientInfo")
-    fun getUser(@Query("client_ID") userId: String):Single<ServerResponse<User>>
+    fun getUser(@Query("client_ID") userId: String): Single<ServerResponse<User>>
 
     @GET("login")
-    fun login(@Query("client_ID")id:String, @Query("client_password")pw:String):Single<ServerResponse<User>>
+    fun login(@Query("client_ID") id: String, @Query("client_password") pw: String): Single<ServerResponse<User>>
 
     @GET("viewChatRooms")
     fun loadChatRooms(@Query("team_ID") teamId: String): Single<ServerResponse<ChatRoom>>
 
     @POST("setSchedule")
-    fun insertSchedule(@Query("schedule_start_date") startDate: String, @Query("schedule_end_date")endDate:String,
-                       @Query("schedule_contents") contents:String, @Query("schedule_team_ID")teamID:String):Single<String>
+    fun insertSchedule(
+        @Query("schedule_start_date") startDate: String, @Query("schedule_end_date") endDate: String,
+        @Query("schedule_contents") contents: String, @Query("schedule_team_ID") teamID: String
+    ): Single<String>
 
     @POST("createTeam")
-    fun createTeam(@Query("team_name")teamName:String):Single<String>
+    fun createTeam(@Query("team_name") teamName: String): Single<String>
+
+    @GET("viewParticipateClients/team")
+    fun loadGroupClient(@Query("team_ID") teamID: String): Single<ServerResponse<User>>
 }
