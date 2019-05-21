@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
-    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener,ChatRoomChangeListener {
+    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener,ChatRoomChangeListener, MemberClickListener {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
@@ -76,17 +77,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         chatViewModel.receiveMessage()
 
 
-        memberListAdapter = MemberListAdapter()
-        memberListAdapter.addGroupMember("JongSeong")
-        memberListAdapter.addGroupMember("HyeonUng")
-        memberListAdapter.addGroupMember("SeungPyo")
-        memberListAdapter.addGroupMember("KiHyeon")
-        memberListAdapter.addGroupMember("JooYeong")
-
-        rcv_main_participants.adapter = memberListAdapter
+        rcv_main_participants.adapter = MemberListAdapter(this)
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
         binding.rvChat.adapter = ChatListAdapter(this)
+        binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         viewModel.init()
 
@@ -148,5 +143,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun chatRoomChagned(chatRoom: ChatRoom) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun memberClicked(client_ID: String) {
+        val dialog = AlertDialog.Builder(this)
+            .setCancelable(true)
+            .setMessage("메세지를 보내시겠습니까?")
+            .setNegativeButton("취소"){ dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("보내기"){_, _ ->
+                viewModel.createChatRoom(client_ID)
+            }
     }
 }

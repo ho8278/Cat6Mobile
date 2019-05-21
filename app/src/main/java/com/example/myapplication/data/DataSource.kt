@@ -33,7 +33,9 @@ interface DataSource{
     fun unSubscribeTopic(list:List<ChatRoom>)
 
     fun loadChatRoom():Single<List<ChatRoom>>
+    fun createChatRoom(clientID:String):Single<ResponseBody>
 
     fun createTeam(teamName:String):Single<String>
 
+    fun sendBroadCastMessage(chatRoomID:String):Single<ResponseBody>
 }

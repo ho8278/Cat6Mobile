@@ -15,6 +15,7 @@ import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.User
 import com.example.myapplication.view.main.MainActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.text.SimpleDateFormat
@@ -41,6 +42,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (chatinfoID == remoteInfoID)
             return
 
+        if(remoteMessage?.from=="main"){
+            broadCastMessage(remoteMessage.data)
+            return
+        }
+
         val info = remoteMessage?.data.run {
             ChatInfo(
                 UUID.randomUUID().toString()
@@ -53,6 +59,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         createNotification(info)
         DataManager.getInstance(applicationContext).receiveMessage(info)
         //TODO("ROOM에 채팅정보 저장")
+    }
+
+    fun broadCastMessage(data:MutableMap<String,String>){
+        if(data.get("id")!=null){
+            data.get("id").apply {
+                FirebaseMessaging.getInstance().subscribeToTopic(this)
+            }
+            return
+        }
     }
 
     fun createNotification(chatInfo: ChatInfo) {

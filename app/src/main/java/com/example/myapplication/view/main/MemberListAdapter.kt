@@ -5,17 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.data.model.User
 import com.example.myapplication.databinding.ItemGroupMemberBinding
+import com.example.myapplication.view.base.BaseViewHolder
 
-class MemberListAdapter : ListAdapter<String, MemberListAdapter.MemberViewHolder> {
+class MemberListAdapter(val listener: MemberClickListener) : RecyclerView.Adapter<MemberListAdapter.MemberViewHolder>() {
 
-    private val memberList: MutableList<String> = ArrayList()
-
-    constructor() : super(object : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = (oldItem == newItem)
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = (oldItem == newItem)
-    })
-
+    private val memberList: MutableList<User> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder =
         MemberViewHolder(
@@ -26,32 +22,31 @@ class MemberListAdapter : ListAdapter<String, MemberListAdapter.MemberViewHolder
 
 
     override fun onBindViewHolder(holder: MemberViewHolder, position: Int) {
-        val userTemp: String = memberList[position]
-        holder.bind(userTemp)
+        holder.bind(position)
     }
 
-    fun addGroupMember(member: String) {
-        memberList.add(member)
-        submitList(memberList)
+    override fun getItemCount(): Int {
+        return memberList.size
     }
 
-    fun removeGroupMember(member: String) {
-        memberList.remove(member)
-        submitList(memberList)
-    }
-
-    fun clearGroupMember() {
+    fun setList(list:MutableList<User>){
         memberList.clear()
-        submitList(memberList)
+        memberList.addAll(list)
+        notifyDataSetChanged()
     }
 
-    inner class MemberViewHolder(itemView: ItemGroupMemberBinding) : RecyclerView.ViewHolder(itemView.root) {
+    inner class MemberViewHolder(itemView: ItemGroupMemberBinding) : BaseViewHolder(itemView) {
 
         private val item : ItemGroupMemberBinding = itemView
 
-        fun bind(member: String) {
-            item.member = member
-            item.url = "https://designshack.net/wp-content/uploads/img-placeholder.jpg"
+        override fun bind(position: Int) {
+            val userTemp: String = memberList[position].name
+            val url = memberList[position].profileLink
+            item.member = userTemp
+            item.url = url
+            item.clContainer.setOnClickListener {
+                listener.memberClicked(memberList[position].id)
+            }
         }
     }
 }

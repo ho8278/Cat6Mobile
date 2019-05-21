@@ -87,6 +87,23 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun sendBroadCastMessage(chatRoomID:String): Single<ResponseBody> {
+        val json = JsonObject().apply {
+            addProperty(
+                "to",
+                "/topics/main"
+            )
+            addProperty("priority", "high")
+            val element = JsonObject()
+            element.addProperty("id",chatRoomID)
+            add("data", element)
+        }
+        return fcmApiHelper.sendTestMessage(json)
+            .doOnError { Log.e(TAG, it.message) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun receiveMessage(chatInfo: ChatInfo) {
         receiveSubject.onNext(chatInfo)
     }
@@ -189,6 +206,11 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun createChatRoom(clientID: String): Single<ResponseBody> {
+        apiHelper.createChatRoom("DirectMessage")
+        TODO("채팅방 이름 설정 할 수 있도록 다이얼로그 수정")
+    }
+
     override fun login(id: String, pw: String): Single<ServerResponse<Team>> {
         return apiHelper.login(id, pw)
             .map { response ->
@@ -209,12 +231,14 @@ class DataManager : DataSource {
     override fun subscribeTopic(list: List<ChatRoom>) {
         FirebaseMessaging.getInstance().apply {
             list.forEach { subscribeToTopic(it.id) }
+            subscribeToTopic("main")
         }
     }
 
     override fun unSubscribeTopic(list: List<ChatRoom>) {
         FirebaseMessaging.getInstance().apply {
             list.forEach { unsubscribeFromTopic(it.id) }
+            unsubscribeFromTopic("main")
         }
     }
 

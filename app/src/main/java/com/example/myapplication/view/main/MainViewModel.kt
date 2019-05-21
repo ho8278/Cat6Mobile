@@ -36,4 +36,8 @@ class MainViewModel: BaseViewModel {
                 })
         )
     }
+
+    fun createChatRoom(client_ID:String){
+
+    }
 }

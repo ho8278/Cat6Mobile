@@ -32,4 +32,10 @@ interface ApiHelper {
 
     @GET("viewParticipateClients/team")
     fun loadGroupClient(@Query("team_ID") teamID: String): Single<ServerResponse<User>>
+
+    @POST("createChatRoom")
+    fun createChatRoom(@Query("chat_room_name") name: String, @Query("team_ID") teamID: String): Single<String>
+
+    @POST("inviteChatRoom")
+    fun inviteChatRoom(@Query("client_ID") clientID: String, @Query("chat_room_ID") chatID: String): Single<String>
 }
