@@ -21,4 +21,19 @@ class MainViewModel: BaseViewModel {
     val userList=ObservableArrayList<User>()
 
     val currentUser= ObservableField<User>()
+
+    fun init(){
+        getCompositeDisposable().add(
+            getDataManager().loadChatRoom()
+                .subscribe({ list ->
+                    chatList.clear()
+                    chatList.addAll(list)
+                    getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,list[0].id)
+                    getDataManager().subscribeTopic(list)
+                    Log.e(TAG, list.toString())
+                },{
+                    Log.e(TAG,it.message)
+                })
+        )
+    }
 }

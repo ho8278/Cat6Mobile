@@ -159,6 +159,14 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_chat"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/btn_main_chat"
+                            bind_item="@{mainviewmodel.chatList}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
                     <TextView
                             style="@style/DrawerItemDefault"
                             android:id="@+id/btn_main_references"
@@ -177,7 +185,7 @@
                             android:layout_marginTop="@dimen/nav_drawer_blank_height"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_chat"/>
+                            app:layout_constraintTop_toBottomOf="@id/rv_chat"/>
 
                     <!-- 접속한 사람들 목록 -->
                     <androidx.recyclerview.widget.RecyclerView

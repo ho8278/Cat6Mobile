@@ -193,13 +193,8 @@ class DataManager : DataSource {
                 prefHelper.saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
                 apiHelper.loadTeams(it.id)
             }
-            .flatMap {
-                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
-                apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
-            }
             .subscribe({ it ->
-                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,it.data[0].id)
-                subscribeTopic(it.data)
+                prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
                 Log.e(TAG, it.toString())
             }, {
                 Log.e(TAG, it.message)

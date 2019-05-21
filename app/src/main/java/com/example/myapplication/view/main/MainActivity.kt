@@ -18,11 +18,12 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
-class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener,GroupChangeListener {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
+    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
-    private lateinit var fragment:TeamListFragment
+    private lateinit var fragment: TeamListFragment
     private lateinit var chatViewModel: ChatViewModel
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
@@ -43,12 +44,12 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         includeInit()
 
 
-        fragment=TeamListFragment()
+        fragment = TeamListFragment()
 
         spinner_show_group.setOnClickListener {
-            val transaction=supportFragmentManager.beginTransaction()
+            val transaction = supportFragmentManager.beginTransaction()
             transaction.apply {
-                replace(R.id.fragment_show_team,fragment)
+                replace(R.id.fragment_show_team, fragment)
                 commit()
             }
         }
@@ -68,9 +69,9 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
 
     private fun initView() {
 
-
         chatViewModel = ChatViewModel(AppInitialize.dataSource)
         binding.chatviewmodel = chatViewModel
+        binding.mainviewmodel = viewModel
         chatViewModel.receiveMessage()
 
 
@@ -83,6 +84,10 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
 
         rcv_main_participants.adapter = memberListAdapter
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.rvChat.adapter = ChatListAdapter()
+
+        viewModel.init()
 
     }
 

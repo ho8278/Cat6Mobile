@@ -12,11 +12,13 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.ChatInfo
+import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.data.model.Team
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
+import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -54,6 +56,15 @@ object BindingAdapter {
     fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>?) {
         val adapter = view.adapter as ScheduleViewPagerAdapter
         adapter.setList(item ?: mutableListOf())
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setChatRoomItem(view: RecyclerView, item: MutableList<ChatRoom>?) {
+        val adapter = view.adapter
+        if(adapter != null){
+            (adapter as ChatListAdapter).setList(item ?: mutableListOf())
+        }
     }
 
     @JvmStatic
