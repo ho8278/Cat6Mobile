@@ -26,6 +26,7 @@ class AddTeamActivity: BaseActivity<ActivityAddTeamBinding,AddTeamViewModel>(){
         }
         binding.tvCreateTeam.setOnClickListener {
             viewModel.createTeam(binding.tietTeamName.text.toString())
+            finish()
         }
     }
 }

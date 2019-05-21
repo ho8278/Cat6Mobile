@@ -9,13 +9,13 @@ import com.google.gson.annotations.SerializedName
 import java.time.OffsetDateTime
 import java.util.*
 
-@Entity(foreignKeys = arrayOf(ForeignKey(entity = Team::class, parentColumns = arrayOf("id"), childColumns = arrayOf("teamID"))))
+@Entity//(foreignKeys = arrayOf(ForeignKey(entity = Team::class, parentColumns = arrayOf("id"), childColumns = arrayOf("teamID"))))
 data class Schedule(@PrimaryKey
                     @SerializedName("schedule_ID")
                     val id:String,
-                    @SerializedName("schedule_startDate")
+                    @SerializedName("schedule_start_date")
                     val startDate: String,
-                    @SerializedName("schedule_endDate")
+                    @SerializedName("schedule_end_date")
                     val endDate: String,
                     @SerializedName("schedule_contents")
                     val name:String,

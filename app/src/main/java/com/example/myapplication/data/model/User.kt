@@ -2,6 +2,7 @@ package com.example.myapplication.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Entity
@@ -14,7 +15,5 @@ data class User(@SerializedName("client_ID")
                 var name:String,
                 @SerializedName("client_nickname")
                 var nickname:String,
-                @SerializedName("client_token")
-                var token:String,
                 @SerializedName("profile_picture")
-                var profileLink:String)
+                var profileLink:String?)

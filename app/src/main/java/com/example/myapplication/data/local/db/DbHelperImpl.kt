@@ -14,7 +14,8 @@ import org.joda.time.format.DateTimeFormat
 import java.util.*
 
 class DbHelperImpl : DbHelper {
-    private val TAG=DbHelperImpl::class.java.simpleName
+    private val TAG = DbHelperImpl::class.java.simpleName
+
     companion object {
         private val dbName = "AppDatabase"
 
@@ -34,24 +35,26 @@ class DbHelperImpl : DbHelper {
         return Single.fromCallable {
             appDatabase.chatInfoDao.loadChatInfo(roomId)
         }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG, it.message) }
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun insertChatInfo(info: ChatInfo) {
-        Completable.fromAction{
+        Completable.fromAction {
             appDatabase.chatInfoDao.insertChatInfo(info)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 
     override fun sendMessage(message: String) {
     }
 
-    override fun insertUser(user: User) {
+    override fun updateUser(user: User) {
         Completable.fromAction {
-            appDatabase.userDao.insertUser(user)
+            appDatabase.userDao.updateUser(user)
         }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 
@@ -59,27 +62,33 @@ class DbHelperImpl : DbHelper {
         return Single.fromCallable {
             appDatabase.userDao.getUser(userId)
         }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG, it.message) }
     }
 
-    override fun insertScheduleList(scheduleList: List<Schedule>): Completable {
-        return Completable.fromAction {
-            appDatabase.scheduleDao.deleteAllSchedules()
-            appDatabase.scheduleDao.insertSchedules(scheduleList)
+    override fun updateSchedule(scheduleList: List<Schedule>) {
+        Completable.fromAction {
+            appDatabase.scheduleDao.updateSchedule(scheduleList)
         }.subscribeOn(Schedulers.io())
-    }
-
-    override fun deleteAllSchedules(): Completable {
-        return Completable.fromAction {
-            appDatabase.scheduleDao.deleteAllSchedules()
-        }.subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG, it.message) }
+            .subscribe()
     }
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
-        val date = "$year-$month-$day%"
-        Log.e(TAG, date)
+        val realMonth = if (month < 10)
+            "0" + month
+        else
+            month
+
+        val realDay = if(day < 10)
+            "0"+day
+        else
+            day
+        val date = "$year-$realMonth-$realDay%"
+        Log.e(TAG,date)
         return Single.fromCallable {
             appDatabase.scheduleDao.getSchedules(date)
-        }.subscribeOn(Schedulers.io())
+        }.doOnError { Log.e(TAG, it.message) }
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -87,40 +96,40 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.scheduleDao.insertSchedules(schedule)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 
     override fun insertTeam(team: Team) {
-        Completable.fromAction{
+        Completable.fromAction {
             appDatabase.teamDao.insertTeam(team)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 
-    override fun insertTeam(listTeam: List<Team>) {
-        Completable.fromAction{
-            appDatabase.teamDao.insertTeam(listTeam)
+    override fun updateTeam(listTeam: List<Team>) {
+        Completable.fromAction {
+            appDatabase.teamDao.updateTeamList(listTeam)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 
-    override fun insertChatRoomList(list: List<ChatRoom>) {
-        Completable.fromAction{
+    override fun updateChatRoom(list: List<ChatRoom>) {
+        Completable.fromAction {
             appDatabase.chatDao.updateChatRoom(list)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 
 
     override fun insertChatRoom(chatRoom: ChatRoom) {
-        Completable.fromAction{
+        Completable.fromAction {
             appDatabase.chatDao.insertChatRoom(chatRoom)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG,it.message) }
+            .doOnError { Log.e(TAG, it.message) }
             .subscribe()
     }
 }

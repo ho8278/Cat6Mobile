@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import java.text.SimpleDateFormat
 
 class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
 
@@ -22,12 +23,12 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     }
 
     constructor(dataSource: DataSource, navigator: AddScheduleNavigator?, schedule: Schedule) : this(dataSource) {
-        val parser=DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss")
-        val startTime=parser.parseDateTime(schedule.startDate)
-        val endTime=parser.parseDateTime(schedule.endDate)
+        val parser=SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        val startTime=parser.parse(schedule.startDate)
+        val endTime=parser.parse(schedule.endDate)
         title.set(schedule.name)
-        startDate.set(startTime)
-        endDate.set(endTime)
+        startDate.set(DateTime(startTime.time))
+        endDate.set(DateTime(endTime.time))
     }
 
     val TAG = AddScheduleViewModel::class.java.simpleName

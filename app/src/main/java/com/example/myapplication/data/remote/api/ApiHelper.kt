@@ -7,7 +7,7 @@ import java.util.*
 
 interface ApiHelper {
     @GET("viewSchedules")
-    fun loadSchedules(@Query("groupid") groupId: String): Single<ServerResponse<Schedule>>
+    fun loadSchedules(@Query("team_ID") groupId: String): Single<ServerResponse<Schedule>>
 
     @GET("viewTeams")
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
@@ -23,10 +23,8 @@ interface ApiHelper {
 
     @POST("setSchedule")
     fun insertSchedule(@Query("schedule_start_date") startDate: String, @Query("schedule_end_date")endDate:String,
-                       @Query("schedule_contents") contents:String, @Query("schedule_team_ID")teamID:String)
-    @POST("schedule")
-    fun insertSchedule(@Body schedule:Schedule):Single<ServerResponse<Schedule>>
+                       @Query("schedule_contents") contents:String, @Query("schedule_team_ID")teamID:String):Single<String>
 
-    @GET("createTeam")
-    fun createTeam(@Query("team_name")teamName:String):Single<ServerResponse<Team>>
+    @POST("createTeam")
+    fun createTeam(@Query("team_name")teamName:String):Single<String>
 }

@@ -10,24 +10,18 @@ interface DbHelper {
     fun sendMessage(message:String)
 
     fun loadChatInfoList(roomId:String): Single<List<ChatInfo>>
-
     fun insertChatInfo(info:ChatInfo)
 
-    fun insertUser(user:User)
-
+    fun updateUser(user:User)
     fun getUser(userId:String):Single<User>
 
     fun insertSchedule(schedule:Schedule)
-
-    fun insertScheduleList(scheduleList:List<Schedule>):Completable
-
-    fun deleteAllSchedules():Completable
-
+    fun updateSchedule(scheduleList:List<Schedule>)
     fun getSchedules(year:Int, month:Int, day:Int):Single<List<Schedule>>
 
     fun insertTeam(team: Team)
-    fun insertTeam(listTeam:List<Team>)
+    fun updateTeam(listTeam:List<Team>)
 
-    fun insertChatRoomList(list:List<ChatRoom>)
     fun insertChatRoom(chatRoom: ChatRoom)
+    fun updateChatRoom(list:List<ChatRoom>)
 }

@@ -38,7 +38,7 @@ class CalendarViewModel : BaseViewModel{
             val groupId=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
             it.add(getDataManager().loadSchedule(groupId)
                 .subscribe({
-                    Log.e(TAG,"LoadSuccess")
+                    Log.e(TAG,it.description)
                     isLoading.set(false)
                     OnDateChanged(year, month, day)
                 },{
@@ -56,6 +56,7 @@ class CalendarViewModel : BaseViewModel{
         getCompositeDisposable().also {
             getDataManager().getSchedules(year,month,day)
                 .subscribe({ list->
+                    Log.e(TAG,list.toString())
                     scheduleList.clear()
                     scheduleList.addAll(list)
                 },{

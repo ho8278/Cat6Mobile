@@ -15,22 +15,12 @@ class TeamListViewModel:BaseViewModel{
 
     val teamList=ObservableArrayList<Team>()
 
-    init {
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST1"))
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST2"))
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST3"))
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST4"))
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST5"))
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST6"))
-        teamList.add(Team(UUID.randomUUID().toString(),"TEST7"))
-    }
-
     fun init(){
         val userID=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
         getCompositeDisposable().add(
             getDataManager().loadTeam(userID)
                 .subscribe({ list->
-                    //teamList.addAll(list)
+                    teamList.addAll(list)
                     Log.e(TAG,list.toString())
                 },{
                     Log.e(TAG,it.toString())

@@ -149,15 +149,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/btn_main_my_page"/>
 
-                <TextView
-                        style="@style/DrawerItemDefault"
-                        android:id="@+id/btn_main_chat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nav_main_chat"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
                     <TextView
                             style="@style/DrawerItemDefault"
                             android:id="@+id/btn_main_chat"
@@ -166,17 +157,8 @@
                             android:text="@string/nav_main_chat"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
+                            app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
 
-                <TextView
-                        style="@style/DrawerItemDefault"
-                        android:id="@+id/btn_main_references"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nav_main_references"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
                     <TextView
                             style="@style/DrawerItemDefault"
                             android:id="@+id/btn_main_references"
@@ -185,17 +167,8 @@
                             android:text="@string/nav_main_references"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_chat"/>
+                            app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
 
-                <View
-                        style="@style/DrawerItemDefault"
-                        android:id="@+id/divider_main_menu"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/nav_drawer_blank_height"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/btn_main_chat"/>
                     <View
                             style="@style/DrawerItemDefault"
                             android:id="@+id/divider_main_menu"
@@ -204,7 +177,7 @@
                             android:layout_marginTop="@dimen/nav_drawer_blank_height"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
+                            app:layout_constraintTop_toBottomOf="@id/btn_main_chat"/>
 
                     <!-- 접속한 사람들 목록 -->
                     <androidx.recyclerview.widget.RecyclerView

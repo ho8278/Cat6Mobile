@@ -16,8 +16,6 @@ class MainViewModel: BaseViewModel {
 
     val TAG=MainViewModel::class.java.simpleName
 
-    val groupList=ObservableArrayList<Team>()
-
     val chatList=ObservableArrayList<ChatRoom>()
 
     val userList=ObservableArrayList<User>()
