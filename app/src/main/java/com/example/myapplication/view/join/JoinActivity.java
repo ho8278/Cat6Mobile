@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.myapplication.data.DataSource;
 import com.example.myapplication.databinding.ActivityJoinBinding;
+import com.example.myapplication.databinding.ActivityLoginBinding;
 import com.example.myapplication.view.base.BaseActivity;
 import com.example.myapplication.view.base.BaseFragment;
 import com.example.myapplication.view.base.BaseViewModel;

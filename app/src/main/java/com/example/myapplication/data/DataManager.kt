@@ -468,4 +468,8 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+
+    override fun join(id: String, pw: String, name: String, nickname: String):Single<Int> {
+        return apiHelper.join(id,pw,name,nickname).subscribeOn(Schedulers.io())
+    }
 }
