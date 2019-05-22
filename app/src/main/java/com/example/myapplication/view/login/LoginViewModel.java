@@ -26,7 +26,7 @@ public class LoginViewModel extends BaseViewModel {
                         .subscribe(new Consumer<Integer>() {
                             @Override
                             public void accept(Integer data) throws Exception {
-                                if(Log.e(TAG, data.toString())==200){
+                                if(data==200){
                                     navigator.OnSuccess();
                                 }
                                 else{
