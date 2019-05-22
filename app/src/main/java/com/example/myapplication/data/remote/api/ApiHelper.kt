@@ -72,4 +72,13 @@ interface ApiHelper {
 
     @GET("checkVote")
     fun checkVote(@Query("vote_ID")voteID:String):Single<ServerResponse<User>>
+    fun insertSchedule(
+        @Query("schedule_start_date") startDate: String, @Query("schedule_end_date") endDate: String,
+        @Query("schedule_contents") contents: String, @Query("schedule_team_ID") teamID: String
+    )
+
+    @GET("createClient")
+    fun join(
+        @Query("client_ID") client_ID: String, @Query("client_password") client_password: String, @Query("client_name") client_name: String,
+        @Query("client_nickname") client_nickname: String, @Query("profile_picture")pictureLink:String = ""): Single<Int>
 }

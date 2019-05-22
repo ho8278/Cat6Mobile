@@ -57,4 +57,6 @@ interface DataSource{
     fun loadVote():Single<List<Vote>>
     fun loadDetailVote(voteID:String):Single<Vote>
     fun acceptVote(voteID:String,voteItemIDlist:List<String>):Observable<ErrorCode>
+
+    fun join(id: String,pw: String, name: String, nickname: String):Single<Int>
 }

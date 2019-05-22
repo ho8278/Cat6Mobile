@@ -281,6 +281,10 @@ class DataManager : DataSource {
         }
     }
 
+    override fun join(id: String, pw: String, name: String, nickname: String):Single<Int> {
+        return apiHelper.join(id,pw,name,nickname).subscribeOn(Schedulers.io())
+    }
+
     override fun createTeam(teamName: String): Single<String> {
         return apiHelper.createTeam(teamName)
             .doOnError { Log.e(TAG, it.message) }

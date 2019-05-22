@@ -1,10 +1,15 @@
 package com.example.myapplication.view.login;
 
+import android.content.Intent;
+import android.widget.Toast;
+import androidx.fragment.app.FragmentTransaction;
 import com.example.myapplication.data.DataSource;
 import com.example.myapplication.databinding.ActivityLoginBinding;
 import com.example.myapplication.view.base.BaseActivity;
 import com.example.myapplication.view.base.BaseViewModel;
+import com.example.myapplication.view.join.JoinActivity;
 import com.example.myapplication.view.main.ErrorCode;
+import com.example.myapplication.view.main.MainActivity;
 import org.jetbrains.annotations.NotNull;
 import com.example.myapplication.R;
 import android.os.Bundle;
@@ -46,15 +51,28 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                 viewModel.loginButtonClicked(id, pw);
             }
         });
+        binding.join.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragement_join, new JoinActivity());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
     }
 
     @Override
     public void OnSuccess() {
-
+        Toast.makeText(this,"로그인 성공",Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
+
 
     @Override
     public void OnError(ErrorCode code) {
-
+        Toast.makeText(this,"로그인 실패",Toast.LENGTH_LONG).show();
     }
 }
