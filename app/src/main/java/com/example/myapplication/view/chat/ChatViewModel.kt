@@ -52,7 +52,6 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
         isSending.set(false)
         val userID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
         val chatInfoID = UUID.randomUUID().toString()
-        getDataManager().saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfoID)
         val chatInfo = ChatInfo(chatInfoID, userID, chatRoom.id, Calendar.getInstance().time, message)
         getCompositeDisposable().add(
             getDataManager().sendMessage(chatInfo)
@@ -63,6 +62,21 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
                 }, {
                     isSending.set(true)
                     Log.e(TAG, it.message)
+                })
+        )
+    }
+
+    fun sendFile(path:String){
+        if(path.isEmpty())
+            return
+        val userID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
+        val chatInfo = ChatInfo(UUID.randomUUID().toString(), userID, chatRoom.id, Calendar.getInstance().time, "파일을 전송하였습니다.")
+        getCompositeDisposable().add(
+            getDataManager().uploadFile(path,chatInfo)
+                .subscribe({ body ->
+                    Log.e(TAG,body.toString())
+                },{
+                    Log.e(TAG,it.message)
                 })
         )
     }

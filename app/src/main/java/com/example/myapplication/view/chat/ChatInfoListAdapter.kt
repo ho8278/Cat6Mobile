@@ -166,10 +166,4 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
             binding.tvMessageClock.setText(date)
         }
     }
-
-    inner class DivideViewHolder(val binding: ItemDatedividerBinding) : BaseViewHolder(binding) {
-        override fun bind(position: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    }
 }

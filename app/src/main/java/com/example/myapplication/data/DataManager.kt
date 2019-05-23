@@ -1,6 +1,7 @@
 package com.example.myapplication.data
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.example.myapplication.data.local.db.DbHelper
 import com.example.myapplication.data.local.db.DbHelperImpl
@@ -21,7 +22,11 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import io.socket.client.Socket
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -74,6 +79,7 @@ class DataManager : DataSource {
             add("data", element)
         }
 
+        prefHelper.saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.id)
         ChatSocketService.socket?.emit("TEST",json)
 
         return fcmApiHelper.sendTestMessage(json)
@@ -216,7 +222,7 @@ class DataManager : DataSource {
                 apiHelper.inviteChatRoom(clientID, chatID)
             }
             .flatMap { sendBroadCastMessage(chatID) }
-            .flatMap { Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID, chatRoomName)) } }
+            .flatMap{Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID,chatRoomName)) }}
             .observeOn(AndroidSchedulers.mainThread())
 
     }
@@ -252,7 +258,7 @@ class DataManager : DataSource {
             .map { response ->
                 val userData = response.data[0]
                 userData.run {
-                    User(this.id, password, name, nickname, profileLink)
+                    User(this.id, password, name, nickname,profileLink)
                 }
             }
             .doOnSuccess {
@@ -445,5 +451,18 @@ class DataManager : DataSource {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { response -> ErrorCode.fromCode(response) }
+    }
+
+    override fun uploadFile(path: String, chatInfo:ChatInfo): Single<ResponseBody> {
+        val file = File(path)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file)
+        val teamID =prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val requestBody = RequestBody.create(MediaType.parse("text/plane"),teamID)
+        val body = MultipartBody.Part.createFormData("file",file.name,requestFile)
+        return apiHelper.uploadFile(requestBody,body)
+            .map { response -> response.data[0] }
+            .flatMap { sendMessage(chatInfo) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

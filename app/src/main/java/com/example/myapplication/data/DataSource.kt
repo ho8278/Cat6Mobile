@@ -1,5 +1,6 @@
 package com.example.myapplication.data
 
+import android.net.Uri
 import com.example.myapplication.data.model.*
 import com.example.myapplication.view.main.ErrorCode
 import com.example.myapplication.data.model.ChatInfo
@@ -44,6 +45,8 @@ interface DataSource{
     fun sendBroadCastMessage(chatRoomID:String):Single<ResponseBody>
 
     fun loadGroupClient():Single<List<User>>
+
+    fun uploadFile(path: String, chatInfo:ChatInfo):Single<ResponseBody>
 
     fun setNotice(text:String,chatRoomID:String):Single<Int>
     fun loadNotice(chatRoomID:String):Single<Notice>

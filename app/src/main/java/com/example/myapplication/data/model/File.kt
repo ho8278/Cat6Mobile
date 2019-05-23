@@ -7,7 +7,11 @@ import java.util.*
 
 @Entity
 data class File(@PrimaryKey
-                @SerializedName("file_link")
+                @SerializedName("fileName")
                 var link:String,
-                @SerializedName("file_date")
-                var date:Date)
+                @SerializedName("fileDownloadUri")
+                var uri:String,
+                @SerializedName("fileType")
+                var type:String,
+                @SerializedName("size")
+                var size:Int)

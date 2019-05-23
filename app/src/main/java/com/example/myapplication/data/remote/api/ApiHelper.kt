@@ -5,6 +5,10 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.*
+import java.util.*
 
 interface ApiHelper {
     @GET("viewSchedules")
@@ -39,6 +43,10 @@ interface ApiHelper {
 
     @POST("inviteChatRoom")
     fun inviteChatRoom(@Query("client_ID") clientID: String, @Query("chat_room_ID") chatID: String): Single<Int>
+
+    @Multipart
+    @POST("uploadFile")
+    fun uploadFile(@Part("team_ID")teamID:RequestBody, @Part file:MultipartBody.Part):Single<ServerResponse<File>>
 
     @POST("notice")
     fun setNotice(@Query("notice_contents") contents: String, @Query("chat_room_ID") chatID: String): Single<Int>

@@ -140,6 +140,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     Log.e(TAG, uri.toString())
                     if (uri != null) {
                         val str = FilePathProvider.getPath(this, uri)
+                        chatViewModel.sendFile(str ?: "")
                         Log.e(TAG, str ?: "TESTTEST")
                     }
 
@@ -164,7 +165,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
             iv_document.setOnClickListener {
                 val fileChooser = Intent(Intent.ACTION_GET_CONTENT)
-                fileChooser.setType("application/*")
+                fileChooser.setType("*/*")
                 fileChooser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivityForResult(Intent.createChooser(fileChooser, "Open"), FILE_REQUEST_CODE)
             }
