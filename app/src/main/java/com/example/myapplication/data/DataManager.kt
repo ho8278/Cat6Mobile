@@ -9,6 +9,7 @@ import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.*
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
+import com.example.myapplication.util.ChatSocketService
 import com.example.myapplication.view.main.ErrorCode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.JsonObject
@@ -19,6 +20,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
+import io.socket.client.Socket
 import okhttp3.ResponseBody
 import java.text.SimpleDateFormat
 import java.util.*
@@ -71,6 +73,8 @@ class DataManager : DataSource {
             element.addProperty("sendId", chatInfo.sendUserId)
             add("data", element)
         }
+
+        ChatSocketService.socket?.emit("TEST",json)
 
         return fcmApiHelper.sendTestMessage(json)
             .doOnSuccess { dbHelper.insertChatInfo(chatInfo) }

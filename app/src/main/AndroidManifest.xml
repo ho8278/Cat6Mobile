@@ -19,6 +19,14 @@
             </intent-filter>
         </service>
 
+        <service android:name=".util.ChatSocketService"
+                 android:enabled="true"
+                 android:exported="true"/>
+        <service android:name=".util.RestartService"
+                 android:enabled="true"
+                 android:exported="true"/>
+        <receiver android:name=".util.AlarmReceiver"/>
+
         <activity
                 android:name=".view.main.MainActivity"
                 android:label="@string/title_activity_main"

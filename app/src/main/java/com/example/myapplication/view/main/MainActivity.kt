@@ -18,6 +18,7 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.view.addfriends.AddFriendsDialog
+import com.example.myapplication.util.ChatSocketService
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
@@ -40,6 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             viewModel.updateChatList()
         }
     }
+    var serviceIntent:Intent? = null
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
         return MainViewModel(dataSource,this)
@@ -57,6 +59,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         initView()
 
         includeInit()
+
+        if(ChatSocketService.serviceIntent==null){
+            serviceIntent = Intent(this,ChatSocketService::class.java)
+            startService(serviceIntent)
+        }else{
+            serviceIntent = ChatSocketService.serviceIntent
+        }
+
 
 
         fragment = TeamListFragment()
@@ -78,6 +88,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     override fun onPause() {
         super.onPause()
         unregisterReceiver(receiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(serviceIntent!=null){
+            stopService(serviceIntent)
+            serviceIntent=null
+        }
     }
 
     override fun onBackPressed() {

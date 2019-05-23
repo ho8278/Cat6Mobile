@@ -1,10 +1,8 @@
 package com.example.myapplication.view.chat
 
-import android.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -117,7 +115,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
                     val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                Calendar.PM -> {
+                Calendar.PM->{
                     val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
@@ -157,11 +155,11 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
             }
             val date: String = when (calendar.get(Calendar.AM_PM)) {
                 Calendar.AM -> {
-                    val dateFormat = SimpleDateFormat("오전 hh-mm", Locale.KOREA)
+                    val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                Calendar.PM -> {
-                    val dateFormat = SimpleDateFormat("오후 hh-mm", Locale.KOREA)
+                Calendar.PM->{
+                    val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
                 else -> ""
