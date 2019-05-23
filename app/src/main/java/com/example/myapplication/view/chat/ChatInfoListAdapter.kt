@@ -86,7 +86,6 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     inner class MeViewHolder(val binding: ItemMychatBinding) : BaseViewHolder(binding) {
 
         override fun bind(position: Int) {
-            //TODO("고쳐야함")
             val calendar = Calendar.getInstance()
             calendar.time = getItem(position).sendDate
             binding.mcvMessageContainer.setOnClickListener {
@@ -129,7 +128,6 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
 
     inner class YouViewHolder(val binding: ItemTheirchatBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
-            //TODO("고쳐야함")
             val calendar = Calendar.getInstance()
             calendar.time = getItem(position).sendDate
 

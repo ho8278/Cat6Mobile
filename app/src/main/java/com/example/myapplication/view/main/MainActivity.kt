@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -19,6 +20,7 @@ import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.view.addfriends.AddFriendsDialog
 import com.example.myapplication.util.ChatSocketService
+import com.example.myapplication.util.FilePathProvider
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
@@ -30,10 +32,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
-    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener,ChatRoomChangeListener, MemberClickListener, MainNavigator {
+    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener, ChatRoomChangeListener, MemberClickListener,
+    MainNavigator {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
-    private lateinit var memberListAdapter: MemberListAdapter
+    private val FILE_REQUEST_CODE = 10
     private lateinit var fragment: TeamListFragment
     private lateinit var chatViewModel: ChatViewModel
     var receiver:BroadcastReceiver = object:BroadcastReceiver(){
@@ -44,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     var serviceIntent:Intent? = null
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
-        return MainViewModel(dataSource,this)
+        return MainViewModel(dataSource, this)
     }
 
     override fun getLayoutID(): Int {
@@ -66,8 +69,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         }else{
             serviceIntent = ChatSocketService.serviceIntent
         }
-
-
 
         fragment = TeamListFragment()
 
@@ -131,6 +132,24 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         viewModel.init()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == FILE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    val uri = data?.data
+                    Log.e(TAG, uri.toString())
+                    if (uri != null) {
+                        val str = FilePathProvider.getPath(this, uri)
+                        Log.e(TAG, str ?: "TESTTEST")
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
     private fun includeInit() {
         include_chat.apply {
 
@@ -141,6 +160,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
             iv_show_toolbox.setOnClickListener {
                 chatViewModel.showToolBox()
+            }
+
+            iv_document.setOnClickListener {
+                val fileChooser = Intent(Intent.ACTION_GET_CONTENT)
+                fileChooser.setType("application/*")
+                fileChooser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivityForResult(Intent.createChooser(fileChooser, "Open"), FILE_REQUEST_CODE)
+            }
+
+            iv_add_friend.setOnClickListener {
+                //TODO:친구들 초대
             }
 
             iv_notice.setOnClickListener {
@@ -216,14 +246,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             .setNegativeButton("취소"){ dialog, _ ->
                 dialog.dismiss()
             }
-            .setPositiveButton("보내기"){dialog, _ ->
-                viewModel.createChatRoom(client_ID, view.findViewById<TextInputEditText>(R.id.tiet_chatroom_name).text.toString())
+            .setPositiveButton("보내기") { dialog, _ ->
+                viewModel.createChatRoom(
+                    client_ID,
+                    view.findViewById<TextInputEditText>(R.id.tiet_chatroom_name).text.toString()
+                )
                 dialog.dismiss()
             }
             .create()
         dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         }
         dialog.show()
     }
