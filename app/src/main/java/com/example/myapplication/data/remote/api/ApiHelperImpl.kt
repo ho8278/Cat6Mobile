@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiHelperImpl {
     private val retrofit: Retrofit
     //http://180.71.228.163:8080
-    private val url="http://180.71.228.163:8080/"
+    private val url="http://180.71.228.163:8070/"
     val api: ApiHelper
 
     init {
