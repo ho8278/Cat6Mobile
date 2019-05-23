@@ -14,6 +14,7 @@ interface DataSource{
     fun receiveMessage(chatInfo:ChatInfo)
     fun receiveMessage(): Observable<ChatInfo>
 
+    fun insertChatInfo(chatInfo:ChatInfo)
     fun loadChatInfoList(roomId:String):Single<List<ChatInfo>>
 
     fun <T:Any> saveItem(key:String,text:T)
@@ -33,9 +34,11 @@ interface DataSource{
     fun unSubscribeTopic(list:List<ChatRoom>)
 
     fun loadChatRoom():Single<List<ChatRoom>>
-    fun createChatRoom(clientID:String):Single<ResponseBody>
+    fun createChatRoom(clientID:String, chatRoomName:String):Single<ChatRoom>
 
     fun createTeam(teamName:String):Single<String>
 
     fun sendBroadCastMessage(chatRoomID:String):Single<ResponseBody>
+
+    fun loadGroupClient():Single<List<User>>
 }

@@ -7,27 +7,18 @@ import com.example.myapplication.data.local.db.DbHelperImpl
 import com.example.myapplication.data.local.pref.PreferenceHelper
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.*
-import com.example.myapplication.data.remote.api.ApiHelper
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
 import com.example.myapplication.view.main.ErrorCode
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import com.google.gson.JsonObject
-import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
-import okhttp3.Response
 import okhttp3.ResponseBody
-import org.joda.time.format.DateTimeFormat
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -87,7 +78,7 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun sendBroadCastMessage(chatRoomID:String): Single<ResponseBody> {
+    override fun sendBroadCastMessage(chatRoomID: String): Single<ResponseBody> {
         val json = JsonObject().apply {
             addProperty(
                 "to",
@@ -95,7 +86,7 @@ class DataManager : DataSource {
             )
             addProperty("priority", "high")
             val element = JsonObject()
-            element.addProperty("id",chatRoomID)
+            element.addProperty("id", chatRoomID)
             add("data", element)
         }
         return fcmApiHelper.sendTestMessage(json)
@@ -110,6 +101,10 @@ class DataManager : DataSource {
 
     override fun receiveMessage(): Observable<ChatInfo> {
         return receiveSubject.observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun insertChatInfo(chatInfo: ChatInfo) {
+        dbHelper.insertChatInfo(chatInfo)
     }
 
     override fun loadChatInfoList(roomId: String): Single<List<ChatInfo>> {
@@ -206,9 +201,19 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun createChatRoom(clientID: String): Single<ResponseBody> {
-        apiHelper.createChatRoom("DirectMessage")
-        TODO("채팅방 이름 설정 할 수 있도록 다이얼로그 수정")
+    override fun createChatRoom(clientID: String, chatRoomName: String): Single<ChatRoom> {
+        var chatID = ""
+        return apiHelper.createChatRoom(chatRoomName, prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
+            .subscribeOn(Schedulers.io())
+            .doOnError { Log.e(TAG, it.message) }
+            .flatMap {
+                chatID = it
+                apiHelper.inviteChatRoom(clientID, chatID)
+            }
+            .flatMap { sendBroadCastMessage(chatID) }
+            .flatMap{Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID,chatRoomName)) }}
+            .observeOn(AndroidSchedulers.mainThread())
+
     }
 
     override fun login(id: String, pw: String): Single<ServerResponse<Team>> {
@@ -216,7 +221,7 @@ class DataManager : DataSource {
             .map { response ->
                 val userData = response.data[0]
                 userData.run {
-                    User(this.id, password, name, nickname, profileLink ?: "")
+                    User(this.id, password, name, nickname,profileLink)
                 }
             }
             .doOnSuccess {
@@ -246,6 +251,13 @@ class DataManager : DataSource {
         return apiHelper.createTeam(teamName)
             .doOnError { Log.e(TAG, it.message) }
             .doOnSuccess { dbHelper.insertTeam(Team(it, teamName)) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun loadGroupClient(): Single<List<User>> {
+        return apiHelper.loadGroupClient(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
+            .map { response -> response.data }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

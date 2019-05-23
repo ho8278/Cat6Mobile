@@ -13,7 +13,7 @@ import com.example.myapplication.view.base.BaseViewModel
 import io.reactivex.Single
 import java.util.*
 
-class ChatViewModel(dataManager: DataSource) : BaseViewModel(dataManager) {
+class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewModel(dataManager) {
 
     val TAG = ChatViewModel::class.java.simpleName
     val isLoading: ObservableField<Boolean> = ObservableField()
@@ -23,34 +23,26 @@ class ChatViewModel(dataManager: DataSource) : BaseViewModel(dataManager) {
     val isToolbox = ObservableBoolean()
     val chatName = ObservableField<String>()
     val isSending = ObservableBoolean()
-    lateinit var chatRoom: ChatRoom  //TODO: 나중에 로그인 후 파라미터로 전달
-
     init {
         isLoading.set(true)
         isNotice.set(false)
         isToolbox.set(false)
         isSending.set(true)
-        getCompositeDisposable().add(
-            getDataManager().loadChatRoom()
-                .flatMap { list ->
-                    chatRoom = list[0]
-                    chatName.set(list[0].name)
-                    getDataManager().loadChatInfoList(chatRoom.id)
-                }
-                .subscribe({ result ->
-                    isLoading.set(false)
-                    chatInfoList.addAll(result)
-                }, {
-                    Log.e(TAG, it.message)
-                })
-        )
     }
 
     fun loadChatinfoList() {
+        if(chatRoom.id.isEmpty()){
+            chatName.set("새 대화 상대를 찾아보세요")
+            getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,"")
+            isLoading.set(false)
+            return
+        }
+        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,chatRoom.id)
         getCompositeDisposable().add(
             getDataManager().loadChatInfoList(chatRoom.id)
                 .subscribe({ result ->
                     isLoading.set(false)
+                    chatName.set(chatRoom.name)
                     chatInfoList.addAll(result)
                 }, {
                     Log.e(TAG, it.message)
@@ -81,7 +73,8 @@ class ChatViewModel(dataManager: DataSource) : BaseViewModel(dataManager) {
         getCompositeDisposable().add(
             getDataManager().receiveMessage()
                 .subscribe({
-                    chatInfoList.add(it)
+                    if(it.roomId==chatRoom.id)
+                        chatInfoList.add(it)
                     Log.e(TAG, it.id)
                 }, {
                     Log.e(TAG, it.message)

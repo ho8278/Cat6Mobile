@@ -42,7 +42,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (chatinfoID == remoteInfoID)
             return
 
-        if(remoteMessage?.from=="main"){
+        if(remoteMessage?.from=="/topics/main"){
             broadCastMessage(remoteMessage.data)
             return
         }
@@ -56,9 +56,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 , this?.get("message") ?: ""
             )
         }
+        //TODO("ROOM에 채팅정보 저장")
+        DataManager.getInstance(applicationContext).insertChatInfo(info)
         createNotification(info)
         DataManager.getInstance(applicationContext).receiveMessage(info)
-        //TODO("ROOM에 채팅정보 저장")
     }
 
     fun broadCastMessage(data:MutableMap<String,String>){

@@ -43,8 +43,7 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.chatInfoDao.insertChatInfo(info)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
     override fun sendMessage(message: String) {
@@ -54,8 +53,7 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.userDao.updateUser(user)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
     override fun getUser(userId: String): Single<User> {
@@ -69,8 +67,7 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.scheduleDao.updateSchedule(scheduleList)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
@@ -96,32 +93,28 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.scheduleDao.insertSchedules(schedule)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
     override fun insertTeam(team: Team) {
         Completable.fromAction {
             appDatabase.teamDao.insertTeam(team)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
     override fun updateTeam(listTeam: List<Team>) {
         Completable.fromAction {
             appDatabase.teamDao.updateTeamList(listTeam)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
     override fun updateChatRoom(list: List<ChatRoom>) {
         Completable.fromAction {
             appDatabase.chatDao.updateChatRoom(list)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 
 
@@ -129,7 +122,6 @@ class DbHelperImpl : DbHelper {
         Completable.fromAction {
             appDatabase.chatDao.insertChatRoom(chatRoom)
         }.subscribeOn(Schedulers.io())
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribe()
+            .subscribe({},{ Log.e(TAG, it.message) })
     }
 }

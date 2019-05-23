@@ -14,14 +14,14 @@ object DateTypeConverter{
     @TypeConverter
     @JvmStatic
     fun StringtoDate(value:String):Date{
-        val simpleDateFormat=SimpleDateFormat("yyyy-MM-dd",Locale.KOREAN)
+        val simpleDateFormat=SimpleDateFormat("yyyy-MM-dd hh:mm:ss",Locale.KOREAN)
         return simpleDateFormat.parse(value)
     }
 
     @TypeConverter
     @JvmStatic
     fun DatetoString(value:Date):String{
-        val simpleDateFormat=SimpleDateFormat("yyyy-MM-dd",Locale.KOREAN)
+        val simpleDateFormat=SimpleDateFormat("yyyy-MM-dd hh:mm:ss",Locale.KOREAN)
         return simpleDateFormat.format(value)
     }
 

@@ -11,14 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
-import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.data.model.ChatRoom
-import com.example.myapplication.data.model.Schedule
-import com.example.myapplication.data.model.Team
+import com.example.myapplication.data.model.*
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.main.ChatListAdapter
+import com.example.myapplication.view.main.MemberListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -72,6 +70,15 @@ object BindingAdapter {
     fun setTeamList(view: RecyclerView, item: MutableList<Team>?) {
         val adapter = view.adapter as TeamListAdapter
         adapter.setList(item ?: mutableListOf())
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setUserList(view: RecyclerView, item: MutableList<User>?) {
+        val adapter = view.adapter
+        if(adapter != null){
+            (adapter as MemberListAdapter).setList(item ?: mutableListOf())
+        }
     }
 
     @JvmStatic

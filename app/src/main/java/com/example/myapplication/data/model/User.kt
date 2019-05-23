@@ -16,4 +16,4 @@ data class User(@SerializedName("client_ID")
                 @SerializedName("client_nickname")
                 var nickname:String,
                 @SerializedName("profile_picture")
-                var profileLink:String?)
+                var profileLink:String ="")

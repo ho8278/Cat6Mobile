@@ -46,21 +46,10 @@
                                 android:id="@+id/tv_name"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                android:layout_marginTop="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 android:text="@{chatviewmodel.chatName}"
                                 android:textSize="16sp"
                                 android:textColor="@color/colorBlack"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_delay"
-                                app:layout_constraintTop_toBottomOf="@id/tv_name"
-                                app:layout_constraintLeft_toLeftOf="@id/tv_name"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="1분 전"
-                                android:textSize="13sp"
-                                android:textColor="@color/colorAccent"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -89,117 +78,123 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                <androidx.core.widget.NestedScrollView
                         android:background="@drawable/background_drawer"
-                        android:padding="16dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/nav_header_vertical_spacing"
-                            app:srcCompat="@mipmap/ic_launcher_round"
-                            android:contentDescription="@string/nav_header_desc"
-                            android:id="@+id/iv_main_user_image"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/spinner_show_group"
-                            app:srcCompat="@drawable/ic_arrow_back"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginTop="16dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    <TextView
-                            style="@style/DrawerItemDefault"
-                            android:id="@+id/tv_main_user_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="center"
-                            android:text="@string/nav_header_title"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/iv_main_user_image"/>
-
-                    <TextView
-                            style="@style/DrawerItemDefault"
-                            android:id="@+id/btn_main_my_page"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/nav_main_my_page"
-                            android:textAlignment="center"
-                            android:drawableStart="@drawable/ic_person_black_24dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_main_user_name"/>
-
-                    <!-- 메뉴 항목들 -->
-                    <TextView
-                            style="@style/DrawerItemDefault"
-                            android:id="@+id/btn_main_schedule"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/nav_main_schedule"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_my_page"/>
-
-                    <TextView
-                            style="@style/DrawerItemDefault"
-                            android:id="@+id/btn_main_chat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/nav_main_chat"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_chat"
-                            android:layout_marginTop="8dp"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_chat"
-                            bind_item="@{mainviewmodel.chatList}"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="match_parent"
+                            android:padding="16dp">
 
-                    <TextView
-                            style="@style/DrawerItemDefault"
-                            android:id="@+id/btn_main_references"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/nav_main_references"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                                app:srcCompat="@mipmap/ic_launcher_round"
+                                android:contentDescription="@string/nav_header_desc"
+                                android:id="@+id/iv_main_user_image"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
 
-                    <View
-                            style="@style/DrawerItemDefault"
-                            android:id="@+id/divider_main_menu"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/nav_drawer_blank_height"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rv_chat"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/spinner_show_group"
+                                app:srcCompat="@drawable/ic_arrow_back"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginTop="16dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
-                    <!-- 접속한 사람들 목록 -->
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcv_main_participants"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/nav_drawer_blank_height"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/divider_main_menu">
+                        <TextView
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/tv_main_user_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/nav_header_title"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/iv_main_user_image"/>
 
-                    </androidx.recyclerview.widget.RecyclerView>
+                        <TextView
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/btn_main_my_page"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_main_my_page"
+                                android:textAlignment="center"
+                                android:drawableStart="@drawable/ic_person_black_24dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_main_user_name"/>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <!-- 메뉴 항목들 -->
+                        <TextView
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/btn_main_schedule"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_main_schedule"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_my_page"/>
+
+                        <TextView
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/btn_main_chat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_main_chat"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_chat"
+                                android:layout_marginTop="8dp"
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_chat"
+                                bind_item="@{mainviewmodel.chatList}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        <TextView
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/btn_main_references"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nav_main_references"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
+
+                        <View
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/divider_main_menu"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="@dimen/nav_drawer_blank_height"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rv_chat"/>
+
+                        <!-- 접속한 사람들 목록 -->
+                        <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rcv_main_participants"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/nav_drawer_blank_height"
+                                bind_item="@{mainviewmodel.userList}"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/divider_main_menu"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
             </FrameLayout>
 
         </com.google.android.material.navigation.NavigationView>

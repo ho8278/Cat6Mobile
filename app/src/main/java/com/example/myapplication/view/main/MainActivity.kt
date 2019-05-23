@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +18,12 @@ import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.chat.ChatViewModel
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
-    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener,ChatRoomChangeListener, MemberClickListener {
+    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener,ChatRoomChangeListener, MemberClickListener, MainNavigator {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private lateinit var memberListAdapter: MemberListAdapter
@@ -29,7 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private lateinit var chatViewModel: ChatViewModel
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
-        return MainViewModel(dataSource)
+        return MainViewModel(dataSource,this)
     }
 
     override fun getLayoutID(): Int {
@@ -69,13 +71,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         TODO("Navigation item click event handle")
     }
 
-    private fun initView() {
-
-        chatViewModel = ChatViewModel(AppInitialize.dataSource)
-        binding.chatviewmodel = chatViewModel
-        binding.mainviewmodel = viewModel
+    override fun setChatViewModel(chatRoom: ChatRoom?) {
+        chatViewModel = ChatViewModel(AppInitialize.dataSource,chatRoom ?: ChatRoom("",""))
+        binding.chatviewmodel=chatViewModel
+        chatViewModel.loadChatinfoList()
         chatViewModel.receiveMessage()
+    }
 
+    private fun initView() {
+        binding.mainviewmodel = viewModel
 
         rcv_main_participants.adapter = MemberListAdapter(this)
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -84,7 +88,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         viewModel.init()
-
     }
 
     private fun includeInit() {
@@ -142,18 +145,30 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun chatRoomChagned(chatRoom: ChatRoom) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        chatViewModel.onDestroy()
+        chatViewModel = ChatViewModel(AppInitialize.dataSource,chatRoom)
+        binding.chatviewmodel=chatViewModel
+        chatViewModel.loadChatinfoList()
+        chatViewModel.receiveMessage()
     }
 
     override fun memberClicked(client_ID: String) {
+        val view = layoutInflater.inflate(R.layout.dialog_add_chatroom,null)
         val dialog = AlertDialog.Builder(this)
             .setCancelable(true)
-            .setMessage("메세지를 보내시겠습니까?")
+            .setView(view)
             .setNegativeButton("취소"){ dialog, _ ->
                 dialog.dismiss()
             }
-            .setPositiveButton("보내기"){_, _ ->
-                viewModel.createChatRoom(client_ID)
+            .setPositiveButton("보내기"){dialog, _ ->
+                viewModel.createChatRoom(client_ID, view.findViewById<TextInputEditText>(R.id.tiet_chatroom_name).text.toString())
+                dialog.dismiss()
             }
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
+        }
+        dialog.show()
     }
 }
