@@ -10,19 +10,22 @@ import android.util.Log
 import android.widget.Toast
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.model.ChatInfo
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.socket.client.IO
 import io.socket.client.Socket
+import org.json.JSONObject
 import java.net.URISyntaxException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ChatSocketService: Service(){
     val TAG =ChatSocketService::class.java.simpleName
-    val url = "https://cb225b54.ngrok.io"
+    val url = "https://3a836387.ngrok.io"
     companion object {
         var serviceIntent :Intent? = null
         var socket:Socket? =null
@@ -37,9 +40,11 @@ class ChatSocketService: Service(){
             socket?.on(Socket.EVENT_CONNECT){
                 Log.e(TAG,it.toString())
             }
-            socket?.on("TEST"){
-                Toast.makeText(applicationContext,"뭔가 왔다!",Toast.LENGTH_SHORT).show()
-                Log.e(TAG,it.toString())
+
+            socket?.on("chat-msg"){
+                val jsonParser = JsonParser()
+                val json = jsonParser.parse(it[0] as String) as JsonObject
+                Log.e(TAG,json.toString())
             }
         }catch (e:URISyntaxException){
             e.printStackTrace()

@@ -79,8 +79,17 @@ class DataManager : DataSource {
             add("data", element)
         }
 
+        val sendJson = JsonObject().apply {
+            addProperty("id", chatInfo.id)
+            addProperty("message", chatInfo.message)
+            addProperty("roomId", chatInfo.roomId)
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
+            addProperty("sendDate", dateFormat.format(chatInfo.sendDate))
+            addProperty("sendId", chatInfo.sendUserId)
+        }
+
         prefHelper.saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.id)
-        ChatSocketService.socket?.emit("TEST",json)
+        ChatSocketService.socket?.emit("chat-msg",sendJson)
 
         return fcmApiHelper.sendTestMessage(json)
             .doOnSuccess { dbHelper.insertChatInfo(chatInfo) }
