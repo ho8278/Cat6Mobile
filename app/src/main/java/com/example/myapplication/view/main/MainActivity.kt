@@ -27,6 +27,7 @@ import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.chat.ChatViewModel
 import com.example.myapplication.view.mypage.MyPageActivity
 import com.example.myapplication.view.vote.VoteActivity
+import com.example.myapplication.view.references.ReferencesActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.activity_main.*
@@ -131,6 +132,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         rcv_main_participants.adapter = MemberListAdapter(this)
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        btn_main_references.setOnClickListener { startActivity(Intent(this, ReferencesActivity::class.java)) }
 
         binding.rvChat.adapter = ChatListAdapter(this)
         binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
