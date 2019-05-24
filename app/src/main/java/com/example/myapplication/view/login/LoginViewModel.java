@@ -6,6 +6,7 @@ import com.example.myapplication.data.model.ServerResponse;
 import com.example.myapplication.data.model.Team;
 import com.example.myapplication.data.model.User;
 import com.example.myapplication.view.base.BaseViewModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import io.reactivex.functions.Consumer;
 import com.example.myapplication.view.main.ErrorCode;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,10 @@ public class LoginViewModel extends BaseViewModel {
                             @Override
                             public void accept(ServerResponse<Team> teamServerResponse) throws Exception {
                                 if(teamServerResponse.getResponseCode().equals("200")){
-                                    //이렇게 하면 될꺼야
+                                    navigator.OnSuccess();
+                                }
+                                else {
+                                    navigator.OnError(ErrorCode.WRONG_PARAMETER);
                                 }
                             }
                         }, new Consumer<Throwable>() {
