@@ -74,8 +74,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     override fun setChatViewModel(chatRoom: ChatRoom?) {
         chatViewModel = ChatViewModel(AppInitialize.dataSource,chatRoom ?: ChatRoom("",""))
         binding.chatviewmodel=chatViewModel
-        rv_chat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        rv_chat.adapter = ChatInfoListAdapter(chatViewModel)
+        include_chat.rv_chat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        include_chat.rv_chat.adapter = ChatInfoListAdapter(chatViewModel)
         chatViewModel.loadChatinfoList()
         chatViewModel.receiveMessage()
     }
@@ -151,6 +151,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         chatViewModel.onDestroy()
         chatViewModel = ChatViewModel(AppInitialize.dataSource,chatRoom)
         binding.chatviewmodel=chatViewModel
+        val adapter = include_chat.rv_chat.adapter as ChatInfoListAdapter
+        adapter.setViewModel(chatViewModel)
         chatViewModel.loadChatinfoList()
         chatViewModel.receiveMessage()
     }

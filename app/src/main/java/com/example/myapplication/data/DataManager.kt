@@ -265,11 +265,21 @@ class DataManager : DataSource {
 
     override fun setNotice(text: String,chatRoomID:String): Single<Int> {
         return apiHelper.setNotice(text, chatRoomID)
-            .doOnSuccess { Log.e(TAG,it.toString()) }
-            .doOnError { Log.e(TAG,it.toString()) }
-            .flatMap { apiHelper.loadNotice(chatRoomID) }
-            .doOnSuccess { Log.e(TAG,it.toString()) }
-            .doOnError { Log.e(TAG,it.toString()) }
+            .doOnSuccess {
+                Log.e(TAG,it.toString())
+            }
+            .doOnError {
+                Log.e(TAG,it.toString())
+            }
+            .flatMap {
+                apiHelper.loadNotice(chatRoomID)
+            }
+            .doOnSuccess {
+                Log.e(TAG,it.toString())
+            }
+            .doOnError {
+                Log.e(TAG,it.toString())
+            }
             .flatMap {
                 if(it.responseCode.toInt() == ErrorCode.SUCCESS.code){
                     dbHelper.insertNotice(it.data[0])

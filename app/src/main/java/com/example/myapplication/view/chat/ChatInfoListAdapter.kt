@@ -19,7 +19,7 @@ import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatInfoListAdapter(val chatViewModel: ChatViewModel) :
+class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     ListAdapter<ChatInfo, BaseViewHolder>(object : DiffUtil.ItemCallback<ChatInfo>() {
         override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
             Log.e("DIFF", (oldItem == newItem).toString())
@@ -45,6 +45,10 @@ class ChatInfoListAdapter(val chatViewModel: ChatViewModel) :
     fun setList(changeList: MutableList<ChatInfo>) {
         submitList(changeList)
         notifyDataSetChanged()
+    }
+
+    fun setViewModel(viewModel:ChatViewModel){
+        chatViewModel = viewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
