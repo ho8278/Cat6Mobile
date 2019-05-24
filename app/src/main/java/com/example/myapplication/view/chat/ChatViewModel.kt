@@ -4,13 +4,11 @@ import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.view.base.BaseViewModel
-import io.reactivex.Single
 import java.util.*
 
 class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewModel(dataManager) {
@@ -82,10 +80,39 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
         )
     }
 
+    fun setNotice(text:String){
+        getCompositeDisposable().add(
+            getDataManager().setNotice(text,chatRoom.id)
+                .subscribe({ data ->
+                    isNotice.set(true)
+                    notice.set(text)
+                },{
+                    Log.e(TAG,it.message)
+                })
+        )
+    }
+
     fun showToolBox() {
         if (isToolbox.get())
             isToolbox.set(false)
         else
             isToolbox.set(true)
+    }
+
+    fun showNotice(){
+        if(isNotice.get()){
+            isNotice.set(false)
+            return
+        }
+        getCompositeDisposable().add(
+            getDataManager().loadNotice(chatRoom.id)
+                .subscribe({ data ->
+                    Log.e(TAG, data.toString())
+                    isNotice.set(true)
+                    notice.set(data.content)
+                },{
+                    Log.e(TAG,it.message)
+                })
+        )
     }
 }

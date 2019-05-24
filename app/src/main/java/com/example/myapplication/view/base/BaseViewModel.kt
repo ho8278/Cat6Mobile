@@ -7,11 +7,10 @@ import io.reactivex.disposables.CompositeDisposable
 
 open class BaseViewModel(private val dataManager: DataSource) {
 
-    private val disposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+    private val disposable = CompositeDisposable()
     fun onDestroy(){
-        disposable.dispose()
+        if(!disposable.isDisposed)
+            disposable.dispose()
     }
 
     fun getCompositeDisposable(): CompositeDisposable = disposable

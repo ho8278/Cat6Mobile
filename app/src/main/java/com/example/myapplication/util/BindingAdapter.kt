@@ -37,9 +37,11 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("bind_item")
     fun setChatItem(view: RecyclerView, item: MutableList<ChatInfo>?) {
-        val adapter = view.adapter as ChatInfoListAdapter
-        adapter.setList(item ?: mutableListOf())
-        view.scrollToPosition(adapter.itemCount - 1)
+        var adapter = view.adapter
+        if(adapter!=null){
+            (adapter as ChatInfoListAdapter).setList(item ?: mutableListOf())
+            view.scrollToPosition(adapter.itemCount - 1)
+        }
     }
 
     @JvmStatic

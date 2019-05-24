@@ -38,4 +38,10 @@ interface ApiHelper {
 
     @POST("inviteChatRoom")
     fun inviteChatRoom(@Query("client_ID") clientID: String, @Query("chat_room_ID") chatID: String): Single<Int>
+
+    @POST("notice")
+    fun setNotice(@Query("notice_contents")contents:String, @Query("chat_room_ID")chatID:String):Single<Int>
+
+    @GET("viewNotice")
+    fun loadNotice(@Query("chat_room_ID")chatRoomID:String):Single<ServerResponse<Notice>>
 }

@@ -14,6 +14,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.JsonObject
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.SingleEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -260,5 +261,33 @@ class DataManager : DataSource {
             .map { response -> response.data }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun setNotice(text: String,chatRoomID:String): Single<Int> {
+        return apiHelper.setNotice(text, chatRoomID)
+            .doOnSuccess { Log.e(TAG,it.toString()) }
+            .doOnError { Log.e(TAG,it.toString()) }
+            .flatMap { apiHelper.loadNotice(chatRoomID) }
+            .doOnSuccess { Log.e(TAG,it.toString()) }
+            .doOnError { Log.e(TAG,it.toString()) }
+            .flatMap {
+                if(it.responseCode.toInt() == ErrorCode.SUCCESS.code){
+                    dbHelper.insertNotice(it.data[0])
+                    Single.create<Int>{
+                        it.onSuccess(ErrorCode.SUCCESS.code)
+                    }
+                }else{
+                    Single.create<Int>{
+                        it.onError(Throwable(ErrorCode.WRONG_PARAMETER.description))
+                    }
+                }
+            }
+            .subscribeOn(Schedulers.io())
+    }
+
+    override fun loadNotice(chatRoomID: String): Single<Notice> {
+        return apiHelper.loadNotice(chatRoomID)
+            .map { response -> response.data[0] }
+            .subscribeOn(Schedulers.io())
     }
 }

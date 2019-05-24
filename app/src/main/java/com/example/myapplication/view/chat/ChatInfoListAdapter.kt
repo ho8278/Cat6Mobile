@@ -1,8 +1,10 @@
 package com.example.myapplication.view.chat
 
+import android.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,17 +19,18 @@ import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object : DiffUtil.ItemCallback<ChatInfo>() {
-    override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-        Log.e("DIFF", (oldItem == newItem).toString())
-        return false
-    }
+class ChatInfoListAdapter(val chatViewModel: ChatViewModel) :
+    ListAdapter<ChatInfo, BaseViewHolder>(object : DiffUtil.ItemCallback<ChatInfo>() {
+        override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
+            Log.e("DIFF", (oldItem == newItem).toString())
+            return false
+        }
 
-    override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-        Log.e("DIFF", (oldItem == newItem).toString())
-        return false
-    }
-}) {
+        override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
+            Log.e("DIFF", (oldItem == newItem).toString())
+            return false
+        }
+    }) {
 
     private val TAG = ChatInfoListAdapter::class.java.simpleName
     private lateinit var userId: String
@@ -84,17 +87,37 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object : Dif
             //TODO("고쳐야함")
             val calendar = Calendar.getInstance()
             calendar.time = getItem(position).sendDate
+            binding.mcvMessageContainer.setOnClickListener {
+                val dialog = AlertDialog.Builder(binding.root.context)
+                    .setMessage("공지사항으로 설정하시겠습니까?")
+                    .setPositiveButton("확인") { dialog, _ ->
+                        chatViewModel.setNotice(getItem(position).message)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("취소") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .setCancelable(true)
+                    .create()
+                dialog.setOnShowListener {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorPrimary))
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        .setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorPrimary))
+                }
+                dialog.show()
+            }
 
-            val date:String = when (calendar.get(Calendar.AM_PM)) {
+            val date: String = when (calendar.get(Calendar.AM_PM)) {
                 Calendar.AM -> {
-                    val dateFormat = SimpleDateFormat("오전 hh-mm", Locale.KOREA)
+                    val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                Calendar.PM->{
-                    val dateFormat = SimpleDateFormat("오후 hh-mm", Locale.KOREA)
+                Calendar.PM -> {
+                    val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                else ->""
+                else -> ""
             }
             binding.tvMessageBody.setText(getItem(position).message)
             binding.tvMessageClock.setText(date)
@@ -108,16 +131,36 @@ class ChatInfoListAdapter() : ListAdapter<ChatInfo, BaseViewHolder>(object : Dif
             val calendar = Calendar.getInstance()
             calendar.time = getItem(position).sendDate
 
-            val date:String = when (calendar.get(Calendar.AM_PM)) {
+            binding.mcvMessageContainer.setOnClickListener {
+                val dialog = AlertDialog.Builder(binding.root.context)
+                    .setMessage("공지사항으로 설정하시겠습니까?")
+                    .setPositiveButton("확인") { dialog, _ ->
+                        chatViewModel.setNotice(getItem(position).message)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("취소") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .setCancelable(true)
+                    .create()
+                dialog.setOnShowListener {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorPrimary))
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        .setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorPrimary))
+                }
+                dialog.show()
+            }
+            val date: String = when (calendar.get(Calendar.AM_PM)) {
                 Calendar.AM -> {
                     val dateFormat = SimpleDateFormat("오전 hh-mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                Calendar.PM->{
+                Calendar.PM -> {
                     val dateFormat = SimpleDateFormat("오후 hh-mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                else ->""
+                else -> ""
             }
             binding.tvMessageBody.setText(getItem(position).message)
             binding.tvMessageClock.setText(date)

@@ -74,6 +74,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     override fun setChatViewModel(chatRoom: ChatRoom?) {
         chatViewModel = ChatViewModel(AppInitialize.dataSource,chatRoom ?: ChatRoom("",""))
         binding.chatviewmodel=chatViewModel
+        rv_chat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        rv_chat.adapter = ChatInfoListAdapter(chatViewModel)
         chatViewModel.loadChatinfoList()
         chatViewModel.receiveMessage()
     }
@@ -98,19 +100,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 et_messagebox.text?.clear()
             }
 
-            rv_chat.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            rv_chat.adapter = ChatInfoListAdapter()
-
             iv_show_toolbox.setOnClickListener {
                 chatViewModel.showToolBox()
             }
 
             iv_notice.setOnClickListener {
-                //TODO:공지사항 visible unvisible
+                chatViewModel.showNotice()
             }
 
             iv_vote.setOnClickListener {
                 //TODO:투표화면 이동
+            }
+
+            iv_add_friend.setOnClickListener {
+                //TODO:채팅 친구 초대
             }
 
         }

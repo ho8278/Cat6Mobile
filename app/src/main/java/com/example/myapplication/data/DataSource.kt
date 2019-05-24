@@ -41,4 +41,7 @@ interface DataSource{
     fun sendBroadCastMessage(chatRoomID:String):Single<ResponseBody>
 
     fun loadGroupClient():Single<List<User>>
+
+    fun setNotice(text:String,chatRoomID:String):Single<Int>
+    fun loadNotice(chatRoomID:String):Single<Notice>
 }

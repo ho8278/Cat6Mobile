@@ -124,4 +124,11 @@ class DbHelperImpl : DbHelper {
         }.subscribeOn(Schedulers.io())
             .subscribe({},{ Log.e(TAG, it.message) })
     }
+
+    override fun insertNotice(notice: Notice) {
+        Completable.fromAction {
+            appDatabase.noticeDao.updateNotice(notice)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{Log.e(TAG,it.message)})
+    }
 }
