@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                 viewModel.loginButtonClicked(id, pw);
             }
         });
-        binding.join.setOnClickListener(new View.OnClickListener(){
+        binding.Join.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

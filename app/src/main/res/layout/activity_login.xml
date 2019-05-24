@@ -91,7 +91,7 @@
                             android:text="Login"
                     />
                     <Button
-                            android:id="@+id/join"
+                            android:id="@+id/Join"
                             android:clickable="true"
                             android:layout_width="212dp"
                             android:layout_height="51dp"

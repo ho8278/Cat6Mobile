@@ -2,6 +2,8 @@ package com.example.myapplication.view.login;
 
 import android.util.Log;
 import com.example.myapplication.data.DataSource;
+import com.example.myapplication.data.model.ServerResponse;
+import com.example.myapplication.data.model.Team;
 import com.example.myapplication.data.model.User;
 import com.example.myapplication.view.base.BaseViewModel;
 import io.reactivex.functions.Consumer;
@@ -23,16 +25,12 @@ public class LoginViewModel extends BaseViewModel {
     public void loginButtonClicked(String id, String pw) {
         getCompositeDisposable().add(
                 getDataManager().login(id, pw)
-                        .subscribe(new Consumer<Integer>() {
+                        .subscribe(new Consumer<ServerResponse<Team>>() {
                             @Override
-                            public void accept(Integer data) throws Exception {
-                                if(data==200){
-                                    navigator.OnSuccess();
+                            public void accept(ServerResponse<Team> teamServerResponse) throws Exception {
+                                if(teamServerResponse.getResponseCode().equals("200")){
+                                    //이렇게 하면 될꺼야
                                 }
-                                else{
-                                    navigator.OnError(ErrorCode.WRONG_PARAMETER);
-                                }
-
                             }
                         }, new Consumer<Throwable>() {
                             @Override

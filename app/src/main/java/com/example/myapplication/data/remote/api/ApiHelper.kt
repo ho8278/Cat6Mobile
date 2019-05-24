@@ -79,6 +79,7 @@ interface ApiHelper {
 
     @GET("createClient")
     fun join(
-        @Query("client_ID") client_ID: String, @Query("client_password") client_password: String, @Query("client_name") client_name: String,
-        @Query("client_nickname") client_nickname: String, @Query("profile_picture")pictureLink:String = ""): Single<Int>
+        @Query("client_ID") client_ID: String, @Query("client_password") client_password: String, @Query("client_name") client_name: String, @Query(
+            "client_nickname") client_nickname: String,@Query("profileLink")link:String=""
+    ): Single<Int>
 }

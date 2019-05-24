@@ -467,11 +467,5 @@ class DataManager : DataSource {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
-    override fun login(id: String, pw: String): Single<User> {
-        return apiHelper.login(id,pw)
-            .map{it->
-                it.data[0]
-            }
-            .subscribeOn(Schedulers.io())
-    }
+
 }
