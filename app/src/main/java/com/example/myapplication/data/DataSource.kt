@@ -35,6 +35,7 @@ interface DataSource{
 
     fun loadChatRoom():Single<List<ChatRoom>>
     fun createChatRoom(clientID:String, chatRoomName:String):Single<ChatRoom>
+    fun inviteChatRoom(clientID:String):Single<Int>
 
     fun createTeam(teamName:String):Single<String>
 

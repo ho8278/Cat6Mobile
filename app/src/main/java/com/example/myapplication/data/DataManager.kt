@@ -217,6 +217,30 @@ class DataManager : DataSource {
 
     }
 
+    override fun inviteChatRoom(clientID: String): Single<Int> {
+        return apiHelper.inviteChatRoom(clientID, prefHelper.getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
+            .subscribeOn(Schedulers.io())
+
+    }
+
+    private fun sendBroadCastMessage(clientID:String, chatRoomID: String):Single<ResponseBody>{
+        val json = JsonObject().apply {
+            addProperty(
+                "to",
+                "/topics/main"
+            )
+            addProperty("priority", "high")
+            val element = JsonObject()
+            element.addProperty("id", chatRoomID)
+            element.addProperty("who",clientID)
+            add("data", element)
+        }
+        return fcmApiHelper.sendTestMessage(json)
+            .doOnError { Log.e(TAG, it.message) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun login(id: String, pw: String): Single<ServerResponse<Team>> {
         return apiHelper.login(id, pw)
             .map { response ->

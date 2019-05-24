@@ -1,6 +1,7 @@
 package com.example.myapplication.view.main
 
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -13,6 +14,7 @@ import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.view.addfriends.AddFriendsDialog
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
@@ -113,7 +115,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
 
             iv_add_friend.setOnClickListener {
-                //TODO:채팅 친구 초대
+                val dialog = AddFriendsDialog(context)
+                dialog.show()
+
+                val display = windowManager.defaultDisplay
+                val point = Point()
+                display.getSize(point)
+
+                val window = dialog.window
+                val x = point.x*0.6f
+                val y = point.y*0.4f
+
+                window.setLayout(x.toInt(),y.toInt())
             }
 
         }

@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.*
+import com.example.myapplication.view.addfriends.AddFriendAdapter
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
@@ -80,6 +81,17 @@ object BindingAdapter {
         val adapter = view.adapter
         if(adapter != null){
             (adapter as MemberListAdapter).setList(item ?: mutableListOf())
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind_dialog_item")
+    fun setDialogUserList(view: RecyclerView, item: MutableList<User>?) {
+        val adapter = view.adapter
+        if(adapter != null){
+            (adapter as AddFriendAdapter).userList.clear()
+            (adapter as AddFriendAdapter).userList.addAll(item?: mutableListOf())
+            adapter.notifyDataSetChanged()
         }
     }
 

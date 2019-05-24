@@ -62,4 +62,6 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
                 })
         )
     }
+
+    fun getUserList():MutableList<User> = userList
 }

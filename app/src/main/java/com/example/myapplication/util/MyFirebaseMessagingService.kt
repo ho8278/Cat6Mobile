@@ -13,7 +13,6 @@ import com.example.myapplication.R
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.data.model.User
 import com.example.myapplication.view.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -42,7 +41,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (chatinfoID == remoteInfoID)
             return
 
-        if(remoteMessage?.from=="/topics/main"){
+        if (remoteMessage?.from == "/topics/main") {
             broadCastMessage(remoteMessage.data)
             return
         }
@@ -62,8 +61,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         DataManager.getInstance(applicationContext).receiveMessage(info)
     }
 
-    fun broadCastMessage(data:MutableMap<String,String>){
-        if(data.get("id")!=null){
+    fun broadCastMessage(data: MutableMap<String, String>) {
+        if (data.get("who") != null) {
+            val clientID =
+                DataManager.getInstance(applicationContext).getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
+            if (clientID == data.get("who")) {
+                data.get("id").apply {
+                    FirebaseMessaging.getInstance().subscribeToTopic(this)
+                }
+                return
+            }
+        }
+
+        if (data.get("id") != null) {
             data.get("id").apply {
                 FirebaseMessaging.getInstance().subscribeToTopic(this)
             }
