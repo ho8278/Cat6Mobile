@@ -22,6 +22,7 @@ import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.chat.ChatViewModel
+import com.example.myapplication.view.vote.VoteActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.activity_main.*
@@ -129,7 +130,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
 
             iv_vote.setOnClickListener {
-                //TODO:투표화면 이동
+                val intent = Intent(context,VoteActivity::class.java)
+                startActivity(intent)
             }
 
             iv_add_friend.setOnClickListener {
