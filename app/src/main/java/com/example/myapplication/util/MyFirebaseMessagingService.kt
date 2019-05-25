@@ -69,6 +69,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 data.get("id").apply {
                     FirebaseMessaging.getInstance().subscribeToTopic(this)
                 }
+                sendBroadcast(Intent("updateChatList"))
                 return
             }
         }

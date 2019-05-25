@@ -1,6 +1,9 @@
 package com.example.myapplication.view.main
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Point
 import android.os.Bundle
 import android.view.MenuItem
@@ -31,6 +34,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private lateinit var memberListAdapter: MemberListAdapter
     private lateinit var fragment: TeamListFragment
     private lateinit var chatViewModel: ChatViewModel
+    var receiver:BroadcastReceiver = object:BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            viewModel.updateChatList()
+        }
+    }
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
         return MainViewModel(dataSource,this)
@@ -59,6 +67,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 commit()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(receiver, IntentFilter("updateChatList"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(receiver)
     }
 
     override fun onBackPressed() {

@@ -219,6 +219,8 @@ class DataManager : DataSource {
 
     override fun inviteChatRoom(clientID: String): Single<Int> {
         return apiHelper.inviteChatRoom(clientID, prefHelper.getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
+            .flatMap { sendBroadCastMessage(clientID,prefHelper.getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)) }
+            .map { response -> 1 }
             .subscribeOn(Schedulers.io())
 
     }

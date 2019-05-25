@@ -20,6 +20,16 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
 
     val currentUser = ObservableField<User>()
 
+    fun updateChatList(){
+        AppInitialize.dataSource.loadChatRoom()
+            .subscribe({
+                chatList.clear()
+                chatList.addAll(it)
+            },{
+                Log.e(TAG,it.message)
+            })
+    }
+
     fun init() {
         getCompositeDisposable().add(
             getDataManager().loadChatRoom()
