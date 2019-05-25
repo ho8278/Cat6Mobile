@@ -52,4 +52,10 @@ interface ApiHelper {
 
     @POST("createVoteItem")
     fun createVoteItem(@Query("vote_item_name")name:String, @Query("vote_ID")voteID:String):Single<String>
+
+    @GET("viewVotes")
+    fun loadVotes(@Query("chat_room_ID")chatRoomID:String):Single<ServerResponse<Vote>>
+
+    @GET("viewVoteInfo")
+    fun loadDetailVote(@Query("vote_ID")voteID:String):Single<ServerResponse<Vote>>
 }

@@ -336,14 +336,14 @@ class DataManager : DataSource {
             }
         }
 
-        return apiHelper.createVote(vote.title, vote.startDate, vote.endDate, vote.isDuplicate, getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
+        return apiHelper.createVote(vote.title, vote.startDate, vote.endDate, vote.duplicate, getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
             .doOnSuccess {
                 dbHelper.insertVote(
                     Vote(it,
                         vote.title,
                         vote.startDate,
                         vote.endDate,
-                        vote.isDuplicate,
+                        vote.duplicate,
                         getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)))
             }
             .flatMapObservable {
@@ -382,5 +382,19 @@ class DataManager : DataSource {
                 else
                     ErrorCode.SUCCESS.code
             }
+    }
+
+    override fun loadVote(): Single<List<Vote>> {
+        return apiHelper.loadVotes(getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
+            .subscribeOn(Schedulers.io())
+            .map { response -> response.data }
+            .doOnSuccess { dbHelper.insertVoteList(it) }
+    }
+
+    override fun loadDetailVote(voteID: String): Single<Vote> {
+        return apiHelper.loadDetailVote(voteID)
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess { Log.e(TAG,it.toString()) }
+            .map { response -> response.data[0] }
     }
 }

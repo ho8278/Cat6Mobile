@@ -50,4 +50,6 @@ interface DataSource{
 
     fun createVote(vote:Vote, list:MutableList<String>):Observable<String>
     fun createVoteItem(name:String, id:String):Single<Int>
+    fun loadVote():Single<List<Vote>>
+    fun loadDetailVote(voteID:String):Single<Vote>
 }

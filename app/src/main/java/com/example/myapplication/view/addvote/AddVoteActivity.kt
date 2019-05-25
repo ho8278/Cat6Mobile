@@ -14,6 +14,7 @@ import com.example.myapplication.databinding.ActivityAddVoteBinding
 import com.example.myapplication.view.addschedule.AddScheduleNavigator
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.main.ErrorCode
+import com.example.myapplication.view.vote.VoteActivity
 import kotlinx.android.synthetic.main.activity_add_vote.*
 
 class AddVoteActivity : BaseActivity<ActivityAddVoteBinding, AddVoteViewModel>(), AddScheduleNavigator {
@@ -120,6 +121,6 @@ class AddVoteActivity : BaseActivity<ActivityAddVoteBinding, AddVoteViewModel>()
 
     override fun OnSaveSuccess() {
         Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show()
-        finish()
+        finishActivity(VoteActivity.ADD_REQUEST_CODE)
     }
 }

@@ -11,6 +11,9 @@ interface VoteDao{
     @Insert
     fun insertVote(vote:Vote)
 
+    @Insert
+    fun insertVoteList(list:List<Vote>)
+
     @Query("delete from vote")
     fun deleteAll()
 

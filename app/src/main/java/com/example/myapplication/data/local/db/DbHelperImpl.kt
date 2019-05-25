@@ -135,6 +135,13 @@ class DbHelperImpl : DbHelper {
             .subscribe({},{Log.e(TAG,it.message)})
     }
 
+    override fun insertVoteList(list: List<Vote>) {
+        Completable.fromAction {
+            appDatabase.voteDao.insertVoteList(list)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{Log.e(TAG,it.message)})
+    }
+
     override fun updateVote(vote: Vote) {
         Completable.fromAction {
             appDatabase.voteDao.updateVote(vote)

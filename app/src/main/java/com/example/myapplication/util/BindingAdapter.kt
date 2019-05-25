@@ -23,6 +23,7 @@ import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.MemberListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
+import com.example.myapplication.view.vote.VoteListAdapter
 import com.google.android.material.textfield.TextInputEditText
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -87,6 +88,13 @@ object BindingAdapter {
         if(adapter != null){
             (adapter as MemberListAdapter).setList(item ?: mutableListOf())
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setVoteList(view: RecyclerView, item: MutableList<Vote>?) {
+        val adapter = view.adapter as VoteListAdapter
+        adapter.setList(item ?: mutableListOf())
     }
 
     @JvmStatic

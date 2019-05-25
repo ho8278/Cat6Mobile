@@ -26,8 +26,8 @@ interface DbHelper {
     fun insertNotice(notice:Notice)
 
     fun insertVote(vote:Vote)
+    fun insertVoteList(list:List<Vote>)
     fun updateVote(vote:Vote)
 
     fun insertVoteItem(voteItem:VoteItem)
-
 }
