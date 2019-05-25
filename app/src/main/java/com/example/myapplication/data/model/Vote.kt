@@ -7,11 +7,15 @@ import java.util.*
 
 @Entity
 data class Vote(@PrimaryKey
+                @SerializedName("vote_ID")
+                var id:String,
                 @SerializedName("vote_title")
                 var title:String,
                 @SerializedName("vote_start_date")
-                var startDate: Date,
+                var startDate: String,
                 @SerializedName("vote_end_date")
-                var endDate:Date,
+                var endDate:String,
                 @SerializedName("vote_duplicate")
-                var isDuplicate:Boolean)
+                var isDuplicate:String,
+                @SerializedName("chat_room_ID")
+                var chatRoomID:String)

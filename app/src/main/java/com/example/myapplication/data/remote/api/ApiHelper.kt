@@ -2,8 +2,9 @@ package com.example.myapplication.data.remote.api
 
 import com.example.myapplication.data.model.*
 import io.reactivex.Single
-import retrofit2.http.*
-import java.util.*
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiHelper {
     @GET("viewSchedules")
@@ -40,8 +41,15 @@ interface ApiHelper {
     fun inviteChatRoom(@Query("client_ID") clientID: String, @Query("chat_room_ID") chatID: String): Single<Int>
 
     @POST("notice")
-    fun setNotice(@Query("notice_contents")contents:String, @Query("chat_room_ID")chatID:String):Single<Int>
+    fun setNotice(@Query("notice_contents") contents: String, @Query("chat_room_ID") chatID: String): Single<Int>
 
     @GET("viewNotice")
-    fun loadNotice(@Query("chat_room_ID")chatRoomID:String):Single<ServerResponse<Notice>>
+    fun loadNotice(@Query("chat_room_ID") chatRoomID: String): Single<ServerResponse<Notice>>
+
+    @POST("createVote")
+    fun createVote(@Query("vote_title") title: String, @Query("vote_start_date") startDate: String, @Query("vote_end_date") endDate: String,
+        @Query("vote_duplicate") duplicate: String, @Query("chat_room_ID") roomID: String): Single<String>
+
+    @POST("createVoteItem")
+    fun createVoteItem(@Query("vote_item_name")name:String, @Query("vote_ID")voteID:String):Single<String>
 }

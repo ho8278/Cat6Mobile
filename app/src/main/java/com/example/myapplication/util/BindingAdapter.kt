@@ -1,12 +1,16 @@
 package com.example.myapplication.util
 
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -19,6 +23,7 @@ import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.MemberListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
+import com.google.android.material.textfield.TextInputEditText
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 

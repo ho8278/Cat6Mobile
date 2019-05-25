@@ -7,21 +7,14 @@ import com.example.myapplication.data.local.db.DbHelperImpl
 import com.example.myapplication.data.local.pref.PreferenceHelper
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.*
-import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.data.model.Schedule
-import com.example.myapplication.data.model.Team
-import com.example.myapplication.data.model.User
 import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
 import com.example.myapplication.view.main.ErrorCode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.JsonObject
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.SingleEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -218,20 +211,20 @@ class DataManager : DataSource {
                 apiHelper.inviteChatRoom(clientID, chatID)
             }
             .flatMap { sendBroadCastMessage(chatID) }
-            .flatMap{Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID,chatRoomName)) }}
+            .flatMap { Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID, chatRoomName)) } }
             .observeOn(AndroidSchedulers.mainThread())
 
     }
 
     override fun inviteChatRoom(clientID: String): Single<Int> {
         return apiHelper.inviteChatRoom(clientID, prefHelper.getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
-            .flatMap { sendBroadCastMessage(clientID,prefHelper.getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)) }
+            .flatMap { sendBroadCastMessage(clientID, prefHelper.getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)) }
             .map { response -> 1 }
             .subscribeOn(Schedulers.io())
 
     }
 
-    private fun sendBroadCastMessage(clientID:String, chatRoomID: String):Single<ResponseBody>{
+    private fun sendBroadCastMessage(clientID: String, chatRoomID: String): Single<ResponseBody> {
         val json = JsonObject().apply {
             addProperty(
                 "to",
@@ -240,7 +233,7 @@ class DataManager : DataSource {
             addProperty("priority", "high")
             val element = JsonObject()
             element.addProperty("id", chatRoomID)
-            element.addProperty("who",clientID)
+            element.addProperty("who", clientID)
             add("data", element)
         }
         return fcmApiHelper.sendTestMessage(json)
@@ -254,7 +247,7 @@ class DataManager : DataSource {
             .map { response ->
                 val userData = response.data[0]
                 userData.run {
-                    User(this.id, password, name, nickname,profileLink)
+                    User(this.id, password, name, nickname, profileLink)
                 }
             }
             .doOnSuccess {
@@ -295,31 +288,31 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun setNotice(text: String,chatRoomID:String): Single<Int> {
+    override fun setNotice(text: String, chatRoomID: String): Single<Int> {
         return apiHelper.setNotice(text, chatRoomID)
             .doOnSuccess {
-                Log.e(TAG,it.toString())
+                Log.e(TAG, it.toString())
             }
             .doOnError {
-                Log.e(TAG,it.toString())
+                Log.e(TAG, it.toString())
             }
             .flatMap {
                 apiHelper.loadNotice(chatRoomID)
             }
             .doOnSuccess {
-                Log.e(TAG,it.toString())
+                Log.e(TAG, it.toString())
             }
             .doOnError {
-                Log.e(TAG,it.toString())
+                Log.e(TAG, it.toString())
             }
             .flatMap {
-                if(it.responseCode.toInt() == ErrorCode.SUCCESS.code){
+                if (it.responseCode.toInt() == ErrorCode.SUCCESS.code) {
                     dbHelper.insertNotice(it.data[0])
-                    Single.create<Int>{
+                    Single.create<Int> {
                         it.onSuccess(ErrorCode.SUCCESS.code)
                     }
-                }else{
-                    Single.create<Int>{
+                } else {
+                    Single.create<Int> {
                         it.onError(Throwable(ErrorCode.WRONG_PARAMETER.description))
                     }
                 }
@@ -331,5 +324,63 @@ class DataManager : DataSource {
         return apiHelper.loadNotice(chatRoomID)
             .map { response -> response.data[0] }
             .subscribeOn(Schedulers.io())
+    }
+
+    override fun createVote(vote: Vote, list: MutableList<String>): Observable<String> {
+        val startDate = vote.startDate
+        val endDate = vote.endDate
+        val regex = Regex("(19|20)[0-9]{2}[.](0[1-9]|1[012])[.](0[1-9]|[12][0-9]|3[01])")
+        if(!(regex.matches(startDate)&&regex.matches(endDate))){
+            return Observable.create<String>{
+                it.onError(Throwable(ErrorCode.NOT_PATTERN_MATCH.code.toString()))
+            }
+        }
+
+        return apiHelper.createVote(vote.title, vote.startDate, vote.endDate, vote.isDuplicate, getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
+            .doOnSuccess {
+                dbHelper.insertVote(
+                    Vote(it,
+                        vote.title,
+                        vote.startDate,
+                        vote.endDate,
+                        vote.isDuplicate,
+                        getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)))
+            }
+            .flatMapObservable {
+                val voteID = it
+                Log.e(TAG,it)
+                Observable.create<String> { emmiter ->
+                    list.forEachIndexed {i,item ->
+                        createVoteItem(item, voteID)
+                            .subscribe({
+                                if(list.size -1 == i)
+                                    emmiter.onComplete()
+                                if (it == ErrorCode.SUCCESS.code)
+                                    emmiter.onNext(ErrorCode.SUCCESS.code.toString())
+                                else
+                                    emmiter.onError(Throwable(ErrorCode.WRONG_PARAMETER.code.toString()))
+                            }, {
+                                Log.e(TAG, it.message)
+                            })
+                    }
+                }
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun createVoteItem(name: String, id: String): Single<Int> {
+        return apiHelper.createVoteItem(name, id)
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess {
+                Log.e(TAG,it.toString())
+                dbHelper.insertVoteItem(VoteItem(it, name, 0, id))
+            }
+            .map { it ->
+                if (it.isEmpty())
+                    ErrorCode.WRONG_PARAMETER.code
+                else
+                    ErrorCode.SUCCESS.code
+            }
     }
 }

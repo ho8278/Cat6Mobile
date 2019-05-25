@@ -127,4 +127,25 @@ class DbHelperImpl : DbHelper {
         }.subscribeOn(Schedulers.io())
             .subscribe({},{Log.e(TAG,it.message)})
     }
+
+    override fun insertVote(vote: Vote) {
+        Completable.fromAction {
+            appDatabase.voteDao.insertVote(vote)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{Log.e(TAG,it.message)})
+    }
+
+    override fun updateVote(vote: Vote) {
+        Completable.fromAction {
+            appDatabase.voteDao.updateVote(vote)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{Log.e(TAG,it.message)})
+    }
+
+    override fun insertVoteItem(voteItem: VoteItem) {
+        Completable.fromAction {
+            appDatabase.voteItemDao.insertVoteItem(voteItem)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{Log.e(TAG,it.message)})
+    }
 }

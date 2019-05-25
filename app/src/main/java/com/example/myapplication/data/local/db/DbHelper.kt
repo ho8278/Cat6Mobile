@@ -24,4 +24,10 @@ interface DbHelper {
     fun updateChatRoom(list:List<ChatRoom>)
 
     fun insertNotice(notice:Notice)
+
+    fun insertVote(vote:Vote)
+    fun updateVote(vote:Vote)
+
+    fun insertVoteItem(voteItem:VoteItem)
+
 }

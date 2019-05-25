@@ -28,4 +28,5 @@ abstract class AppDatabase:RoomDatabase(){
     abstract val scheduleDao:ScheduleDao
     abstract val teamDao:TeamDao
     abstract val voteDao:VoteDao
+    abstract val voteItemDao:VoteItemDao
 }

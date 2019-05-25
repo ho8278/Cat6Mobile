@@ -4,6 +4,7 @@ enum class ErrorCode(val code: Int, val description: String) {
     WRONG_PARAMETER(100, "Wrong Parameter Error"),
     LATE_START_DATE(101, "StartDate is later than EndDate"),
     EMPTY_TEXT(102,"Text is empty"),
+    NOT_PATTERN_MATCH(103,"Date Pattern is not matched"),
     SUCCESS(200, "Success");
 
     companion object {

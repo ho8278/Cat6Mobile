@@ -11,7 +11,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemAddVoteBinding
 import com.example.myapplication.view.base.BaseViewHolder
 
-class AddVoteAdapter(): RecyclerView.Adapter<BaseViewHolder>(){
+class AddVoteAdapter(val addVoteViewModel: AddVoteViewModel): RecyclerView.Adapter<BaseViewHolder>(){
 
     private val voteItemList = mutableListOf<String>()
 

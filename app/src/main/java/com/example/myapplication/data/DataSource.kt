@@ -47,4 +47,7 @@ interface DataSource{
 
     fun setNotice(text:String,chatRoomID:String):Single<Int>
     fun loadNotice(chatRoomID:String):Single<Notice>
+
+    fun createVote(vote:Vote, list:MutableList<String>):Observable<String>
+    fun createVoteItem(name:String, id:String):Single<Int>
 }

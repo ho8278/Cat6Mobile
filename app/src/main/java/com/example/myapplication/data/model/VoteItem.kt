@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class VoteItem(@PrimaryKey
+                    var id:String,
                     @SerializedName("vote_item_name")
                     var name:String,
                     @SerializedName("number_of_votes")
-                    var selected:Int)
+                    var selected:Int,
+                    var voteID:String)
