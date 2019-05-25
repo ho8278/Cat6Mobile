@@ -23,6 +23,8 @@ import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.MemberListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
 import com.example.myapplication.view.vote.VoteListAdapter
+import com.example.myapplication.view.references.Reference
+import com.example.myapplication.view.references.ReferenceListAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -69,7 +71,7 @@ object BindingAdapter {
     @BindingAdapter("bind_item")
     fun setChatRoomItem(view: RecyclerView, item: MutableList<ChatRoom>?) {
         val adapter = view.adapter
-        if (adapter != null) {
+        if(adapter != null){
             (adapter as ChatListAdapter).setList(item ?: mutableListOf())
         }
     }
@@ -85,7 +87,7 @@ object BindingAdapter {
     @BindingAdapter("bind_item")
     fun setUserList(view: RecyclerView, item: MutableList<User>?) {
         val adapter = view.adapter
-        if (adapter != null) {
+        if(adapter != null){
             (adapter as MemberListAdapter).setList(item ?: mutableListOf())
         }
     }
@@ -136,8 +138,8 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingConversion
-    fun convertBooleanToView(status: Boolean): Int {
-        if (status)
+    fun convertBooleanToView(status:Boolean):Int{
+        if(status)
             return View.VISIBLE
         else
             return View.GONE
@@ -155,5 +157,12 @@ object BindingAdapter {
         }
     }
 
-
+    @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setReferenceList(view: RecyclerView, item: MutableList<Reference>?) {
+        val adapter = view.adapter
+        if(adapter != null){
+            (adapter as ReferenceListAdapter).setList(item ?: mutableListOf())
+        }
+    }
 }

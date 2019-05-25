@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable name="viewModel" type="com.example.myapplication.view.references.ReferenceListViewModel"/>
     </data>
 
@@ -17,7 +18,8 @@
 
         <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
@@ -32,30 +34,73 @@
                         android:id="@+id/toolbar_file_search"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        app:navigationIcon="?attr/homeAsUpIndicator"
+                        app:contentInsetStart="0dp"
                         app:layout_collapseMode="pin">
 
-                    <EditText
-                            android:id="@+id/edit_file_search"
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textSize="20sp"
-                            android:background="@android:color/transparent"
-                            android:hint="@string/hint_reference_search"/>
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
+                        <ImageButton
+                                android:id="@+id/ib_reference_back"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorWhite"
+                                android:layout_marginStart="18dp"
+                                app:srcCompat="@drawable/ic_arrow_back"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/edit_file_search"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:inputType="text"
+                                android:layout_weight="1"
+                                android:textSize="20sp"
+                                android:background="@android:color/transparent"
+                                android:hint="@string/hint_reference_search"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginStart="15dp"
+                                android:layoutDirection="rtl"
+                                app:iconifiedByDefault="true">
+
+                        </androidx.appcompat.widget.AppCompatEditText>
+                    </LinearLayout>
                 </androidx.appcompat.widget.Toolbar>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:background="@color/colorGray"/>
+
+            <TextView
+                    android:id="@+id/tv_reference_item_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:text="10개 / 40MB"/>
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="1dp"
+                  android:background="@color/colorGray"/>
+
+
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_references_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                bind_item="@{viewModel.referenceList}">
 
         </androidx.recyclerview.widget.RecyclerView>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_references_add"
