@@ -15,14 +15,14 @@ import java.text.SimpleDateFormat
 
 class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
 
-    constructor(dataSource: DataSource, navigator: AddScheduleNavigator) : this(dataSource) {
+    constructor(dataSource: DataSource, navigator: AddNavigator) : this(dataSource) {
         val time = DateTime()
         this.navigator = navigator
         startDate.set(time)
         endDate.set(time)
     }
 
-    constructor(dataSource: DataSource, navigator: AddScheduleNavigator?, schedule: Schedule) : this(dataSource) {
+    constructor(dataSource: DataSource, navigator: AddNavigator?, schedule: Schedule) : this(dataSource) {
         val parser=SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val startTime=parser.parse(schedule.startDate)
         val endTime=parser.parse(schedule.endDate)
@@ -32,7 +32,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     }
 
     val TAG = AddScheduleViewModel::class.java.simpleName
-    var navigator: AddScheduleNavigator? = null
+    var navigator: AddNavigator? = null
     val startDate = ObservableField<DateTime>()
     val endDate = ObservableField<DateTime>()
     val title = ObservableField<String>()

@@ -1,5 +1,6 @@
 package com.example.myapplication.view.addvote
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityAddVoteBinding
-import com.example.myapplication.view.addschedule.AddScheduleNavigator
+import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.main.ErrorCode
 import com.example.myapplication.view.vote.VoteActivity
 import kotlinx.android.synthetic.main.activity_add_vote.*
 
-class AddVoteActivity : BaseActivity<ActivityAddVoteBinding, AddVoteViewModel>(), AddScheduleNavigator {
+class AddVoteActivity : BaseActivity<ActivityAddVoteBinding, AddVoteViewModel>(), AddNavigator {
     override val TAG: String
         get() = AddVoteActivity::class.java.simpleName
 
@@ -121,6 +122,8 @@ class AddVoteActivity : BaseActivity<ActivityAddVoteBinding, AddVoteViewModel>()
 
     override fun OnSaveSuccess() {
         Toast.makeText(this, "성공", Toast.LENGTH_SHORT).show()
-        finishActivity(VoteActivity.ADD_REQUEST_CODE)
+        setResult(Activity.RESULT_OK)
+        finish()
+
     }
 }

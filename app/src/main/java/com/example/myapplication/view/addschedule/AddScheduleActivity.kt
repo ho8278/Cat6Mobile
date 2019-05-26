@@ -15,7 +15,7 @@ import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import org.joda.time.DateTime
 
-class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddScheduleNavigator {
+class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddNavigator {
     override val TAG: String
         get() = AddScheduleActivity::class.java.simpleName
 

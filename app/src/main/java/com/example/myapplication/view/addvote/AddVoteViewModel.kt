@@ -4,16 +4,15 @@ import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableList
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Vote
 import com.example.myapplication.data.model.VoteItem
-import com.example.myapplication.view.addschedule.AddScheduleNavigator
+import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.base.BaseViewModel
 import com.example.myapplication.view.main.ErrorCode
 
 class AddVoteViewModel : BaseViewModel {
-    constructor(dataSource: DataSource, listener:AddScheduleNavigator? =null) : super(dataSource){
+    constructor(dataSource: DataSource, listener:AddNavigator? =null) : super(dataSource){
         this.listener=listener
     }
     constructor(dataSource: DataSource, voteID:String):super(dataSource){
@@ -27,7 +26,7 @@ class AddVoteViewModel : BaseViewModel {
     val startDate = ObservableField<String>()
     val endDate = ObservableField<String>()
     val voteItemList =  ObservableArrayList<VoteItem>()
-    var listener:AddScheduleNavigator? = null
+    var listener:AddNavigator? = null
     val TAG = AddVoteViewModel::class.java.simpleName
     val isParticipate = ObservableBoolean(false)
 

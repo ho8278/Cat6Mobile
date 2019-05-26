@@ -11,7 +11,7 @@ import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityAddShceduleBinding
-import com.example.myapplication.view.addschedule.AddScheduleNavigator
+import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.addschedule.AddScheduleViewModel
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.main.AppInitialize
@@ -19,7 +19,7 @@ import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import org.joda.time.format.DateTimeFormat
 
-class UpdateScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddScheduleNavigator {
+class UpdateScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddNavigator {
 
     val UPDATE_SCHEDULE = "UPDATE_SCHEDULE"
 

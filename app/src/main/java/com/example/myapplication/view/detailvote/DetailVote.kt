@@ -1,16 +1,19 @@
 package com.example.myapplication.view.detailvote
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityDetailVoteBinding
+import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.addvote.AddVoteViewModel
 import com.example.myapplication.view.base.BaseActivity
+import com.example.myapplication.view.main.ErrorCode
 import kotlinx.android.synthetic.main.activity_detail_vote.*
 
-class DetailVote:BaseActivity<ActivityDetailVoteBinding, AddVoteViewModel>(){
+class DetailVote:BaseActivity<ActivityDetailVoteBinding, AddVoteViewModel>(), AddNavigator{
     override val TAG: String
         get() = DetailVote::class.java.simpleName
 
@@ -39,5 +42,14 @@ class DetailVote:BaseActivity<ActivityDetailVoteBinding, AddVoteViewModel>(){
             viewModel.acceptVote((binding.rvVote.adapter as VoteItemListAdapter).selectList)
         }
 
+    }
+
+    override fun OnSaveFail(errorCode: ErrorCode) {
+        Toast.makeText(this,errorCode.description,Toast.LENGTH_SHORT).show()
+    }
+
+    override fun OnSaveSuccess() {
+        Toast.makeText(this,"투표 성공",Toast.LENGTH_SHORT).show()
+        finish()
     }
 }
