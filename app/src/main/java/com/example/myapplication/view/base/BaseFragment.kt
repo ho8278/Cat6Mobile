@@ -25,7 +25,7 @@ abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment()
         viewModel = getViewModel(DataManager.getInstance(activity!!.applicationContext))
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         Log.d(TAG, "OnAttach")
         super.onAttach(context)
     }

@@ -1,5 +1,6 @@
 package com.example.myapplication.view.vote
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,6 +10,7 @@ import com.example.myapplication.R
 import com.example.myapplication.data.model.Vote
 import com.example.myapplication.databinding.ItemVoteBinding
 import com.example.myapplication.view.base.BaseViewHolder
+import com.example.myapplication.view.detailvote.DetailVote
 
 class VoteListAdapter : ListAdapter<Vote,BaseViewHolder>(object:DiffUtil.ItemCallback<Vote>(){
     override fun areItemsTheSame(oldItem: Vote, newItem: Vote): Boolean = oldItem.id == newItem.id
@@ -24,6 +26,8 @@ class VoteListAdapter : ListAdapter<Vote,BaseViewHolder>(object:DiffUtil.ItemCal
         holder.bind(position)
     }
 
+    val VOTE_ID = "VOTE_ID"
+    val VOTE_PLURAL = "VOTE_PLURAL"
     fun setList(list:MutableList<Vote>){
         submitList(list.toMutableList())
     }
@@ -34,6 +38,12 @@ class VoteListAdapter : ListAdapter<Vote,BaseViewHolder>(object:DiffUtil.ItemCal
                 tvVoteName.text = getItem(position).title
                 tvStartDate.text = getItem(position).startDate
                 tvEndDate.text = getItem(position).endDate
+                clContianer.setOnClickListener {
+                    val intent = Intent(root.context, DetailVote::class.java)
+                    intent.putExtra(VOTE_ID,getItem(position).id)
+                    intent.putExtra(VOTE_PLURAL,getItem(position).duplicate=="1")
+                    root.context.startActivity(intent)
+                }
             }
 
         }

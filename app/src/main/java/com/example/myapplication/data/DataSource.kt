@@ -52,4 +52,5 @@ interface DataSource{
     fun createVoteItem(name:String, id:String):Single<Int>
     fun loadVote():Single<List<Vote>>
     fun loadDetailVote(voteID:String):Single<Vote>
+    fun acceptVote(voteID:String,voteItemIDlist:List<String>):Observable<ErrorCode>
 }

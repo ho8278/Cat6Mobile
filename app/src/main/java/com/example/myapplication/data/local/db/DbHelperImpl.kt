@@ -155,4 +155,23 @@ class DbHelperImpl : DbHelper {
         }.subscribeOn(Schedulers.io())
             .subscribe({},{Log.e(TAG,it.message)})
     }
+
+    override fun setVote(vote: Vote) {
+        Completable.fromAction {
+            appDatabase.voteDao.setVote(vote)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{Log.e(TAG,it.message)})
+    }
+
+    override fun getVote(id: String): Single<Vote> {
+        return Single.create<Vote> {
+            it.onSuccess(appDatabase.voteDao.getVote(id))
+        }.subscribeOn(Schedulers.io())
+    }
+
+    override fun getVoteID(id: String): Single<String> {
+        return Single.create<String> {
+            it.onSuccess(appDatabase.voteItemDao.getVoteID(id))
+        }.subscribeOn(Schedulers.io())
+    }
 }

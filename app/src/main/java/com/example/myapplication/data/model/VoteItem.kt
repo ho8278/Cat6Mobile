@@ -1,5 +1,7 @@
 package com.example.myapplication.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -10,7 +12,7 @@ data class VoteItem(@PrimaryKey
                     var id:String,
                     @SerializedName("vote_item_name")
                     var name:String,
-                    @SerializedName("number_of_votes")
+                    @SerializedName("number_of_vote")
                     var selected:Int,
                     @SerializedName("vote_item_vote_ID")
                     var voteID:String)

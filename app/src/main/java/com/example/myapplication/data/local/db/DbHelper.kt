@@ -28,6 +28,9 @@ interface DbHelper {
     fun insertVote(vote:Vote)
     fun insertVoteList(list:List<Vote>)
     fun updateVote(vote:Vote)
+    fun setVote(vote:Vote)
+    fun getVote(id:String):Single<Vote>
 
     fun insertVoteItem(voteItem:VoteItem)
+    fun getVoteID(id:String):Single<String>
 }

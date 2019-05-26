@@ -15,6 +15,7 @@ import com.google.gson.JsonObject
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
@@ -349,16 +350,16 @@ class DataManager : DataSource {
             .flatMapObservable {
                 val voteID = it
                 Log.e(TAG,it)
-                Observable.create<String> { emmiter ->
+                Observable.create<String> { emitter ->
                     list.forEachIndexed {i,item ->
                         createVoteItem(item, voteID)
                             .subscribe({
                                 if(list.size -1 == i)
-                                    emmiter.onComplete()
+                                    emitter.onComplete()
                                 if (it == ErrorCode.SUCCESS.code)
-                                    emmiter.onNext(ErrorCode.SUCCESS.code.toString())
+                                    emitter.onNext(ErrorCode.SUCCESS.code.toString())
                                 else
-                                    emmiter.onError(Throwable(ErrorCode.WRONG_PARAMETER.code.toString()))
+                                    emitter.onError(Throwable(ErrorCode.WRONG_PARAMETER.code.toString()))
                             }, {
                                 Log.e(TAG, it.message)
                             })
@@ -392,9 +393,53 @@ class DataManager : DataSource {
     }
 
     override fun loadDetailVote(voteID: String): Single<Vote> {
+        val checkVote = apiHelper.checkVote(voteID)
+            .subscribeOn(Schedulers.io())
+            .map { response -> response.data }
+            .map { list ->
+                val user = list.find { it.id==getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
+                user != null
+            }
+
         return apiHelper.loadDetailVote(voteID)
             .subscribeOn(Schedulers.io())
             .doOnSuccess { Log.e(TAG,it.toString()) }
-            .map { response -> response.data[0] }
+            .map { response -> response.data }
+            .zipWith(checkVote, BiFunction { data:VoteData,check:Boolean ->
+                val vote = data.vote
+                if(check){
+                    vote.itemList.addAll(data.voteList)
+                    vote.select=1
+                    vote
+                }else{
+                    vote.itemList.addAll(data.voteList)
+                    vote
+                }
+            })
+    }
+
+    override fun acceptVote(voteID:String,voteItemIDlist:List<String>): Observable<ErrorCode> {
+        return Observable.create<ErrorCode>{ emitter ->
+            voteItemIDlist.forEachIndexed { index, s ->
+                vote(voteID,s)
+                    .subscribe({
+                        if(voteItemIDlist.size-1 == index)
+                            emitter.onComplete()
+                        if(it == ErrorCode.SUCCESS)
+                            emitter.onNext(it)
+                        else
+                            emitter.onError(Throwable(it.description))
+                    },{
+                        Log.e(TAG,it.message)
+                    })
+            }
+        }
+    }
+
+    private fun vote(voteID:String,voteItemID:String):Single<ErrorCode>{
+        return apiHelper.vote(voteID,voteItemID,getItem(PreferenceHelperImpl.CURRENT_USER_ID))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { response -> ErrorCode.fromCode(response) }
     }
 }

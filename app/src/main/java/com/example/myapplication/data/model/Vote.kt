@@ -1,5 +1,7 @@
 package com.example.myapplication.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -22,4 +24,5 @@ data class Vote(@PrimaryKey
                 var chatRoomID:String="",
                 @SerializedName("vote_item")
                 @Ignore
-                var itemList:List<VoteItem> = listOf())
+                var itemList:MutableList<VoteItem> = mutableListOf(),
+                var select:Int=0)

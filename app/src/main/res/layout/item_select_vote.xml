@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="select" type="Boolean"/>
+        <variable name="count" type="String"/>
+        <variable name="name" type="String"/>
+    </data>
+
+    <LinearLayout
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:id="@+id/ll_container"
+            vote_select="@{select}"
+            android:background="@drawable/shape_vote_box_unselect"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/et_vote_item_name"
+                android:layout_weight="0.8"
+                android:textSize="16sp"
+                android:paddingLeft="16dp"
+                android:gravity="center_vertical"
+                android:text="@{name}"
+                tools:text="TEST"
+                android:textColor="@color/colorBlack"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:text="@{count}"
+                tools:text="10"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</layout>

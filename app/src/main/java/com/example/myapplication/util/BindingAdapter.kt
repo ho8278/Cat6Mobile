@@ -1,16 +1,13 @@
 package com.example.myapplication.util
 
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.EditText
+import android.widget.Button
 import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
-import androidx.databinding.InverseBindingAdapter
-import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -18,13 +15,13 @@ import com.example.myapplication.R
 import com.example.myapplication.data.model.*
 import com.example.myapplication.view.addfriends.AddFriendAdapter
 import com.example.myapplication.view.calendar.ScheduleListAdapter
-import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
+import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
+import com.example.myapplication.view.detailvote.VoteItemListAdapter
 import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.MemberListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
 import com.example.myapplication.view.vote.VoteListAdapter
-import com.google.android.material.textfield.TextInputEditText
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -45,7 +42,7 @@ object BindingAdapter {
     @BindingAdapter("bind_item")
     fun setChatItem(view: RecyclerView, item: MutableList<ChatInfo>?) {
         var adapter = view.adapter
-        if(adapter!=null){
+        if (adapter != null) {
             (adapter as ChatInfoListAdapter).setList(item ?: mutableListOf())
             view.scrollToPosition(adapter.itemCount - 1)
         }
@@ -69,7 +66,7 @@ object BindingAdapter {
     @BindingAdapter("bind_item")
     fun setChatRoomItem(view: RecyclerView, item: MutableList<ChatRoom>?) {
         val adapter = view.adapter
-        if(adapter != null){
+        if (adapter != null) {
             (adapter as ChatListAdapter).setList(item ?: mutableListOf())
         }
     }
@@ -85,7 +82,7 @@ object BindingAdapter {
     @BindingAdapter("bind_item")
     fun setUserList(view: RecyclerView, item: MutableList<User>?) {
         val adapter = view.adapter
-        if(adapter != null){
+        if (adapter != null) {
             (adapter as MemberListAdapter).setList(item ?: mutableListOf())
         }
     }
@@ -98,20 +95,46 @@ object BindingAdapter {
     }
 
     @JvmStatic
+    @BindingAdapter("bind_item")
+    fun setVoteItemList(view: RecyclerView, item: MutableList<VoteItem>?) {
+        val adapter = view.adapter as VoteItemListAdapter
+        adapter.setList(item ?: mutableListOf())
+    }
+
+    @JvmStatic
+    @BindingAdapter("vote_select")
+    fun setSelect(view: LinearLayout, isSelect: Boolean?) {
+        if (isSelect ?: false) {
+            view.background = ContextCompat.getDrawable(view.context, R.drawable.shape_vote_box_select)
+        }else{
+            view.background = ContextCompat.getDrawable(view.context, R.drawable.shape_vote_box_unselect)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("bind_dialog_item")
     fun setDialogUserList(view: RecyclerView, item: MutableList<User>?) {
         val adapter = view.adapter
-        if(adapter != null){
+        if (adapter != null) {
             (adapter as AddFriendAdapter).userList.clear()
-            adapter.userList.addAll(item?: mutableListOf())
+            adapter.userList.addAll(item ?: mutableListOf())
             adapter.notifyDataSetChanged()
         }
     }
 
     @JvmStatic
+    @BindingAdapter("isParticipate")
+    fun setButtonDisable(view:Button, participate:Boolean){
+        if(participate){
+            view.isEnabled = false
+            view.text = "투표 완료"
+        }
+    }
+
+    @JvmStatic
     @BindingConversion
-    fun convertBooleanToView(status:Boolean):Int{
-        if(status)
+    fun convertBooleanToView(status: Boolean): Int {
+        if (status)
             return View.VISIBLE
         else
             return View.GONE

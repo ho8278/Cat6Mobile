@@ -1,9 +1,6 @@
 package com.example.myapplication.data.local.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.example.myapplication.data.model.Vote
 
 @Dao
@@ -16,6 +13,12 @@ interface VoteDao{
 
     @Query("delete from vote")
     fun deleteAll()
+
+    @Query("select * from Vote where id=:id")
+    fun getVote(id:String):Vote
+
+    @Update
+    fun setVote(vote:Vote)
 
     @Transaction
     fun updateVote(vote:Vote){

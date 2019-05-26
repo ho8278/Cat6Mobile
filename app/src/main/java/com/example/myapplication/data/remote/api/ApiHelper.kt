@@ -57,5 +57,11 @@ interface ApiHelper {
     fun loadVotes(@Query("chat_room_ID")chatRoomID:String):Single<ServerResponse<Vote>>
 
     @GET("viewVoteInfo")
-    fun loadDetailVote(@Query("vote_ID")voteID:String):Single<ServerResponse<Vote>>
+    fun loadDetailVote(@Query("vote_ID")voteID:String):Single<VoteServerResponse>
+
+    @POST("vote")
+    fun vote(@Query("vote_ID")voteID:String,@Query("vote_item_ID")voteItemID:String,@Query("client_ID")clientID:String):Single<Int>
+
+    @GET("checkVote")
+    fun checkVote(@Query("vote_ID")voteID:String):Single<ServerResponse<User>>
 }
