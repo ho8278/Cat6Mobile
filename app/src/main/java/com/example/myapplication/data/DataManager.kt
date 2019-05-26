@@ -109,6 +109,7 @@ class DataManager : DataSource {
     }
 
     override fun loadChatInfoList(roomId: String): Single<List<ChatInfo>> {
+        ChatSocketService.socket?.emit("channelJoin",roomId)
         return dbHelper.loadChatInfoList(roomId)
     }
 

@@ -13,28 +13,17 @@
             android:background="?attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_drawer_item_profile_img"
-                android:layout_width="@dimen/nav_drawer_member_profile_w"
-                android:layout_height="@dimen/nav_drawer_member_profile_h"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                app:imageUrl="@{url}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
         <TextView
                 android:id="@+id/tv_drawer_item_profile_id"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
                 android:text="@{member}"
-                app:layout_constraintStart_toEndOf="@id/iv_drawer_item_profile_img"
+                android:textSize="15sp"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"/>
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

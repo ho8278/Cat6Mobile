@@ -20,6 +20,8 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
 
     val currentUser = ObservableField<User>()
 
+    val userNickName = ObservableField<String>()
+
     fun updateChatList(){
         AppInitialize.dataSource.loadChatRoom()
             .subscribe({
@@ -53,6 +55,8 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
                 .subscribe({ list ->
                     userList.clear()
                     userList.addAll(list)
+                    val currentUser = userList.find { it.id==getDataManager().getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
+                    userNickName.set(currentUser?.nickname)
                     Log.e(TAG, list.toString())
                 }, {
                     Log.e(TAG, it.message)
