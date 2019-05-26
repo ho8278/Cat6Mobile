@@ -156,8 +156,14 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
                 }
                 else -> ""
             }
-            binding.tvMessageBody.setText(getItem(position).message)
-            binding.tvMessageClock.setText(date)
+            AppInitialize.dataSource.getUser(getItem(position).send_user_id)
+                .subscribe({
+                    binding.tvTheirname.setText(it.nickname)
+                    binding.tvMessageBody.setText(getItem(position).message)
+                    binding.tvMessageClock.setText(date)
+                },{
+                    Log.e(TAG,it.message)
+                })
         }
     }
 }
