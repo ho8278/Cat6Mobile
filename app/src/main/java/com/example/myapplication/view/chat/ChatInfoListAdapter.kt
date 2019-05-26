@@ -3,13 +3,14 @@ package com.example.myapplication.view.chat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myapplication.R
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.databinding.ItemDatedividerBinding
 import com.example.myapplication.databinding.ItemMychatBinding
 import com.example.myapplication.databinding.ItemTheirchatBinding
 import com.example.myapplication.view.base.BaseViewHolder
@@ -19,15 +20,9 @@ import java.util.*
 
 class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     ListAdapter<ChatInfo, BaseViewHolder>(object : DiffUtil.ItemCallback<ChatInfo>() {
-        override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-            Log.e("DIFF", (oldItem == newItem).toString())
-            return false
-        }
+        override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean = oldItem.chatinfo_id == newItem.chatinfo_id
 
-        override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean {
-            Log.e("DIFF", (oldItem == newItem).toString())
-            return false
-        }
+        override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean  = oldItem.chatinfo_id == newItem.chatinfo_id
     }) {
 
     private val TAG = ChatInfoListAdapter::class.java.simpleName
@@ -41,8 +36,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     }
 
     fun setList(changeList: MutableList<ChatInfo>) {
-        submitList(changeList)
-        notifyDataSetChanged()
+        submitList(changeList.toMutableList())
     }
 
     fun setViewModel(viewModel:ChatViewModel){
@@ -76,7 +70,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (userId == getItem(position).sendUserId) {
+        if (userId == getItem(position).send_user_id) {
             return VIEW_TYPE_ME
         } else {
             return VIEW_TYPE_YOU
@@ -87,7 +81,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
 
         override fun bind(position: Int) {
             val calendar = Calendar.getInstance()
-            calendar.time = getItem(position).sendDate
+            calendar.time = getItem(position).send_date
             binding.mcvMessageContainer.setOnClickListener {
                 val dialog = AlertDialog.Builder(binding.root.context)
                     .setMessage("공지사항으로 설정하시겠습니까?")
@@ -129,7 +123,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     inner class YouViewHolder(val binding: ItemTheirchatBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
             val calendar = Calendar.getInstance()
-            calendar.time = getItem(position).sendDate
+            calendar.time = getItem(position).send_date
 
             binding.mcvMessageContainer.setOnClickListener {
                 val dialog = AlertDialog.Builder(binding.root.context)

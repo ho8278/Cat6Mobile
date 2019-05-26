@@ -11,6 +11,7 @@ interface DbHelper {
     fun insertChatInfo(info:ChatInfo)
 
     fun updateUser(user:User)
+    fun updateUser(list:List<User>)
     fun getUser(userId:String):Single<User>
 
     fun insertSchedule(schedule:Schedule)

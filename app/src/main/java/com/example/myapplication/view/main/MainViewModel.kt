@@ -41,7 +41,6 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
                         listener.setChatViewModel(list[0])
                         chatList.clear()
                         chatList.addAll(list)
-                        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID, list[0].id)
                         getDataManager().subscribeTopic(list)
                         Log.e(TAG, list.toString())
                     }

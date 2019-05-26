@@ -1,5 +1,6 @@
 package com.example.myapplication.util
 
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -44,7 +45,9 @@ object BindingAdapter {
         var adapter = view.adapter
         if (adapter != null) {
             (adapter as ChatInfoListAdapter).setList(item ?: mutableListOf())
-            view.scrollToPosition(adapter.itemCount - 1)
+            Handler().postDelayed({
+                view.scrollToPosition(adapter.itemCount-1)
+            },300)
         }
     }
 

@@ -1,7 +1,6 @@
 package com.example.myapplication.data
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import com.example.myapplication.data.local.db.DbHelper
 import com.example.myapplication.data.local.db.DbHelperImpl
@@ -13,6 +12,8 @@ import com.example.myapplication.data.remote.fcm.FCMHelperImpl
 import com.example.myapplication.util.ChatSocketService
 import com.example.myapplication.view.main.ErrorCode
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -21,7 +22,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
-import io.socket.client.Socket
+import io.socket.client.Ack
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -59,43 +60,22 @@ class DataManager : DataSource {
 
     }
 
-    override fun sendMessage(chatInfo: ChatInfo): Single<ResponseBody> {
-        /*return fcmApiHelper.sendMessage(chatInfo)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())*/
-        val json = JsonObject().apply {
-            addProperty(
-                "to",
-                "/topics/${chatInfo.roomId}"
-            )
-            addProperty("priority", "high")
-            val element = JsonObject()
-            element.addProperty("id", chatInfo.id)
-            element.addProperty("message", chatInfo.message)
-            element.addProperty("roomId", chatInfo.roomId)
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
-            element.addProperty("sendDate", dateFormat.format(chatInfo.sendDate))
-            element.addProperty("sendId", chatInfo.sendUserId)
-            add("data", element)
-        }
-
-        val sendJson = JsonObject().apply {
-            addProperty("id", chatInfo.id)
+    override fun sendMessage(chatInfo: ChatInfo) {
+        val chatInfoJson = JsonObject().apply {
+            addProperty("chatinfo_id", chatInfo.chatinfo_id)
             addProperty("message", chatInfo.message)
-            addProperty("roomId", chatInfo.roomId)
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
-            addProperty("sendDate", dateFormat.format(chatInfo.sendDate))
-            addProperty("sendId", chatInfo.sendUserId)
+            addProperty("chatroom_id", chatInfo.chatroom_id)
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            addProperty("send_date", dateFormat.format(chatInfo.send_date))
+            addProperty("send_user_id", chatInfo.send_user_id)
         }
 
-        prefHelper.saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.id)
-        ChatSocketService.socket?.emit("chat-msg",sendJson)
-
-        return fcmApiHelper.sendTestMessage(json)
-            .doOnSuccess { dbHelper.insertChatInfo(chatInfo) }
-            .doOnError { Log.e(TAG, it.message) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        prefHelper.saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.chatinfo_id)
+        ChatSocketService.socket?.emit("send",chatInfoJson, object:Ack{
+            override fun call(vararg args: Any?) {
+                Log.e(TAG,args.toString())
+            }
+        })
     }
 
     override fun sendBroadCastMessage(chatRoomID: String): Single<ResponseBody> {
@@ -106,7 +86,7 @@ class DataManager : DataSource {
             )
             addProperty("priority", "high")
             val element = JsonObject()
-            element.addProperty("id", chatRoomID)
+            element.addProperty("chatinfo_id", chatRoomID)
             add("data", element)
         }
         return fcmApiHelper.sendTestMessage(json)
@@ -116,6 +96,7 @@ class DataManager : DataSource {
     }
 
     override fun receiveMessage(chatInfo: ChatInfo) {
+        dbHelper.insertChatInfo(chatInfo)
         receiveSubject.onNext(chatInfo)
     }
 
@@ -141,6 +122,10 @@ class DataManager : DataSource {
 
     override fun getCurrentUser(): Single<User> {
         return dbHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
+    }
+
+    override fun getUser(userID: String): Single<User> {
+        return dbHelper.getUser(userID)
     }
 
     override fun loadSchedule(groupId: String): Single<ErrorCode> {
@@ -216,7 +201,10 @@ class DataManager : DataSource {
     override fun loadChatRoom(): Single<List<ChatRoom>> {
         return apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
             .map { response -> response.data }
-            .doOnSuccess { dbHelper.updateChatRoom(it) }
+            .doOnSuccess {
+                saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID, it[0].id)
+                dbHelper.updateChatRoom(it)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -252,7 +240,7 @@ class DataManager : DataSource {
             )
             addProperty("priority", "high")
             val element = JsonObject()
-            element.addProperty("id", chatRoomID)
+            element.addProperty("chatinfo_id", chatRoomID)
             element.addProperty("who", clientID)
             add("data", element)
         }
@@ -272,7 +260,6 @@ class DataManager : DataSource {
             }
             .doOnSuccess {
                 prefHelper.saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
-                dbHelper.updateUser(it)
             }
             .subscribeOn(Schedulers.io())
             .flatMap { apiHelper.loadTeams(it.id) }
@@ -304,6 +291,7 @@ class DataManager : DataSource {
     override fun loadGroupClient(): Single<List<User>> {
         return apiHelper.loadGroupClient(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
             .map { response -> response.data }
+            .doOnSuccess { dbHelper.updateUser(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -462,15 +450,15 @@ class DataManager : DataSource {
             .map { response -> ErrorCode.fromCode(response) }
     }
 
-    override fun uploadFile(path: String, chatInfo:ChatInfo): Single<ResponseBody> {
+    override fun uploadFile(path: String, chatInfo:ChatInfo): Single<Int> {
         val file = File(path)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file)
         val teamID =prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         val requestBody = RequestBody.create(MediaType.parse("text/plane"),teamID)
         val body = MultipartBody.Part.createFormData("file",file.name,requestFile)
         return apiHelper.uploadFile(requestBody,body)
-            .map { response -> response.data[0] }
-            .flatMap { sendMessage(chatInfo) }
+            .map { response -> response.responseCode.toInt() }
+            .doOnSuccess { sendMessage(chatInfo) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

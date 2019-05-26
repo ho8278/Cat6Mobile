@@ -7,7 +7,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity//(foreignKeys = arrayOf(ForeignKey(entity = Team::class, parentColumns = arrayOf("id"), childColumns = arrayOf("teamID"))))
+@Entity//(foreignKeys = arrayOf(ForeignKey(entity = Team::class, parentColumns = arrayOf("chatinfo_id"), childColumns = arrayOf("teamID"))))
 data class Schedule(@PrimaryKey
                     @SerializedName("schedule_ID")
                     val id:String,

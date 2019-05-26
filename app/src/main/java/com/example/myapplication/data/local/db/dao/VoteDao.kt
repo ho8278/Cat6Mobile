@@ -14,7 +14,7 @@ interface VoteDao{
     @Query("delete from vote")
     fun deleteAll()
 
-    @Query("select * from Vote where id=:id")
+    @Query("select * from Vote where Vote.id=:id")
     fun getVote(id:String):Vote
 
     @Update

@@ -49,21 +49,10 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
     }
 
     fun sendButtonClicked(message: String) {
-        isSending.set(false)
         val userID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
         val chatInfoID = UUID.randomUUID().toString()
         val chatInfo = ChatInfo(chatInfoID, userID, chatRoom.id, Calendar.getInstance().time, message)
-        getCompositeDisposable().add(
-            getDataManager().sendMessage(chatInfo)
-                .subscribe({
-                    isSending.set(true)
-                    chatInfoList.add(chatInfo)
-                    Log.e(TAG, it.string())
-                }, {
-                    isSending.set(true)
-                    Log.e(TAG, it.message)
-                })
-        )
+        getDataManager().sendMessage(chatInfo)
     }
 
     fun sendFile(path:String){
@@ -85,9 +74,9 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
         getCompositeDisposable().add(
             getDataManager().receiveMessage()
                 .subscribe({
-                    if(it.roomId==chatRoom.id)
+                    if(it.chatroom_id==chatRoom.id)
                         chatInfoList.add(it)
-                    Log.e(TAG, it.id)
+                    Log.e(TAG, it.chatinfo_id)
                 }, {
                     Log.e(TAG, it.message)
                 })

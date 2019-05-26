@@ -33,11 +33,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        val simpleDate = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.KOREA)
         val chatinfoID =
             DataManager.getInstance(applicationContext).getItem<String>(PreferenceHelperImpl.RECENT_CHATINFO_ID)
 
-        val remoteInfoID = remoteMessage?.data?.get("id") ?: "null"
+        val remoteInfoID = remoteMessage?.data?.get("chatinfo_id") ?: "null"
         if (chatinfoID == remoteInfoID)
             return
 
@@ -45,20 +44,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             broadCastMessage(remoteMessage.data)
             return
         }
-
-        val info = remoteMessage?.data.run {
-            ChatInfo(
-                UUID.randomUUID().toString()
-                , this?.get("sendId") ?: ""
-                , this?.get("roomId") ?: ""
-                , simpleDate.parse(this?.get("sendDate"))
-                , this?.get("message") ?: ""
-            )
-        }
-        //TODO("ROOM에 채팅정보 저장")
-        DataManager.getInstance(applicationContext).insertChatInfo(info)
-        createNotification(info)
-        DataManager.getInstance(applicationContext).receiveMessage(info)
     }
 
     fun broadCastMessage(data: MutableMap<String, String>) {
@@ -66,7 +51,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val clientID =
                 DataManager.getInstance(applicationContext).getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
             if (clientID == data.get("who")) {
-                data.get("id").apply {
+                data.get("chatinfo_id").apply {
                     FirebaseMessaging.getInstance().subscribeToTopic(this)
                 }
                 sendBroadcast(Intent("updateChatList"))
@@ -74,48 +59,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
 
-        if (data.get("id") != null) {
-            data.get("id").apply {
+        if (data.get("chatinfo_id") != null) {
+            data.get("chatinfo_id").apply {
                 FirebaseMessaging.getInstance().subscribeToTopic(this)
             }
             return
         }
     }
 
-    fun createNotification(chatInfo: ChatInfo) {
-        val notiManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            DataManager.getInstance(applicationContext).let {
-                var channelId = it.getItem<String>(PreferenceHelperImpl.CHANNEL_ID)
-                var channelName = it.getItem<String>(PreferenceHelperImpl.CHANNEL_NAME)
-                if (channelId == "" || channelName == "") {
-                    it.saveItem(PreferenceHelperImpl.CHANNEL_ID, "channel1")
-                    it.saveItem(PreferenceHelperImpl.CHANNEL_NAME, "channel1")
-                    channelId = "channel1"
-                    channelName = "channel1"
 
-                    NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT).run {
-                        description = "Chat Channel"
-                        enableLights(true)
-                        lightColor = Color.BLUE
-                        enableVibration(true)
-                        vibrationPattern = longArrayOf(100, 200, 100, 200)
-                        notiManager.createNotificationChannel(this)
-                    }
-                }
-            }
-        }
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-        val noti = NotificationCompat.Builder(applicationContext, "channel1")
-            .setContentTitle(chatInfo.sendUserId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentText(chatInfo.message)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        notiManager.notify(11, noti)
-
-    }
 }

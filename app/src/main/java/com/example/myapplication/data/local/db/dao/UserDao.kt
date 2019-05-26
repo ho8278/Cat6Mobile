@@ -10,6 +10,9 @@ import com.example.myapplication.data.model.User
 interface UserDao{
     @Insert
     fun insertUser(user:User)
+    @Insert
+    fun insertUser(list:List<User>)
+
     @Query("delete from User")
     fun deleteUserAll()
 
@@ -17,6 +20,12 @@ interface UserDao{
     fun updateUser(user:User){
         deleteUserAll()
         insertUser(user)
+    }
+
+    @Transaction
+    fun updateUser(list:List<User>){
+        deleteUserAll()
+        insertUser(list)
     }
 
     @Query("select * from User where User.id= :userId")

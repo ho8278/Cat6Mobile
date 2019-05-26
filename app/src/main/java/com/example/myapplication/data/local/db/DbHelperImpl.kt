@@ -52,6 +52,13 @@ class DbHelperImpl : DbHelper {
             .subscribe({},{ Log.e(TAG, it.message) })
     }
 
+    override fun updateUser(list: List<User>) {
+        Completable.fromAction {
+            appDatabase.userDao.updateUser(list)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{ Log.e(TAG, it.message) })
+    }
+
     override fun getUser(userId: String): Single<User> {
         return Single.fromCallable {
             appDatabase.userDao.getUser(userId)

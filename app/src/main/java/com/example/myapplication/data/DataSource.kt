@@ -13,7 +13,7 @@ import io.reactivex.Single
 import okhttp3.ResponseBody
 
 interface DataSource{
-    fun sendMessage(chatInfo: ChatInfo):Single<ResponseBody>
+    fun sendMessage(chatInfo: ChatInfo)
     fun receiveMessage(chatInfo:ChatInfo)
     fun receiveMessage(): Observable<ChatInfo>
 
@@ -24,6 +24,7 @@ interface DataSource{
     fun <T:Any> getItem(key:String):T
 
     fun getCurrentUser():Single<User>
+    fun getUser(userID:String):Single<User>
 
     fun loadSchedule(groupId:String):Single<ErrorCode>
     fun getSchedules(year:Int,month:Int,day:Int):Single<List<Schedule>>
@@ -46,7 +47,7 @@ interface DataSource{
 
     fun loadGroupClient():Single<List<User>>
 
-    fun uploadFile(path: String, chatInfo:ChatInfo):Single<ResponseBody>
+    fun uploadFile(path: String, chatInfo:ChatInfo): Single<Int>
 
     fun setNotice(text:String,chatRoomID:String):Single<Int>
     fun loadNotice(chatRoomID:String):Single<Notice>

@@ -10,6 +10,6 @@ interface ChatInfoDao {
     @Insert
     fun insertChatInfo(chatinfo:ChatInfo)
 
-    @Query("select * from chatinfo where roomId=:id")
+    @Query("select * from chatinfo where chatroom_id=:id")
     fun loadChatInfo(id:String) : List<ChatInfo>
 }
