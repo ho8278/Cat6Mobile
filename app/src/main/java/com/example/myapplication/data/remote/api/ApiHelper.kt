@@ -78,10 +78,6 @@ interface ApiHelper {
 
     @GET("checkVote")
     fun checkVote(@Query("vote_ID")voteID:String):Single<ServerResponse<User>>
-    fun insertSchedule(
-        @Query("schedule_start_date") startDate: String, @Query("schedule_end_date") endDate: String,
-        @Query("schedule_contents") contents: String, @Query("schedule_team_ID") teamID: String
-    )
 
     @POST("createClient")
     fun join(
