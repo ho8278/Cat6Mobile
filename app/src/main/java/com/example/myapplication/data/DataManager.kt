@@ -479,7 +479,7 @@ class DataManager : DataSource {
             .map { response -> ErrorCode.fromCode(response) }
     }
 
-    override fun uploadFile(path: String, chatInfo:ChatInfo): Single<Int> {
+    override fun uploadFile(path: String): Single<Int> {
         val file = File(path)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file)
         val teamID =prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
@@ -487,7 +487,6 @@ class DataManager : DataSource {
         val body = MultipartBody.Part.createFormData("file",file.name,requestFile)
         return apiHelper.uploadFile(requestBody,body)
             .map { response -> response.responseCode.toInt() }
-            .doOnSuccess { sendMessage(chatInfo) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

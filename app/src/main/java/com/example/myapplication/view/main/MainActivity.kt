@@ -141,7 +141,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     if (uri != null) {
                         val str = FilePathProvider.getPath(this, uri)
                         chatViewModel.sendFile(str ?: "")
-                        Log.e(TAG, str ?: "TESTTEST")
                     }
 
                 } catch (e: Exception) {

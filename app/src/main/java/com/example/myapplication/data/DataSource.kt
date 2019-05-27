@@ -49,7 +49,7 @@ interface DataSource{
 
     fun loadGroupClient():Single<List<User>>
 
-    fun uploadFile(path: String, chatInfo:ChatInfo): Single<Int>
+    fun uploadFile(path: String): Single<Int>
 
     fun setNotice(text:String,chatRoomID:String):Single<Int>
     fun loadNotice(chatRoomID:String):Single<Notice>

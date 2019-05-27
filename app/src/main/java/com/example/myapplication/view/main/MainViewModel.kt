@@ -68,7 +68,7 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
     fun changeTeam(teamID: String) {
         getDataManager().saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, teamID)
         init()
-}
+    }
 
     fun createChatRoom(client_ID: String, chatRoomName: String) {
         getCompositeDisposable().add(

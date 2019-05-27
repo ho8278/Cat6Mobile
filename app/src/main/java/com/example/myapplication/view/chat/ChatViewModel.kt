@@ -58,12 +58,10 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
     fun sendFile(path:String){
         if(path.isEmpty())
             return
-        val userID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
-        val chatInfo = ChatInfo(UUID.randomUUID().toString(), userID, chatRoom.id, Calendar.getInstance().time, "파일을 전송하였습니다.")
         getCompositeDisposable().add(
-            getDataManager().uploadFile(path,chatInfo)
+            getDataManager().uploadFile(path)
                 .subscribe({ body ->
-                    Log.e(TAG,body.toString())
+                    sendButtonClicked("파일을 전송하였습니다.")
                 },{
                     Log.e(TAG,it.message)
                 })
