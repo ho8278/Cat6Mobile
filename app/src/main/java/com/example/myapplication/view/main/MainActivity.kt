@@ -226,7 +226,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun groupChanged(groupID: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.remove(fragment)
+        transaction.commit()
+        viewModel.changeTeam(groupID)
     }
 
     override fun chatRoomChagned(chatRoom: ChatRoom) {

@@ -215,11 +215,14 @@ class DataManager : DataSource {
     }
 
     override fun loadChatRoom(): Single<List<ChatRoom>> {
+        Log.e(TAG,getItem(PreferenceHelperImpl.CURRENT_GROUP_ID) )
         return apiHelper.loadChatRooms(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
             .map { response -> response.data }
             .doOnSuccess {
-                saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID, it[0].id)
-                dbHelper.updateChatRoom(it)
+                if(it.size !=0){
+                    saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID, it[0].id)
+                    dbHelper.updateChatRoom(it)
+                }
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -487,10 +490,5 @@ class DataManager : DataSource {
             .doOnSuccess { sendMessage(chatInfo) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-    }
-
-
-    override fun join(id: String, pw: String, name: String, nickname: String):Single<Int> {
-        return apiHelper.join(id,pw,name,nickname).subscribeOn(Schedulers.io())
     }
 }

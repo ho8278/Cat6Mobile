@@ -9,7 +9,7 @@ import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.data.model.User
 import com.example.myapplication.view.base.BaseViewModel
 
-class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseViewModel(dataManager) {
+class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : BaseViewModel(dataManager) {
 
 
     val TAG = MainViewModel::class.java.simpleName
@@ -22,13 +22,13 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
 
     val userNickName = ObservableField<String>()
 
-    fun updateChatList(){
+    fun updateChatList() {
         AppInitialize.dataSource.loadChatRoom()
             .subscribe({
                 chatList.clear()
                 chatList.addAll(it)
-            },{
-                Log.e(TAG,it.message)
+            }, {
+                Log.e(TAG, it.message)
             })
     }
 
@@ -36,16 +36,16 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
         getCompositeDisposable().add(
             getDataManager().loadChatRoom()
                 .subscribe({ list ->
-                    if(list.size==0){
+                    if (list.size == 0) {
                         listener.setChatViewModel(null)
                     }
-                    else {
+                    else{
                         listener.setChatViewModel(list[0])
-                        chatList.clear()
-                        chatList.addAll(list)
-                        getDataManager().subscribeTopic(list)
-                        Log.e(TAG, list.toString())
                     }
+                    chatList.clear()
+                    chatList.addAll(list)
+                    getDataManager().subscribeTopic(list)
+                    Log.e(TAG, list.toString())
                 }, {
                     Log.e(TAG, it.message)
                 })
@@ -55,7 +55,8 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
                 .subscribe({ list ->
                     userList.clear()
                     userList.addAll(list)
-                    val currentUser = userList.find { it.id==getDataManager().getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
+                    val currentUser =
+                        userList.find { it.id == getDataManager().getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
                     userNickName.set(currentUser?.nickname)
                     Log.e(TAG, list.toString())
                 }, {
@@ -64,17 +65,21 @@ class MainViewModel(dataManager:DataSource, val listener:MainNavigator) : BaseVi
         )
     }
 
-    fun createChatRoom(client_ID: String, chatRoomName:String) {
+    fun changeTeam(teamID: String) {
+        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, teamID)
+        init()
+}
+
+    fun createChatRoom(client_ID: String, chatRoomName: String) {
         getCompositeDisposable().add(
-            getDataManager().createChatRoom(client_ID,chatRoomName)
+            getDataManager().createChatRoom(client_ID, chatRoomName)
                 .subscribe({ room ->
                     chatList.add(room)
-                    Log.e(TAG,"${room.id} ${room.name}")
-                },{
-                    Log.e(TAG,it.message)
+                    Log.e(TAG, "${room.id} ${room.name}")
+                }, {
+                    Log.e(TAG, it.message)
                 })
         )
     }
 
-    fun getUserList():MutableList<User> = userList
 }
