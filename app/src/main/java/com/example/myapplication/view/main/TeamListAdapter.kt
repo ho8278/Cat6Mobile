@@ -83,19 +83,13 @@ class TeamListAdapter(val listener: GroupChangeListener) : RecyclerView.Adapter<
 
             }
 
-            if (currentGroupID.isEmpty() && isCurrent == false) {
-                binding.llContainer.setBackgroundColor(
-                    ContextCompat.getColor(
-                        binding.llContainer.context,
-                        R.color.colorCurrentGroup
-                    )
-                )
-                isCurrent = true
-            } else if (currentGroupID == groupList[position].id && isCurrent == false) {
+            if (currentGroupID == groupList[position].id) {
+                binding.llContainer.setBackgroundColor(ContextCompat.getColor(binding.root.context,R.color.colorCurrentGroup))
+            }
+            else{
                 binding.llContainer.setOnClickListener {
                     listener.groupChanged(groupList[position].id)
                 }
-                isCurrent = true
             }
         }
     }
