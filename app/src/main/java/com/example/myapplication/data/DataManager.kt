@@ -1,6 +1,7 @@
 package com.example.myapplication.data
 
 import android.content.Context
+import android.os.Environment
 import android.util.Log
 import com.example.myapplication.data.local.db.DbHelper
 import com.example.myapplication.data.local.db.DbHelperImpl
@@ -13,8 +14,6 @@ import com.example.myapplication.util.ChatSocketService
 import com.example.myapplication.view.main.ErrorCode
 import com.example.myapplication.view.references.Reference
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -23,14 +22,20 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
-import io.socket.client.Ack
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import retrofit2.adapter.rxjava2.Result.response
+import okio.Okio
+import okio.BufferedSink
+import android.os.Environment.DIRECTORY_DOWNLOADS
+import android.os.Environment.getExternalStoragePublicDirectory
+
 
 class DataManager : DataSource {
 
@@ -72,11 +77,7 @@ class DataManager : DataSource {
         }
 
         prefHelper.saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.chatinfo_id)
-        ChatSocketService.socket?.emit("send",chatInfoJson, object:Ack{
-            override fun call(vararg args: Any?) {
-                Log.e(TAG,args.toString())
-            }
-        })
+        ChatSocketService.socket?.emit("send", chatInfoJson)
     }
 
     override fun sendBroadCastMessage(chatRoomID: String): Single<ResponseBody> {
@@ -110,7 +111,7 @@ class DataManager : DataSource {
     }
 
     override fun loadChatInfoList(roomId: String): Single<List<ChatInfo>> {
-        ChatSocketService.socket?.emit("channelJoin",roomId)
+        ChatSocketService.socket?.emit("channelJoin", roomId)
         return dbHelper.loadChatInfoList(roomId)
     }
 
@@ -249,7 +250,7 @@ class DataManager : DataSource {
                 apiHelper.inviteChatRoom(clientID, chatID)
             }
             .flatMap { sendBroadCastMessage(chatID) }
-            .flatMap{Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID,chatRoomName)) }}
+            .flatMap { Single.create<ChatRoom> { it.onSuccess(ChatRoom(chatID, chatRoomName)) } }
             .observeOn(AndroidSchedulers.mainThread())
 
     }
@@ -285,7 +286,7 @@ class DataManager : DataSource {
             .map { response ->
                 val userData = response.data[0]
                 userData.run {
-                    User(this.id, password, name, nickname,profileLink)
+                    User(this.id, password, name, nickname, profileLink)
                 }
             }
             .doOnSuccess {
@@ -382,30 +383,39 @@ class DataManager : DataSource {
         val startDate = vote.startDate
         val endDate = vote.endDate
         val regex = Regex("(19|20)[0-9]{2}[.](0[1-9]|1[012])[.](0[1-9]|[12][0-9]|3[01])")
-        if(!(regex.matches(startDate)&&regex.matches(endDate))){
-            return Observable.create<String>{
+        if (!(regex.matches(startDate) && regex.matches(endDate))) {
+            return Observable.create<String> {
                 it.onError(Throwable(ErrorCode.NOT_PATTERN_MATCH.code.toString()))
             }
         }
 
-        return apiHelper.createVote(vote.title, vote.startDate, vote.endDate, vote.duplicate, getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
+        return apiHelper.createVote(
+            vote.title,
+            vote.startDate,
+            vote.endDate,
+            vote.duplicate,
+            getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)
+        )
             .doOnSuccess {
                 dbHelper.insertVote(
-                    Vote(it,
+                    Vote(
+                        it,
                         vote.title,
                         vote.startDate,
                         vote.endDate,
                         vote.duplicate,
-                        getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)))
+                        getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID)
+                    )
+                )
             }
             .flatMapObservable {
                 val voteID = it
-                Log.e(TAG,it)
+                Log.e(TAG, it)
                 Observable.create<String> { emitter ->
-                    list.forEachIndexed {i,item ->
+                    list.forEachIndexed { i, item ->
                         createVoteItem(item, voteID)
                             .subscribe({
-                                if(list.size -1 == i)
+                                if (list.size - 1 == i)
                                     emitter.onComplete()
                                 if (it == ErrorCode.SUCCESS.code)
                                     emitter.onNext(ErrorCode.SUCCESS.code.toString())
@@ -425,7 +435,7 @@ class DataManager : DataSource {
         return apiHelper.createVoteItem(name, id)
             .subscribeOn(Schedulers.io())
             .doOnSuccess {
-                Log.e(TAG,it.toString())
+                Log.e(TAG, it.toString())
                 dbHelper.insertVoteItem(VoteItem(it, name, 0, id))
             }
             .map { it ->
@@ -448,69 +458,99 @@ class DataManager : DataSource {
             .subscribeOn(Schedulers.io())
             .map { response -> response.data }
             .map { list ->
-                val user = list.find { it.id==getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
+                val user = list.find { it.id == getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
                 user != null
             }
 
         return apiHelper.loadDetailVote(voteID)
             .subscribeOn(Schedulers.io())
-            .doOnSuccess { Log.e(TAG,it.toString()) }
+            .doOnSuccess { Log.e(TAG, it.toString()) }
             .map { response -> response.data }
-            .zipWith(checkVote, BiFunction { data:VoteData,check:Boolean ->
+            .zipWith(checkVote, BiFunction { data: VoteData, check: Boolean ->
                 val vote = data.vote
-                if(check){
+                if (check) {
                     vote.itemList.addAll(data.voteList)
-                    vote.select=1
+                    vote.select = 1
                     vote
-                }else{
+                } else {
                     vote.itemList.addAll(data.voteList)
                     vote
                 }
             })
     }
 
-    override fun acceptVote(voteID:String,voteItemIDlist:List<String>): Observable<ErrorCode> {
-        return Observable.create<ErrorCode>{ emitter ->
+    override fun acceptVote(voteID: String, voteItemIDlist: List<String>): Observable<ErrorCode> {
+        return Observable.create<ErrorCode> { emitter ->
             voteItemIDlist.forEachIndexed { index, s ->
-                vote(voteID,s)
+                vote(voteID, s)
                     .subscribe({
-                        if(voteItemIDlist.size-1 == index)
+                        if (voteItemIDlist.size - 1 == index)
                             emitter.onComplete()
-                        if(it == ErrorCode.SUCCESS)
+                        if (it == ErrorCode.SUCCESS)
                             emitter.onNext(it)
                         else
                             emitter.onError(Throwable(it.description))
-                    },{
-                        Log.e(TAG,it.message)
+                    }, {
+                        Log.e(TAG, it.message)
                     })
             }
         }
     }
 
-    private fun vote(voteID:String,voteItemID:String):Single<ErrorCode>{
-        return apiHelper.vote(voteID,voteItemID,getItem(PreferenceHelperImpl.CURRENT_USER_ID))
+    private fun vote(voteID: String, voteItemID: String): Single<ErrorCode> {
+        return apiHelper.vote(voteID, voteItemID, getItem(PreferenceHelperImpl.CURRENT_USER_ID))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { response -> ErrorCode.fromCode(response) }
     }
 
+    override fun uploadFile(path: String, chatInfo: ChatInfo): Single<Int> {
     override fun uploadFile(path: String): Single<Int> {
         val file = File(path)
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file)
-        val teamID =prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
-        val requestBody = RequestBody.create(MediaType.parse("text/plane"),teamID)
-        val body = MultipartBody.Part.createFormData("file",file.name,requestFile)
-        return apiHelper.uploadFile(requestBody,body)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val teamID = prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val requestBody = RequestBody.create(MediaType.parse("text/plane"), teamID)
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+        return apiHelper.uploadFile(requestBody, body)
             .map { response -> response.responseCode.toInt() }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun loadReferences(groupId: String): Observable<ServerResponse<Reference>> {
-        return apiHelper.loadReferences(groupId)
-            .doOnError { Log.e(TAG, it.message) }
-            .doOnNext { it.data }
-            .subscribeOn(Schedulers.io())
+    override fun loadReferences(): Observable<ServerResponse<Reference>> {
+        return apiHelper.loadReferences(prefHelper.getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
+            .doOnError {
+                Log.e(TAG, it.message)
+            }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+
+    override fun uploadFile(list: MutableList<MultipartBody.Part>): Observable<ServerResponse<com.example.myapplication.data.model.File>> =
+        Observable.fromIterable(list)
+            .flatMapSingle {
+                apiHelper.uploadReferences(getItem(PreferenceHelperImpl.CURRENT_GROUP_ID), it)
+            }.subscribeOn(Schedulers.io())
+
+    override fun downloadFile(fileName: String): Single<File> =
+        apiHelper.downloadReference(fileName)
+            .flatMap {
+
+                val file =
+                    File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "catsix" + File.separator, fileName)
+
+                file.parentFile.mkdirs()
+                file.createNewFile()
+
+                val sink = Okio.buffer(Okio.sink(file))
+                it.body()!!.apply {
+                    sink.writeAll(source())
+                    close()
+                }
+
+                Single.just(file)
+            }.doOnError { Log.d("ZZZ", "Fail") }
+            .doOnSuccess { Log.d("ZZZ", "SUCCESS") }
+            .subscribeOn(Schedulers.io())
+
 }

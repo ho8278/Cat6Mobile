@@ -1,16 +1,16 @@
 package com.example.myapplication.data.remote.api
 
 import com.example.myapplication.data.model.*
+import com.example.myapplication.view.references.FileUploadResponse
 import com.example.myapplication.view.references.Reference
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
-import java.util.*
 
 interface ApiHelper {
     @GET("viewSchedules")
@@ -23,7 +23,7 @@ interface ApiHelper {
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
 
     @GET("showClientInfo")
-    fun getUser(@Query("client_ID") userId: String): Single<UserServerResponse>
+    fun getUser(@Query("client_ID") userId: String): Single<ServerResponse<User>>
 
     @GET("login")
     fun login(@Query("client_ID") id: String, @Query("client_password") pw: String): Single<ServerResponse<User>>
@@ -84,6 +84,16 @@ interface ApiHelper {
     @GET("checkVote")
     fun checkVote(@Query("vote_ID")voteID:String):Single<ServerResponse<User>>
 
+    @GET("viewFiles")
+    fun loadReferences(@Query("team_ID") id: String): Observable<ServerResponse<Reference>>
+
+    @Streaming
+    @GET("downloadFile/{fileName}")
+    fun downloadReference(@Path("fileName") fileName: String): Single<Response<ResponseBody>>
+
+    @Multipart
+    @POST("uploadFile")
+    fun uploadReferences(@Query("team_ID") teamID: String, @Part file: MultipartBody.Part): Single<ServerResponse<File>>
     @GET("groupId")
     fun loadReferences(@Query("groupId") id : String) : Observable<ServerResponse<Reference>>
 

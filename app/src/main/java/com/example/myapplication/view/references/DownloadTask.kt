@@ -6,11 +6,29 @@ package com.example.myapplication.view.references
 
 import android.content.Context
 import androidx.work.RxWorker
+import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.example.myapplication.data.DataManager
+import com.example.myapplication.data.remote.api.ApiHelper
 import io.reactivex.Single
+import java.io.File
 
-class DownloadTask(val context : Context, val workerParameters: WorkerParameters ) : RxWorker(context, workerParameters) {
-    override fun createWork(): Single<Result> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class DownloadTask(val context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {
+
+    private val dataManager: DataManager = DataManager.getInstance(context)
+
+    override fun doWork(): Result {
+
+        val fileName: String = inputData.getString("fileName")?:""
+
+        if(fileName.isNotEmpty()) {
+            val file : File = dataManager.downloadFile(fileName)
+                .blockingGet()
+
+            if(!file.exists())
+                return Result.failure()
+        }
+
+        return Result.success()
     }
 }
