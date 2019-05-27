@@ -1,9 +1,7 @@
 package com.example.myapplication.data.remote.api
 
 import com.example.myapplication.data.model.*
-import com.example.myapplication.view.references.FileUploadResponse
 import com.example.myapplication.view.references.Reference
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -23,7 +21,7 @@ interface ApiHelper {
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
 
     @GET("showClientInfo")
-    fun getUser(@Query("client_ID") userId: String): Single<ServerResponse<User>>
+    fun getUser(@Query("client_ID") userId: String): Single<UserServerResponse>
 
     @GET("login")
     fun login(@Query("client_ID") id: String, @Query("client_password") pw: String): Single<ServerResponse<User>>
@@ -94,8 +92,6 @@ interface ApiHelper {
     @Multipart
     @POST("uploadFile")
     fun uploadReferences(@Query("team_ID") teamID: String, @Part file: MultipartBody.Part): Single<ServerResponse<File>>
-    @GET("groupId")
-    fun loadReferences(@Query("groupId") id : String) : Observable<ServerResponse<Reference>>
 
     @POST("createClient")
     fun join(

@@ -2,8 +2,6 @@ package com.example.myapplication.view.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.data.model.User
 import com.example.myapplication.databinding.ItemGroupMemberBinding

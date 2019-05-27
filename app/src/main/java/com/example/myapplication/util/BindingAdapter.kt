@@ -22,9 +22,9 @@ import com.example.myapplication.view.detailvote.VoteItemListAdapter
 import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.MemberListAdapter
 import com.example.myapplication.view.main.TeamListAdapter
-import com.example.myapplication.view.vote.VoteListAdapter
 import com.example.myapplication.view.references.Reference
 import com.example.myapplication.view.references.ReferenceListAdapter
+import com.example.myapplication.view.vote.VoteListAdapter
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 

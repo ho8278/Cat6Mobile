@@ -2,13 +2,11 @@ package com.example.myapplication.data
 
 import com.example.myapplication.data.model.*
 import com.example.myapplication.view.main.ErrorCode
-import com.example.myapplication.view.references.FileUploadResponse
 import com.example.myapplication.view.references.Reference
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.Response
 
 
 interface DataSource{
@@ -67,7 +65,6 @@ interface DataSource{
 
     fun uploadFile(list : MutableList<MultipartBody.Part>) : Observable<ServerResponse<File>>
     fun downloadFile(fileName : String) : Single<java.io.File>
-    fun loadReferences(groupId : String) : Observable<ServerResponse<Reference>>
 
     fun join(id: String,pw: String, name: String, nickname: String):Single<Int>
 }

@@ -1,9 +1,13 @@
 package com.example.myapplication.view.login;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentTransaction;
+import com.example.myapplication.R;
 import com.example.myapplication.data.DataSource;
 import com.example.myapplication.databinding.ActivityLoginBinding;
 import com.example.myapplication.view.base.BaseActivity;
@@ -11,10 +15,6 @@ import com.example.myapplication.view.join.JoinFragment;
 import com.example.myapplication.view.main.ErrorCode;
 import com.example.myapplication.view.main.MainActivity;
 import org.jetbrains.annotations.NotNull;
-import com.example.myapplication.R;
-import android.os.Bundle;
-import android.widget.EditText;
-import android.view.View;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator {
     EditText et_id, et_pw;

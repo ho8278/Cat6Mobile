@@ -6,7 +6,6 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Team
 import com.example.myapplication.view.base.BaseViewModel
-import java.util.*
 
 class TeamListViewModel:BaseViewModel{
 

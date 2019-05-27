@@ -5,12 +5,9 @@
 package com.example.myapplication.view.references
 
 import android.content.Context
-import androidx.work.RxWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.myapplication.data.DataManager
-import com.example.myapplication.data.remote.api.ApiHelper
-import io.reactivex.Single
 import java.io.File
 
 class DownloadTask(val context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {

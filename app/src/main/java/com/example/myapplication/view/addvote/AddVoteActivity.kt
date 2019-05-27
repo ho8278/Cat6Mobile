@@ -15,7 +15,6 @@ import com.example.myapplication.databinding.ActivityAddVoteBinding
 import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.main.ErrorCode
-import com.example.myapplication.view.vote.VoteActivity
 import kotlinx.android.synthetic.main.activity_add_vote.*
 
 class AddVoteActivity : BaseActivity<ActivityAddVoteBinding, AddVoteViewModel>(), AddNavigator {

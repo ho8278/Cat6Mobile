@@ -5,11 +5,9 @@ import com.example.myapplication.data.DataSource;
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl;
 import com.example.myapplication.data.model.ServerResponse;
 import com.example.myapplication.data.model.Team;
-import com.example.myapplication.data.model.User;
 import com.example.myapplication.view.base.BaseViewModel;
-import com.google.android.gms.tasks.OnSuccessListener;
-import io.reactivex.functions.Consumer;
 import com.example.myapplication.view.main.ErrorCode;
+import io.reactivex.functions.Consumer;
 import org.jetbrains.annotations.NotNull;
 
 public class LoginViewModel extends BaseViewModel {

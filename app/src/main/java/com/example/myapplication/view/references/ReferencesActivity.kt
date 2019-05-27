@@ -2,15 +2,10 @@ package com.example.myapplication.view.references
 
 import android.app.Activity
 import android.content.Intent
-import android.database.Cursor
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +15,6 @@ import com.example.myapplication.databinding.ActivityReferencesBinding
 import com.example.myapplication.util.FilePathProvider
 import com.example.myapplication.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_references.*
-import java.io.File
 
 
 class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceListViewModel>() {

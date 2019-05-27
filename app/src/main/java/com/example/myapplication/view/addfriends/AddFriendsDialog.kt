@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.data.model.User
 import com.example.myapplication.databinding.DialogAddFriendsBinding
 import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.main.AppInitialize

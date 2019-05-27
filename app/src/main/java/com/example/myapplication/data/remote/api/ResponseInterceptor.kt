@@ -1,8 +1,6 @@
 package com.example.myapplication.data.remote.api
 
-import android.content.Context
 import android.util.Log
-import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.view.main.AppInitialize
 import okhttp3.Interceptor

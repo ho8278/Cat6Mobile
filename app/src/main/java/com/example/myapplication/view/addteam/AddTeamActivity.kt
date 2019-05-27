@@ -1,7 +1,6 @@
 package com.example.myapplication.view.addteam
 
 import android.os.Bundle
-import android.view.Window
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityAddTeamBinding

@@ -1,13 +1,8 @@
 package com.example.myapplication.view.main
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
-import com.example.myapplication.data.local.pref.PreferenceHelperImpl
-import com.example.myapplication.data.model.ChatRoom
-import com.example.myapplication.data.model.Team
 import com.facebook.stetho.Stetho
 
 class AppInitialize:Application(){

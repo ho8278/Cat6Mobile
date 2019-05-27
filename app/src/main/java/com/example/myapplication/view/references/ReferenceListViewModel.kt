@@ -7,7 +7,6 @@ package com.example.myapplication.view.references
 import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
@@ -17,7 +16,6 @@ import com.example.myapplication.view.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.internal.operators.observable.ObservableFilter
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody

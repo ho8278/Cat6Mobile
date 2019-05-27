@@ -1,20 +1,13 @@
 package com.example.myapplication.view.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
-import com.example.myapplication.data.model.Team
 import com.example.myapplication.databinding.FragmentTeamlistBinding
 import com.example.myapplication.view.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_teamlist.*
-import java.util.*
 
 class TeamListFragment:BaseFragment<FragmentTeamlistBinding,TeamListViewModel>() {
     override val TAG: String

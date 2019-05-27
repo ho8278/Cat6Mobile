@@ -1,21 +1,18 @@
 package com.example.myapplication.view.join;
 
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import com.example.myapplication.R;
 import com.example.myapplication.data.DataSource;
 import com.example.myapplication.databinding.ActivityJoinBinding;
-import com.example.myapplication.databinding.ActivityLoginBinding;
-import com.example.myapplication.view.base.BaseActivity;
 import com.example.myapplication.view.base.BaseFragment;
 import com.example.myapplication.view.main.ErrorCode;
 import org.jetbrains.annotations.NotNull;
-import com.example.myapplication.R;
-import android.os.Bundle;
-import android.widget.EditText;
-import android.view.View;
 
 public class JoinFragment extends BaseFragment<ActivityJoinBinding, JoinViewModel> implements JoinNavigator {
     String id, pw,name,nickname;

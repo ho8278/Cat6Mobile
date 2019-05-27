@@ -2,7 +2,6 @@ package com.example.myapplication.view.join;
 
 import android.util.Log;
 import com.example.myapplication.data.DataSource;
-import com.example.myapplication.data.model.User;
 import com.example.myapplication.view.base.BaseViewModel;
 import com.example.myapplication.view.main.ErrorCode;
 import io.reactivex.functions.Consumer;

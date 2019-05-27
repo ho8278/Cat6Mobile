@@ -14,9 +14,7 @@ import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.main.MainActivity
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.socket.client.IO
 import io.socket.client.Socket

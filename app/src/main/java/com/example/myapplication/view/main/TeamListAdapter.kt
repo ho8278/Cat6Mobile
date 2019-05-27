@@ -1,25 +1,19 @@
 package com.example.myapplication.view.main
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Point
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Team
 import com.example.myapplication.databinding.ItemAddGroupBinding
 import com.example.myapplication.databinding.ItemTeamBinding
-import com.example.myapplication.view.addfriends.AddFriendsDialog
 import com.example.myapplication.view.addteam.AddTeamActivity
 import com.example.myapplication.view.addusertoteam.AddUserToTeamActivity
 import com.example.myapplication.view.base.BaseViewHolder
-import java.util.*
 
 class TeamListAdapter(val listener: GroupChangeListener) : RecyclerView.Adapter<BaseViewHolder>() {
 

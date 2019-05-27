@@ -13,7 +13,6 @@ import androidx.core.app.NotificationCompat
 import com.example.myapplication.R
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
-import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.view.main.MainActivity
 
 class RestartService:Service(){

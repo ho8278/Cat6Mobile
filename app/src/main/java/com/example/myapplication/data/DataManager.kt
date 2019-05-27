@@ -26,15 +26,10 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import retrofit2.Response
+import okio.Okio
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import retrofit2.adapter.rxjava2.Result.response
-import okio.Okio
-import okio.BufferedSink
-import android.os.Environment.DIRECTORY_DOWNLOADS
-import android.os.Environment.getExternalStoragePublicDirectory
 
 
 class DataManager : DataSource {
@@ -504,7 +499,6 @@ class DataManager : DataSource {
             .map { response -> ErrorCode.fromCode(response) }
     }
 
-    override fun uploadFile(path: String, chatInfo: ChatInfo): Single<Int> {
     override fun uploadFile(path: String): Single<Int> {
         val file = File(path)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
@@ -552,5 +546,4 @@ class DataManager : DataSource {
             }.doOnError { Log.d("ZZZ", "Fail") }
             .doOnSuccess { Log.d("ZZZ", "SUCCESS") }
             .subscribeOn(Schedulers.io())
-
 }

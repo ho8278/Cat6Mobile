@@ -92,6 +92,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="@dimen/nav_header_vertical_spacing"
+                                android:layout_marginTop="16dp"
                                 app:srcCompat="@drawable/cat6_logo"
                                 android:contentDescription="@string/nav_header_desc"
                                 android:id="@+id/iv_main_user_image"
@@ -101,7 +102,7 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/spinner_show_group"
-                                app:srcCompat="@drawable/ic_arrow_back"
+                                app:srcCompat="@drawable/ic_team"
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 android:layout_marginTop="16dp"
