@@ -4,9 +4,10 @@ import android.util.Log
 import androidx.databinding.ObservableArrayList
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.User
+import com.example.myapplication.view.addschedule.AddNavigator
 import com.example.myapplication.view.base.BaseViewModel
 
-class AddFriendViewModel(dataSource: DataSource):BaseViewModel(dataSource){
+class AddFriendViewModel(dataSource: DataSource, val listener:AddNavigator):BaseViewModel(dataSource){
     val userList = ObservableArrayList<User>()
 
     init{
@@ -26,6 +27,7 @@ class AddFriendViewModel(dataSource: DataSource):BaseViewModel(dataSource){
                 getDataManager().inviteChatRoom(it.id)
                     .subscribe({
                         Log.e("AddFriendVieModel",it.toString())
+                        listener.OnSaveSuccess()
                     },{
                         Log.e("AddFriendVieModel",it.message)
                     })

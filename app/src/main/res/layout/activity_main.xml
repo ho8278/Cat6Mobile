@@ -126,7 +126,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/nav_main_my_page"
                                 android:textAlignment="center"
-                                android:drawableStart="@drawable/ic_person_black_24dp"
+                                android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tv_main_user_name"/>

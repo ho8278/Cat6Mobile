@@ -158,6 +158,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
             }
             AppInitialize.dataSource.getUser(getItem(position).send_user_id)
                 .subscribe({
+                    Log.e(TAG,"${it.nickname}")
                     binding.tvTheirname.setText(it.nickname)
                     binding.tvMessageBody.setText(getItem(position).message)
                     binding.tvMessageClock.setText(date)

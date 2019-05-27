@@ -22,14 +22,25 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
 
     val userNickName = ObservableField<String>()
 
-    fun updateChatList() {
-        AppInitialize.dataSource.loadChatRoom()
-            .subscribe({
-                chatList.clear()
-                chatList.addAll(it)
-            }, {
-                Log.e(TAG, it.message)
-            })
+    fun updateUI() {
+        getCompositeDisposable().add(
+            getDataManager().loadChatRoom()
+                .subscribe({
+                    chatList.clear()
+                    chatList.addAll(it)
+                }, {
+                    Log.e(TAG, it.message)
+                })
+        )
+        getCompositeDisposable().add(
+            getDataManager().loadGroupClient()
+                .subscribe({ list ->
+                    userList.clear()
+                    userList.addAll(list)
+                }, {
+                    Log.e(TAG, it.message)
+                })
+        )
     }
 
     fun init() {
@@ -45,7 +56,6 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
                     chatList.clear()
                     chatList.addAll(list)
                     getDataManager().subscribeTopic(list)
-                    Log.e(TAG, list.toString())
                 }, {
                     Log.e(TAG, it.message)
                 })
@@ -58,7 +68,6 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
                     val currentUser =
                         userList.find { it.id == getDataManager().getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
                     userNickName.set(currentUser?.nickname)
-                    Log.e(TAG, list.toString())
                 }, {
                     Log.e(TAG, it.message)
                 })
@@ -75,7 +84,6 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
             getDataManager().createChatRoom(client_ID, chatRoomName)
                 .subscribe({ room ->
                     chatList.add(room)
-                    Log.e(TAG, "${room.id} ${room.name}")
                 }, {
                     Log.e(TAG, it.message)
                 })

@@ -1,5 +1,6 @@
 package com.example.myapplication.view.addusertoteam
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.example.myapplication.R
@@ -43,6 +44,7 @@ class AddUserToTeamActivity : BaseActivity<DialogAddUserToTeamBinding, AddUserTo
 
     override fun OnSaveSuccess() {
         Toast.makeText(this, "성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        sendBroadcast(Intent("updateChatList"))
         finish()
     }
 }

@@ -63,6 +63,7 @@ class DbHelperImpl : DbHelper {
         return Single.fromCallable {
             appDatabase.userDao.getUser(userId)
         }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnError { Log.e(TAG, it.message) }
     }
 

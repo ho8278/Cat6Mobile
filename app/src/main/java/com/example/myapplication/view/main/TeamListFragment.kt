@@ -38,6 +38,7 @@ class TeamListFragment:BaseFragment<FragmentTeamlistBinding,TeamListViewModel>()
         binding.rvTeamlist.adapter=TeamListAdapter(listener)
 
         binding.ivBackButton.setOnClickListener {
+            (activity as MainViewRefresh).refresh()
             val transaction = activity?.supportFragmentManager?.beginTransaction()
             transaction?.remove(this)
             transaction?.commit()

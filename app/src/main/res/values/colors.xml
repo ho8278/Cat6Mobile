@@ -9,6 +9,7 @@
 
     <color name="colorVoteSelect">#CDCD00</color>
     <color name="colorVoteUnSelect">#FFFFFF</color>
+    <color name="colorMyPage">#1C0BE7</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#C1c1c1c1</color>

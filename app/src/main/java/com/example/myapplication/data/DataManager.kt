@@ -291,14 +291,12 @@ class DataManager : DataSource {
 
     override fun subscribeTopic(list: List<ChatRoom>) {
         FirebaseMessaging.getInstance().apply {
-            list.forEach { subscribeToTopic(it.id) }
             subscribeToTopic("main")
         }
     }
 
     override fun unSubscribeTopic(list: List<ChatRoom>) {
         FirebaseMessaging.getInstance().apply {
-            list.forEach { unsubscribeFromTopic(it.id) }
             unsubscribeFromTopic("main")
         }
     }

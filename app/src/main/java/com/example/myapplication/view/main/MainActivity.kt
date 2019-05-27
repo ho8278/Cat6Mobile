@@ -25,6 +25,7 @@ import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.calendar.CalendarActivity
 import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.chat.ChatViewModel
+import com.example.myapplication.view.mypage.MyPageActivity
 import com.example.myapplication.view.vote.VoteActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -33,7 +34,7 @@ import kotlinx.android.synthetic.main.content_main.view.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     NavigationView.OnNavigationItemSelectedListener, GroupChangeListener, ChatRoomChangeListener, MemberClickListener,
-    MainNavigator {
+    MainNavigator, MainViewRefresh {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
     private val FILE_REQUEST_CODE = 10
@@ -41,7 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private lateinit var chatViewModel: ChatViewModel
     var receiver:BroadcastReceiver = object:BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
-            viewModel.updateChatList()
+            viewModel.updateUI()
         }
     }
     var serviceIntent:Intent? = null
@@ -123,6 +124,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private fun initView() {
         binding.mainviewmodel = viewModel
 
+        btn_main_my_page.setOnClickListener {
+            val intent = Intent(this,MyPageActivity::class.java)
+            startActivity(intent)
+        }
+
         rcv_main_participants.adapter = MemberListAdapter(this)
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
@@ -167,10 +173,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 fileChooser.setType("*/*")
                 fileChooser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivityForResult(Intent.createChooser(fileChooser, "Open"), FILE_REQUEST_CODE)
-            }
-
-            iv_add_friend.setOnClickListener {
-                //TODO:친구들 초대
             }
 
             iv_notice.setOnClickListener {
@@ -264,5 +266,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
         }
         dialog.show()
+    }
+
+    override fun refresh() {
+        viewModel.updateUI()
     }
 }

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="viewmodel" type="com.example.myapplication.view.mypage.MyPageViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="@color/colorBlack"
+                    android:text="My Page"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_bottom"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/cv_mypage"
+                app:cardElevation="5dp"
+                app:cardBackgroundColor="@color/colorMyPage"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+                app:cardCornerRadius="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_card_top"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.35"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_card_bottom"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.65"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_card_right"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_id_card"
+                        app:srcCompat="@drawable/ic_id_card"
+                        app:layout_constraintTop_toBottomOf="@id/guideline_card_top"
+                        app:layout_constraintBottom_toTopOf="@id/guideline_card_bottom"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/guideline_card_right"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
+
+                <TextView
+                        android:id="@+id/view_dot_id"
+                        app:layout_constraintTop_toTopOf="@id/tv_user_id"
+                        app:layout_constraintLeft_toLeftOf="@id/view_dot_name"
+                        app:layout_constraintRight_toRightOf="@id/view_dot_name"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_user_id"
+                        android:text="ID: "
+                        android:textColor="@color/colorWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_user_id"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintLeft_toLeftOf="@id/tv_user_name"
+                        app:layout_constraintBottom_toTopOf="@id/guideline_card_top"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="15sp"
+                        android:text="@{viewmodel.id}"
+                        tools:text="TEST"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/view_dot_name"
+                        app:layout_constraintTop_toTopOf="@id/tv_user_name"
+                        app:layout_constraintLeft_toLeftOf="@id/view_dot_nickname"
+                        app:layout_constraintRight_toRightOf="@id/view_dot_nickname"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
+                        android:text="Name: "
+                        android:textColor="@color/colorWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_user_name"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintLeft_toLeftOf="@id/tv_user_nickname"
+                        app:layout_constraintTop_toBottomOf="@id/guideline_card_top"
+                        app:layout_constraintBottom_toTopOf="@id/guideline_card_bottom"
+                        android:textSize="15sp"
+                        android:text="@{viewmodel.name}"
+                        tools:text="TEST"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/view_dot_nickname"
+                        app:layout_constraintTop_toTopOf="@id/tv_user_nickname"
+                        app:layout_constraintLeft_toLeftOf="@id/guideline_card_right"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_user_nickname"
+                        android:text="NickName: "
+                        android:textColor="@color/colorWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_user_nickname"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toRightOf="@id/view_dot_nickname"
+                        app:layout_constraintTop_toBottomOf="@id/guideline_card_bottom"
+                        android:layout_marginTop="8dp"
+                        android:textSize="15sp"
+                        android:text="@{viewmodel.nickname}"
+                        tools:text="TEST"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
