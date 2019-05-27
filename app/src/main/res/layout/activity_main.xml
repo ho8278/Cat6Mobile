@@ -135,13 +135,22 @@
                         <!-- 메뉴 항목들 -->
                         <TextView
                                 style="@style/DrawerItemDefault"
+                                android:id="@+id/btn_main_conference"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="회의"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_my_page"/>
+                        <TextView
+                                style="@style/DrawerItemDefault"
                                 android:id="@+id/btn_main_schedule"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/nav_main_schedule"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/btn_main_my_page"/>
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_conference"/>
 
                         <TextView
                                 style="@style/DrawerItemDefault"

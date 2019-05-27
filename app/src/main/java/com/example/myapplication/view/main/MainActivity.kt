@@ -28,6 +28,7 @@ import com.example.myapplication.view.chat.ChatViewModel
 import com.example.myapplication.view.mypage.MyPageActivity
 import com.example.myapplication.view.references.ReferencesActivity
 import com.example.myapplication.view.vote.VoteActivity
+import com.example.myapplication.view.web.WebActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.activity_main.*
@@ -224,6 +225,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         btn_main_references.setOnClickListener {
             //TODO:자료실 화면 이동
+        }
+
+        btn_main_conference.setOnClickListener {
+            val intent = Intent(this,WebActivity::class.java)
+            startActivity(intent)
         }
 
     }

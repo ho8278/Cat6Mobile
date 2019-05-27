@@ -143,8 +143,11 @@ class DataManager : DataSource {
             .doOnError { Log.e(TAG, it.message) }
             .flatMap { it ->
                 val code = it.responseCode.toInt()
+                val list = it.data
                 Single.create<ErrorCode> {
-                    if (code == ErrorCode.WRONG_PARAMETER.code)
+                    if(list.size==0)
+                        it.onSuccess(ErrorCode.SUCCESS)
+                    else if (code == ErrorCode.WRONG_PARAMETER.code)
                         it.onError(Throwable(ErrorCode.WRONG_PARAMETER.description))
                     else
                         it.onSuccess(ErrorCode.SUCCESS)
@@ -289,8 +292,10 @@ class DataManager : DataSource {
             }
             .flatMap { apiHelper.loadTeams(it.id) }
             .doOnSuccess {
-                if(it.data.size!=0)
-                    prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
+                if(it.data.size!=0){
+                    if(getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID).isEmpty())
+                        prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
+                }
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -479,8 +484,10 @@ class DataManager : DataSource {
             voteItemIDlist.forEachIndexed { index, s ->
                 vote(voteID, s)
                     .subscribe({
-                        if (voteItemIDlist.size - 1 == index)
+                        if (voteItemIDlist.size - 1 == index && it == ErrorCode.SUCCESS){
+                            emitter.onNext(it)
                             emitter.onComplete()
+                        }
                         if (it == ErrorCode.SUCCESS)
                             emitter.onNext(it)
                         else

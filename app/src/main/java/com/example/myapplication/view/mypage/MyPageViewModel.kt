@@ -28,6 +28,10 @@ class MyPageViewModel(dataSource: DataSource):BaseViewModel(dataSource){
     fun logout(){
         getDataManager().saveItem(PreferenceHelperImpl.AUTO_LOGIN_ID,"")
         getDataManager().saveItem(PreferenceHelperImpl.AUTO_LOGIN_PW,"")
+        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID,"")
+        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_USER_ID,"")
+        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,"")
+        getDataManager().saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID,"")
         getCompositeDisposable().add(
             getDataManager().logout()
                 .subscribe({
