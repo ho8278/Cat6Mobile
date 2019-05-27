@@ -23,6 +23,7 @@ interface DataSource{
     fun <T:Any> saveItem(key:String,text:T)
     fun <T:Any> getItem(key:String):T
 
+    fun loadUser(userID:String):Single<UserServerResponse>
     fun getCurrentUser():Single<User>
     fun getUser(userID:String):Single<User>
 
@@ -32,6 +33,7 @@ interface DataSource{
 
     fun insertTeam(team: Team)
     fun loadTeam(userID:String):Single<List<Team>>
+    fun addUserToTeam(userID:String):Single<ErrorCode>
 
     fun login(id:String, pw:String): Single<ServerResponse<Team>>
     fun subscribeTopic(list:List<ChatRoom>)

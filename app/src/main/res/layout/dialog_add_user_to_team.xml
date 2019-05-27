@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable name="viewmodel" type="com.example.myapplication.view.addusertoteam.AddUserToTeamViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_user_id"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/guideline_center"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="@={viewmodel.searchText}"
+                android:hint="유저 아이디"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_center"
+                app:layout_constraintGuide_percent="0.7"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_search"
+                android:text="검색"
+                app:layout_constraintTop_toTopOf="@id/et_user_id"
+                app:layout_constraintBottom_toBottomOf="@id/et_user_id"
+                app:layout_constraintLeft_toRightOf="@id/guideline_center"
+                android:layout_marginBottom="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_user"
+                app:layout_constraintTop_toBottomOf="@id/et_user_id"
+                app:layout_constraintLeft_toRightOf="@id/guideline_textLeft"
+                app:layout_constraintRight_toLeftOf="@id/guideline_textRight"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                android:text="@{viewmodel.nickname}"
+                tools:text = "TESTTEST"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="40dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textLeft"
+                app:layout_constraintGuide_percent="0.2"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_textRight"
+                app:layout_constraintGuide_percent="0.8"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/tv_cancel"
+                app:layout_constraintBottom_toBottomOf="@id/tv_ok"
+                app:layout_constraintTop_toTopOf="@id/tv_ok"
+                app:layout_constraintRight_toLeftOf="@id/tv_ok"
+                android:layout_marginRight="16dp"
+                android:text="취소"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tv_ok"
+                app:layout_constraintTop_toBottomOf="@id/tv_user"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="확인"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

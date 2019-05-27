@@ -121,6 +121,14 @@ class DataManager : DataSource {
         return prefHelper.getItem(key)
     }
 
+
+    override fun loadUser(userID: String): Single<UserServerResponse> {
+        return apiHelper.getUser(userID)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    }
+
     override fun getCurrentUser(): Single<User> {
         return dbHelper.getUser(prefHelper.getItem(PreferenceHelperImpl.CURRENT_USER_ID))
     }
@@ -197,6 +205,13 @@ class DataManager : DataSource {
             .doOnSuccess { dbHelper.updateTeam(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun addUserToTeam(userID: String): Single<ErrorCode> {
+        return apiHelper.inviteTeam(userID,getItem(PreferenceHelperImpl.CURRENT_GROUP_ID))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { response -> ErrorCode.fromCode(response) }
     }
 
     override fun loadChatRoom(): Single<List<ChatRoom>> {

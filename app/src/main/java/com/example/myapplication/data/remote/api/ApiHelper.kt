@@ -18,7 +18,7 @@ interface ApiHelper {
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
 
     @GET("showClientInfo")
-    fun getUser(@Query("client_ID") userId: String): Single<ServerResponse<User>>
+    fun getUser(@Query("client_ID") userId: String): Single<UserServerResponse>
 
     @GET("login")
     fun login(@Query("client_ID") id: String, @Query("client_password") pw: String): Single<ServerResponse<User>>
@@ -43,6 +43,9 @@ interface ApiHelper {
 
     @POST("inviteChatRoom")
     fun inviteChatRoom(@Query("client_ID") clientID: String, @Query("chat_room_ID") chatID: String): Single<Int>
+
+    @POST("inviteTeam")
+    fun inviteTeam(@Query("client_ID")clientID:String, @Query("team_ID")teamID:String):Single<Int>
 
     @Multipart
     @POST("uploadFile")
