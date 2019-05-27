@@ -38,6 +38,8 @@ interface DataSource{
     fun addUserToTeam(userID:String):Single<ErrorCode>
 
     fun login(id:String, pw:String): Single<ServerResponse<Team>>
+    fun logout():Single<String>
+
     fun subscribeTopic(list:List<ChatRoom>)
     fun unSubscribeTopic(list:List<ChatRoom>)
 

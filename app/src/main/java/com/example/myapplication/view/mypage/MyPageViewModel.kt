@@ -3,6 +3,7 @@ package com.example.myapplication.view.mypage
 import android.util.Log
 import androidx.databinding.ObservableField
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.view.base.BaseViewModel
 
 class MyPageViewModel(dataSource: DataSource):BaseViewModel(dataSource){
@@ -20,6 +21,19 @@ class MyPageViewModel(dataSource: DataSource):BaseViewModel(dataSource){
                     nickname.set(it.nickname)
                 },{
                   Log.e(TAG,it.message)
+                })
+        )
+    }
+
+    fun logout(){
+        getDataManager().saveItem(PreferenceHelperImpl.AUTO_LOGIN_ID,"")
+        getDataManager().saveItem(PreferenceHelperImpl.AUTO_LOGIN_PW,"")
+        getCompositeDisposable().add(
+            getDataManager().logout()
+                .subscribe({
+                    Log.e(TAG, it)
+                },{
+                    Log.e(TAG, it.message)
                 })
         )
     }

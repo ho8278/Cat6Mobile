@@ -299,6 +299,12 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun logout(): Single<String> {
+        return apiHelper.logout()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun subscribeTopic(list: List<ChatRoom>) {
         FirebaseMessaging.getInstance().apply {
             subscribeToTopic("main")
