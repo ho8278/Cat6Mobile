@@ -77,7 +77,7 @@ interface ApiHelper {
         @Query("schedule_contents") contents: String, @Query("schedule_team_ID") teamID: String
     )
 
-    @GET("createClient")
+    @POST("createClient")
     fun join(
         @Query("client_ID") client_ID: String, @Query("client_password") client_password: String, @Query("client_name") client_name: String, @Query(
             "client_nickname") client_nickname: String,@Query("profileLink")link:String=""

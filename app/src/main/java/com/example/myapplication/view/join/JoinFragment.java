@@ -1,14 +1,15 @@
 package com.example.myapplication.view.join;
 
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 import com.example.myapplication.data.DataSource;
 import com.example.myapplication.databinding.ActivityJoinBinding;
 import com.example.myapplication.databinding.ActivityLoginBinding;
 import com.example.myapplication.view.base.BaseActivity;
 import com.example.myapplication.view.base.BaseFragment;
-import com.example.myapplication.view.base.BaseViewModel;
 import com.example.myapplication.view.main.ErrorCode;
 import org.jetbrains.annotations.NotNull;
 import com.example.myapplication.R;
@@ -16,13 +17,12 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.view.View;
 
-public class JoinActivity extends BaseFragment<ActivityJoinBinding, JoinViewModel> implements JoinNavigator {
-    EditText et_id, et_pw,et_name,et_nickname;
+public class JoinFragment extends BaseFragment<ActivityJoinBinding, JoinViewModel> implements JoinNavigator {
     String id, pw,name,nickname;
     @NotNull
     @Override
     public String getTAG() {
-        return JoinActivity.class.getSimpleName();
+        return JoinFragment.class.getSimpleName();
     }
 
     @NotNull
@@ -39,6 +39,9 @@ public class JoinActivity extends BaseFragment<ActivityJoinBinding, JoinViewMode
     @Override
     public void OnSuccess() {
         Toast.makeText(getActivity(),"회원 가입 성공",Toast.LENGTH_LONG).show();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.remove(this);
+        transaction.commit();
     }
 
 
@@ -48,20 +51,17 @@ public class JoinActivity extends BaseFragment<ActivityJoinBinding, JoinViewMode
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        et_id = getActivity().findViewById(R.id.et_id);
-        et_pw = getActivity().findViewById(R.id.et_pw);
-        et_name = getActivity().findViewById(R.id.et_id);
-        et_nickname = getActivity().findViewById(R.id.et_pw);
         binding.joinOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = et_id.getText().toString();
-                pw = et_pw.getText().toString();
-                name = et_id.getText().toString();
-                nickname = et_pw.getText().toString();
+                id = binding.etId.getText().toString();
+                pw = binding.etPw.getText().toString();
+                name = binding.etName.getText().toString();
+                nickname = binding.etNickname.getText().toString();
+                Log.e("TEST",id+", "+pw +", "+name+", "+nickname);
                 viewModel.OKButtonClicked(id,pw,name,nickname);
             }
         });

@@ -262,9 +262,13 @@ class DataManager : DataSource {
             .doOnSuccess {
                 prefHelper.saveItem(PreferenceHelperImpl.CURRENT_USER_ID, it.id)
             }
-            .subscribeOn(Schedulers.io())
             .flatMap { apiHelper.loadTeams(it.id) }
-            .doOnSuccess { prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id) }
+            .doOnSuccess {
+                if(it.data.size!=0)
+                    prefHelper.saveItem(PreferenceHelperImpl.CURRENT_GROUP_ID, it.data[0].id)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun subscribeTopic(list: List<ChatRoom>) {
@@ -282,7 +286,9 @@ class DataManager : DataSource {
     }
 
     override fun join(id: String, pw: String, name: String, nickname: String):Single<Int> {
-        return apiHelper.join(id,pw,name,nickname).subscribeOn(Schedulers.io())
+        return apiHelper.join(id,pw,name,nickname,"")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun createTeam(teamName: String): Single<String> {
