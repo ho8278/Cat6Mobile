@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.databinding.ObservableArrayList
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
+import com.example.myapplication.data.model.ServerResponse
 import com.example.myapplication.view.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 class ReferenceListViewModel(val dataSource : DataSource) : BaseViewModel(dataSource) {
 
     val referenceList : ObservableArrayList<Reference> = ObservableArrayList()
-    val originList = mutableListOf<Reference>()
+    private val originList = mutableListOf<Reference>()
     private lateinit var preSearchDisposable : Disposable
 
     fun init() {
@@ -27,8 +28,21 @@ class ReferenceListViewModel(val dataSource : DataSource) : BaseViewModel(dataSo
 
     }
 
+    fun loadReferenceList(id : String)
+        = dataSource.loadReferences(id)
+        .subscribe {
+            setReferences(it.data)
+        }
+
     fun addReference(reference: Reference) {
         originList.add(reference)
+        referenceList.clear()
+        referenceList.addAll(originList)
+    }
+
+    private fun setReferences(reference: List<Reference>) {
+        originList.clear()
+        originList.addAll(reference)
         referenceList.clear()
         referenceList.addAll(originList)
     }

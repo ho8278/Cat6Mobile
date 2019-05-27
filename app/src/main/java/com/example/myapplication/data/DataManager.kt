@@ -11,6 +11,7 @@ import com.example.myapplication.data.remote.api.ApiHelperImpl
 import com.example.myapplication.data.remote.fcm.FCMHelperImpl
 import com.example.myapplication.util.ChatSocketService
 import com.example.myapplication.view.main.ErrorCode
+import com.example.myapplication.view.references.Reference
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -501,6 +502,14 @@ class DataManager : DataSource {
         val body = MultipartBody.Part.createFormData("file",file.name,requestFile)
         return apiHelper.uploadFile(requestBody,body)
             .map { response -> response.responseCode.toInt() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun loadReferences(groupId: String): Observable<ServerResponse<Reference>> {
+        return apiHelper.loadReferences(groupId)
+            .doOnError { Log.e(TAG, it.message) }
+            .doOnNext { it.data }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -1,6 +1,8 @@
 package com.example.myapplication.data.remote.api
 
 import com.example.myapplication.data.model.*
+import com.example.myapplication.view.references.Reference
+import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -81,6 +83,9 @@ interface ApiHelper {
 
     @GET("checkVote")
     fun checkVote(@Query("vote_ID")voteID:String):Single<ServerResponse<User>>
+
+    @GET("groupId")
+    fun loadReferences(@Query("groupId") id : String) : Observable<ServerResponse<Reference>>
 
     @POST("createClient")
     fun join(

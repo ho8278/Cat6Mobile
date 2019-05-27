@@ -7,6 +7,7 @@ import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.data.model.Team
 import com.example.myapplication.data.model.User
+import com.example.myapplication.view.references.Reference
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -63,6 +64,8 @@ interface DataSource{
     fun loadVote():Single<List<Vote>>
     fun loadDetailVote(voteID:String):Single<Vote>
     fun acceptVote(voteID:String,voteItemIDlist:List<String>):Observable<ErrorCode>
+
+    fun loadReferences(groupId : String) : Observable<ServerResponse<Reference>>
 
     fun join(id: String,pw: String, name: String, nickname: String):Single<Int>
 }
