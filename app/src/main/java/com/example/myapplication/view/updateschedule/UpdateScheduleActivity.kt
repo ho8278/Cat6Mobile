@@ -42,7 +42,10 @@ class UpdateScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSched
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> finish()
-            R.id.update_schedule -> viewModel.updateSchedule()
+            R.id.update_schedule -> {
+                viewModel.updateSchedule()
+                finish()
+            }
             else -> {
                 Log.e(TAG, this.toString())
             }

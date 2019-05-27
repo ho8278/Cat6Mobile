@@ -26,7 +26,7 @@ class DetailVote:BaseActivity<ActivityDetailVoteBinding, AddVoteViewModel>(), Ad
     lateinit var voteID : String
 
     override fun getViewModel(dataSource: DataSource): AddVoteViewModel {
-        return AddVoteViewModel(dataSource, voteID)
+        return AddVoteViewModel(dataSource, voteID, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

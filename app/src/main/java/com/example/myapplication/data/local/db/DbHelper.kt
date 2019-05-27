@@ -16,6 +16,7 @@ interface DbHelper {
 
     fun insertSchedule(schedule:Schedule)
     fun updateSchedule(scheduleList:List<Schedule>)
+    fun updateSchedule(schedule:Schedule)
     fun getSchedules(year:Int, month:Int, day:Int):Single<List<Schedule>>
 
     fun insertTeam(team: Team)

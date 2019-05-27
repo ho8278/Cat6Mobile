@@ -23,6 +23,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     }
 
     constructor(dataSource: DataSource, navigator: AddNavigator?, schedule: Schedule) : this(dataSource) {
+        this.schedule=schedule
         val parser=SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val startTime=parser.parse(schedule.startDate)
         val endTime=parser.parse(schedule.endDate)
@@ -31,6 +32,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         endDate.set(DateTime(endTime.time))
     }
 
+    lateinit var schedule:Schedule
     val TAG = AddScheduleViewModel::class.java.simpleName
     var navigator: AddNavigator? = null
     val startDate = ObservableField<DateTime>()
@@ -79,7 +81,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     }
 
     fun saveSchedule() {
-        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd hh:mm:ss")
+        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
         val currentGroupID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         getCompositeDisposable().add(
             getDataManager().saveSchedule(
@@ -102,11 +104,16 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         )
     }
 
-    fun delteSchedule(){
-
-    }
-
     fun updateSchedule(){
-
+        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+        val currentGroupID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        getDataManager().updateSchedulers(
+            Schedule(
+                schedule.id,
+                startDate.get()?.toString(formatter) ?: "",
+                endDate.get()?.toString(formatter) ?: "",
+                title.get() ?: "",
+                currentGroupID
+            ))
     }
 }

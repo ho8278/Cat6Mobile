@@ -194,6 +194,16 @@ class DataManager : DataSource {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun deleteSchedule(id: String): Single<Int> {
+        return apiHelper.deleteSchedule(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateSchedulers(schedule: Schedule) {
+        dbHelper.updateSchedule(schedule)
+    }
+
     override fun insertTeam(team: Team) {
         dbHelper.insertTeam(team)
     }

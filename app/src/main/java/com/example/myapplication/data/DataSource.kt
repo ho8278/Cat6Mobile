@@ -30,6 +30,8 @@ interface DataSource{
     fun loadSchedule(groupId:String):Single<ErrorCode>
     fun getSchedules(year:Int,month:Int,day:Int):Single<List<Schedule>>
     fun saveSchedule(schedule: Schedule):Single<String>
+    fun deleteSchedule(id:String):Single<Int>
+    fun updateSchedulers(schedule:Schedule)
 
     fun insertTeam(team: Team)
     fun loadTeam(userID:String):Single<List<Team>>

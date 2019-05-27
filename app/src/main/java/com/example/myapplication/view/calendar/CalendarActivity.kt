@@ -42,7 +42,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
 
     private fun initScheduleList() {
         binding.rvSchedule.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvSchedule.adapter = ScheduleListAdapter(this)
+        binding.rvSchedule.adapter = ScheduleListAdapter(this,viewModel)
 
         binding.ablToolbarcontainer.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { layout: AppBarLayout, offset ->
             viewModel.offsetChange(Math.abs(offset), layout.totalScrollRange)

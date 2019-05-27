@@ -15,9 +15,10 @@ class AddVoteViewModel : BaseViewModel {
     constructor(dataSource: DataSource, listener:AddNavigator? =null) : super(dataSource){
         this.listener=listener
     }
-    constructor(dataSource: DataSource, voteID:String):super(dataSource){
+    constructor(dataSource: DataSource, voteID:String, listener:AddNavigator):super(dataSource){
         getVoteInfo(voteID)
         this.voteID=voteID
+        this.listener = listener
     }
 
     lateinit var voteID: String
@@ -91,6 +92,7 @@ class AddVoteViewModel : BaseViewModel {
             getDataManager().acceptVote(voteID,IDList)
                 .subscribe({
                     Log.e(TAG,it.description)
+                    listener?.OnSaveSuccess()
                 },{
                     Log.e(TAG,it.message)
                 })

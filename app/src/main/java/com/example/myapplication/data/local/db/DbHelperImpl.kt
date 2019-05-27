@@ -74,6 +74,13 @@ class DbHelperImpl : DbHelper {
             .subscribe({},{ Log.e(TAG, it.message) })
     }
 
+    override fun updateSchedule(schedule: Schedule) {
+        Completable.fromAction {
+            appDatabase.scheduleDao.updateSchedule(schedule)
+        }.subscribeOn(Schedulers.io())
+            .subscribe({},{ Log.e(TAG, it.message) })
+    }
+
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
         val realMonth = if (month < 10)
             "0" + month

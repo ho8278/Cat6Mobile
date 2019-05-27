@@ -41,7 +41,6 @@ class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: Sc
                 val dialog= AlertDialog.Builder(container.context)
                     .setMessage("정말 삭제하시겠습니까?")
                     .setPositiveButton("확인") { _, _ ->
-                        viewModel.delteSchedule()
                         listener.OnDelete(position)
                         list.removeAt(position)
                         notifyDataSetChanged()
@@ -49,6 +48,7 @@ class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: Sc
                     .setNegativeButton("취소"){ dialog, _ ->
                         dialog.cancel()
                     }
+                dialog.show()
             }
             tvUpdate.setOnClickListener {
                 val intent= Intent(container.context,UpdateScheduleActivity::class.java)
@@ -58,9 +58,6 @@ class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: Sc
         }
         container.addView(binding.root)
         return binding.root
-    }
-
-    fun setCurrentPosition(position:Int){
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

@@ -14,6 +14,9 @@ interface ScheduleDao {
     @Insert
     fun insertSchedules(scheduleList:List<Schedule>)
 
+    @Update
+    fun updateSchedule(schedule:Schedule)
+
     @Query("delete from Schedule")
     fun deleteAllSchedules()
 

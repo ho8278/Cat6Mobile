@@ -14,6 +14,9 @@ interface ApiHelper {
     @GET("viewSchedules")
     fun loadSchedules(@Query("team_ID") groupId: String): Single<ServerResponse<Schedule>>
 
+    @DELETE("deleteSchedule")
+    fun deleteSchedule(@Query("schedule_ID")id:String):Single<Int>
+
     @GET("viewTeams")
     fun loadTeams(@Query("client_ID") userId: String): Single<ServerResponse<Team>>
 

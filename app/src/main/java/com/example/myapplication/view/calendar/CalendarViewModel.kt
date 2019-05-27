@@ -64,4 +64,15 @@ class CalendarViewModel : BaseViewModel{
                 })
         }
     }
+
+    fun deleteSchedule(position:Int){
+        getCompositeDisposable().add(
+            getDataManager().deleteSchedule(scheduleList[position].id)
+                .subscribe({
+                    Log.e(TAG,it.toString())
+                },{
+                    Log.e(TAG,it.message)
+                })
+        )
+    }
 }

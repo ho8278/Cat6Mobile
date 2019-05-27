@@ -14,7 +14,7 @@ import com.example.myapplication.view.detailschedule.ScheduleChangeListener
 import com.example.myapplication.view.main.AppInitialize
 import java.util.*
 
-class ScheduleListAdapter(val listener: OnItemClickListener) : RecyclerView.Adapter<BaseViewHolder>(),
+class ScheduleListAdapter(val listener: OnItemClickListener, val viewModel:CalendarViewModel) : RecyclerView.Adapter<BaseViewHolder>(),
     ScheduleChangeListener {
     val TAG=ScheduleListAdapter::class.java.simpleName
     var scheduleList = mutableListOf<Schedule>()
@@ -48,12 +48,13 @@ class ScheduleListAdapter(val listener: OnItemClickListener) : RecyclerView.Adap
 
     override fun OnDelete(position: Int) {
         scheduleList.removeAt(position)
-        notifyDataSetChanged()
+        viewModel.deleteSchedule(position)
+        notifyItemRemoved(position)
     }
 
     override fun OnUpdate(position: Int, schedule: Schedule) {
         scheduleList[position] = schedule
-        notifyDataSetChanged()
+        notifyItemChanged(position)
     }
 
     inner class ScheduleViewHolder(val binding: ItemScheduleBinding, val dataSource: DataSource) :
