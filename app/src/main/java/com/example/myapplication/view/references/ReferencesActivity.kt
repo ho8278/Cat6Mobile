@@ -21,6 +21,8 @@ import com.example.myapplication.databinding.ActivityReferencesBinding
 import com.example.myapplication.util.FilePathProvider
 import com.example.myapplication.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_references.*
+import kotlinx.android.synthetic.main.fragment_teamlist.*
+import kotlinx.android.synthetic.main.fragment_teamlist.view.*
 
 
 class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceListViewModel>() {
@@ -65,7 +67,7 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
     private fun initListener() {
 
         // toolbar back button listener
-        toolbar_file_search.setNavigationOnClickListener {
+        ib_reference_back.setOnClickListener {
             finish()
         }
 
