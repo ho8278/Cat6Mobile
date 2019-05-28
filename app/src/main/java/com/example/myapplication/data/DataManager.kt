@@ -540,8 +540,9 @@ class DataManager : DataSource {
                 val file =
                     File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "catsix" + File.separator, fileName)
 
-                file.parentFile.mkdirs()
-                file.createNewFile()
+                if(!file.exists()) {
+                    file.parentFile.mkdirs()
+                }
 
                 val sink = Okio.buffer(Okio.sink(file))
                 it.body()!!.apply {

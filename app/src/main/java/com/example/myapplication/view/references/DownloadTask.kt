@@ -5,6 +5,7 @@
 package com.example.myapplication.view.references
 
 import android.content.Context
+import android.os.Environment
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.myapplication.data.DataManager
@@ -16,13 +17,18 @@ class DownloadTask(val context: Context, workerParameters: WorkerParameters) : W
 
     override fun doWork(): Result {
 
-        val fileName: String = inputData.getString("fileName")?:""
+        val fileName: String = inputData.getString("fileName") ?: ""
 
-        if(fileName.isNotEmpty()) {
-            val file : File = dataManager.downloadFile(fileName)
+        if (File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "catsix" + File.separator + fileName).exists()) {
+            return Result.success()
+        }
+
+
+        if (fileName.isNotEmpty()) {
+            val file: File = dataManager.downloadFile(fileName)
                 .blockingGet()
 
-            if(!file.exists())
+            if (!file.exists())
                 return Result.failure()
         }
 

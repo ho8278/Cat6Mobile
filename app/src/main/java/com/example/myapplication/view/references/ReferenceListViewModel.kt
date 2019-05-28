@@ -39,7 +39,8 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
     fun loadReferenceList() = getCompositeDisposable().add(dataSource.loadReferences()
         .subscribe {
             setReferences(it.data)
-            loadItemCountObservable.set(it.data.size.toString())
+            setViewReferences(originList)
+            loadItemCountObservable.set(it.data.size.toString() + "개 파일")
         })
 
     fun uploadReferences(filePathList: MutableList<String>) {
@@ -78,10 +79,10 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
 
     fun downloadReference(fileName: String) {
 
-        val inputData : Data.Builder = Data.Builder()
+        val inputData: Data.Builder = Data.Builder()
         inputData.putString("fileName", fileName)
 
-        val request : OneTimeWorkRequest = OneTimeWorkRequest.Builder(DownloadTask::class.java)
+        val request: OneTimeWorkRequest = OneTimeWorkRequest.Builder(DownloadTask::class.java)
             .setInputData(inputData.build())
             .addTag("DOWNLOAD")
             .build()
@@ -116,32 +117,34 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
         return false
     }
 
+    private fun setViewReferences(reference: List<Reference>) {
+        referenceList.clear()
+        referenceList.addAll(reference)
+        loadItemCountObservable.set(reference.size.toString() + "개 파일")
+    }
+
     private fun setReferences(reference: List<Reference>) {
         originList.clear()
         originList.addAll(reference)
-        referenceList.clear()
-        referenceList.addAll(originList)
     }
 
     fun filterItem(str: String) {
         if (::preSearchDisposable.isInitialized && !preSearchDisposable.isDisposed)
             preSearchDisposable.dispose()
 
-        preSearchDisposable = Observable.fromIterable(originList)
-            .filter { t -> t.title.contains(str) }
-            .toList()
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("Test", it.size.toString())
-                referenceList.clear()
-                if (str.isEmpty()) {
-                    referenceList.addAll(originList)
-                } else {
-                    referenceList.addAll(ArrayList(it))
-                }
-            }, {
-                it.stackTrace[0]
-            })
+        if (str.isNotEmpty()) {
+            preSearchDisposable = Observable.fromIterable(originList)
+                .filter { t -> t.title.contains(str) }
+                .toList()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    setViewReferences(it)
+                }, {
+                    it.stackTrace[0]
+                })
+        } else {
+            setViewReferences(originList)
+        }
     }
 }

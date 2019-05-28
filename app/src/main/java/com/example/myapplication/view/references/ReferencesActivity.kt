@@ -59,7 +59,10 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
     private fun initListener() {
 
         // toolbar back button listener
-        toolbar_file_search.setNavigationOnClickListener { }
+        toolbar_file_search.setNavigationOnClickListener {
+            //onBackPressed()
+            finish()
+        }
 
         //
         edit_file_search.setOnFocusChangeListener { _, hasFocus ->
@@ -92,6 +95,17 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
         }
     }
 
+    override fun onBackPressed() {
+
+        if(edit_file_search.isCursorVisible) {
+            edit_file_search.setText("")
+            viewModel.filterItem("")
+            edit_file_search.isCursorVisible = false
+            fab_references_add.show()
+        } else {
+            finish()
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

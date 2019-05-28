@@ -16,10 +16,10 @@ class ReferenceListAdapter(private val itemClickListener: ReferenceItemClickList
     ListAdapter<Reference, ReferenceListAdapter.ReferenceViewHolder>(Reference.DIFF_UTIL) {
 
     private lateinit var referencesList: MutableList<Reference>
-    private val imgRegex : Regex = Regex("([^\\s]+(\\.(?i)(jpg|png|gif|bmp))\$)")
-    private val pdfRegex : Regex = Regex(".*\\.(pdf)$")
-    private val hwpRegex : Regex = Regex(".*\\.(hwp)$")
-    private val videoRegex : Regex = Regex(".*\\.(wav|mp4|avi)$")
+    private val imgRegex: Regex = Regex("([^\\s]+(\\.(?i)(jpg|png|gif|bmp))\$)")
+    private val pdfRegex: Regex = Regex("([^\\s]+(\\.(?i)(pdf))\$)")
+    private val hwpRegex: Regex = Regex("([^\\s]+(\\.(?i)(hwp))\$)")
+    private val videoRegex: Regex = Regex("([^\\s]+(\\.(?i)(wav|mp4|avi))\$)")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReferenceViewHolder = ReferenceViewHolder(
         ItemReferenceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,7 +32,7 @@ class ReferenceListAdapter(private val itemClickListener: ReferenceItemClickList
         holder.itemView.setOnClickListener { itemClickListener.itemOnClicked(referencesList[position].title) }
     }
 
-    fun setList(referenceList : MutableList<Reference>) {
+    fun setList(referenceList: MutableList<Reference>) {
         this.referencesList = referenceList
         submitList(ArrayList(referencesList))
     }
@@ -42,14 +42,34 @@ class ReferenceListAdapter(private val itemClickListener: ReferenceItemClickList
         override fun bind(position: Int) {
             binding.tvReferenceItemName.text = referencesList[position].title
 
-            if(imgRegex.matches(referencesList[position].title)) {
-                binding.ivReferenceItemImg.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_image_black_24dp))
-            } else if(pdfRegex.matches(referencesList[position].title)) {
-                binding.ivReferenceItemImg.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_arrow_back))
-            } else if(hwpRegex.matches(referencesList[position].title)) {
-                binding.ivReferenceItemImg.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_document))
-            } else if(videoRegex.matches(referencesList[position].title)){
-                binding.ivReferenceItemImg.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_person_black_24dp))
+            if (imgRegex.matches(referencesList[position].title)) {
+                binding.ivReferenceItemImg.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        binding.root.context,
+                        R.drawable.ic_image_black_24dp
+                    )
+                )
+            } else if (pdfRegex.matches(referencesList[position].title)) {
+                binding.ivReferenceItemImg.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        binding.root.context,
+                        R.drawable.ic_arrow_back
+                    )
+                )
+            } else if (hwpRegex.matches(referencesList[position].title)) {
+                binding.ivReferenceItemImg.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        binding.root.context,
+                        R.drawable.ic_document
+                    )
+                )
+            } else if (videoRegex.matches(referencesList[position].title)) {
+                binding.ivReferenceItemImg.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        binding.root.context,
+                        R.drawable.ic_person_black_24dp
+                    )
+                )
             }
         }
     }
