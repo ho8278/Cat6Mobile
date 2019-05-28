@@ -4,7 +4,6 @@
 
 package com.example.myapplication.view.references
 
-import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.work.Data
@@ -43,10 +42,10 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
             loadItemCountObservable.set(it.data.size.toString() + "개 파일")
         })
 
-    fun uploadReferences(filePathList: MutableList<String>) {
+    fun uploadReferences(filePathList: MutableList<String>) : OneTimeWorkRequest? {
         // TODO : Worker 부르기
 
-        if (filePathList.size == 0) return
+        if (filePathList.size == 0) return null
 
         val transformList: MutableList<MultipartBody.Part> = mutableListOf()
 
@@ -74,7 +73,7 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
             WorkManager.getInstance().cancelAllWorkByTag("UPLOAD")
         }
 
-        WorkManager.getInstance().enqueue(request)
+        return request
     }
 
     fun downloadReference(fileName: String) {
@@ -88,12 +87,6 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
             .build()
 
         WorkManager.getInstance().enqueue(request)
-    }
-
-    fun addReference(reference: Reference) {
-        originList.add(reference)
-        referenceList.clear()
-        referenceList.addAll(originList)
     }
 
     private fun isSameWorkRunning(tag: String): Boolean {

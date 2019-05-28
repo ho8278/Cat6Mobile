@@ -1,17 +1,15 @@
 package com.example.myapplication.view.web
 
-import android.view.MotionEvent
-import androidx.core.content.ContextCompat
-import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintAttribute.setAttributes
-import android.view.View.SYSTEM_UI_FLAG_VISIBLE
-import android.view.WindowManager
-import android.webkit.WebChromeClient
-import android.os.Build
 import android.app.Activity
 import android.content.Context
+import android.os.Build
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.webkit.WebChromeClient
+import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 
 
 class FullscreenableChromeClient(activity: Activity) : WebChromeClient() {

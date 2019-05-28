@@ -6,9 +6,13 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.databinding.ActivityReferencesBinding
@@ -60,7 +64,6 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
 
         // toolbar back button listener
         toolbar_file_search.setNavigationOnClickListener {
-            //onBackPressed()
             finish()
         }
 
@@ -97,7 +100,7 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
 
     override fun onBackPressed() {
 
-        if(edit_file_search.isCursorVisible) {
+        if (edit_file_search.isCursorVisible) {
             edit_file_search.setText("")
             viewModel.filterItem("")
             edit_file_search.isCursorVisible = false
@@ -117,13 +120,28 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
                     if (filePath != null)
                         filePathList.add(filePath)
                 }
-                // TODO : ViewModel 에게 FileUpload 요청하기
-                viewModel.uploadReferences(filePathList)
-            } else {
-                data.extras
+                Toast.makeText(this, "파일 업로드를 시작합니다!", Toast.LENGTH_LONG).show()
+
+                viewModel.uploadReferences(filePathList).apply {
+                    if(this != null) {
+                        WorkManager.getInstance().getWorkInfoByIdLiveData(this.id)
+                            .observe(this@ReferencesActivity, Observer { workInfo ->
+                                if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
+                                    viewModel.loadReferenceList()
+                                }
+                            })
+
+                        WorkManager.getInstance().enqueue(this)
+                    }
+                }
+
+            } else if (data.data != null) {
+                Toast.makeText(this, "파일 업로드를 시작합니다!", Toast.LENGTH_LONG).show()
                 val filePath = FilePathProvider.getPath(this, data.data)
                 if (filePath != null)
                     viewModel.uploadReferences(mutableListOf(filePath))
+            } else {
+                Toast.makeText(this, "파일 업로드를 시작합니다!", Toast.LENGTH_LONG).show()
             }
         }
     }
