@@ -28,6 +28,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import okio.Okio
 import java.io.File
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -511,7 +512,8 @@ class DataManager : DataSource {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val teamID = prefHelper.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         val requestBody = RequestBody.create(MediaType.parse("text/plane"), teamID)
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+        val body = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), requestFile)
+
         return apiHelper.uploadFile(requestBody, body)
             .map { response -> response.responseCode.toInt() }
             .subscribeOn(Schedulers.io())

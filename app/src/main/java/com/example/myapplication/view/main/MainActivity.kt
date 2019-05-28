@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Point
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -148,7 +149,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     val uri = data?.data
                     Log.e(TAG, uri.toString())
                     if (uri != null) {
-                        val str = FilePathProvider.getPath(this, uri)
+                        val str = getFileName(uri)
                         chatViewModel.sendFile(str ?: "")
                     }
 
@@ -157,6 +158,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
             }
         }
+    }
+
+    fun getFileName(uri: Uri): String? {
+        var result: String? = null
+        if (uri.scheme == "content") {
+            contentResolver.query(uri, null, null, null, null).use {
+                if (it != null && it.moveToFirst()) {
+                    result = it.getString(it.getColumnIndex("filePath"))
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.path
+        }
+        return result
     }
 
     private fun includeInit() {
