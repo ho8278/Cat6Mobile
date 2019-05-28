@@ -2,8 +2,10 @@ package com.example.myapplication.view.references
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
@@ -110,20 +112,36 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
         }
     }
 
+    fun getFileName(uri: Uri): String? {
+        var result: String? = null
+        if (uri.scheme == "content") {
+            contentResolver.query(uri, null, null, null, null).use {
+                if (it != null && it.moveToFirst()) {
+                    result = it.getString(it.getColumnIndex("filePath"))
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.path
+        }
+        return result
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 5050 && data != null && resultCode == Activity.RESULT_OK) {
             if (data.clipData != null) {
                 val filePathList = mutableListOf<String>()
                 for (count in IntRange(0, data.clipData.itemCount - 1)) {
-                    val filePath = FilePathProvider.getPath(this, data.clipData.getItemAt(count).uri)
+                    val filePath = getFileName(data.clipData.getItemAt(count).uri)
                     if (filePath != null)
                         filePathList.add(filePath)
                 }
                 Toast.makeText(this, "파일 업로드를 시작합니다!", Toast.LENGTH_LONG).show()
 
                 viewModel.uploadReferences(filePathList).apply {
-                    if(this != null) {
+                    if (this != null) {
                         WorkManager.getInstance().getWorkInfoByIdLiveData(this.id)
                             .observe(this@ReferencesActivity, Observer { workInfo ->
                                 if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
@@ -137,11 +155,21 @@ class ReferencesActivity : BaseActivity<ActivityReferencesBinding, ReferenceList
 
             } else if (data.data != null) {
                 Toast.makeText(this, "파일 업로드를 시작합니다!", Toast.LENGTH_LONG).show()
-                val filePath = FilePathProvider.getPath(this, data.data)
-                if (filePath != null)
-                    viewModel.uploadReferences(mutableListOf(filePath))
-            } else {
-                Toast.makeText(this, "파일 업로드를 시작합니다!", Toast.LENGTH_LONG).show()
+                val filePath = getFileName(data.data)
+                if (filePath != null) {
+                    viewModel.uploadReferences(mutableListOf(filePath)).apply {
+                        if (this != null) {
+                            WorkManager.getInstance().getWorkInfoByIdLiveData(this.id)
+                                .observe(this@ReferencesActivity, Observer { workInfo ->
+                                    if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
+                                        viewModel.loadReferenceList()
+                                    }
+                                })
+
+                            WorkManager.getInstance().enqueue(this)
+                        }
+                    }
+                }
             }
         }
     }

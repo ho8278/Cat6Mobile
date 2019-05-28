@@ -13,6 +13,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.net.URLEncoder
 
 
 class UploadTask(val context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {
@@ -37,7 +38,7 @@ class UploadTask(val context: Context, workerParameters: WorkerParameters) : Wor
             val file = File(it)
             transformList.add(
                 MultipartBody.Part.createFormData(
-                    "file", file.name, RequestBody.create(
+                    "file", URLEncoder.encode(file.name, "utf-8"), RequestBody.create(
                         MediaType.parse("multipart/form-data"),
                         file
                     )

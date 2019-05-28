@@ -4,6 +4,7 @@
 
 package com.example.myapplication.view.references
 
+import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableField
 import androidx.work.Data
@@ -20,6 +21,8 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.concurrent.ExecutionException
 
 
@@ -42,7 +45,7 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
             loadItemCountObservable.set(it.data.size.toString() + "개 파일")
         })
 
-    fun uploadReferences(filePathList: MutableList<String>) : OneTimeWorkRequest? {
+    fun uploadReferences(filePathList: MutableList<String>): OneTimeWorkRequest? {
         // TODO : Worker 부르기
 
         if (filePathList.size == 0) return null
@@ -53,7 +56,7 @@ class ReferenceListViewModel(val dataSource: DataSource) : BaseViewModel(dataSou
             val file = File(it)
             transformList.add(
                 MultipartBody.Part.createFormData(
-                    "file", file.name, RequestBody.create(
+                    "file", URLEncoder.encode(file.name, "utf-8"), RequestBody.create(
                         MediaType.parse("multipart/form-data"),
                         file
                     )

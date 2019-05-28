@@ -40,6 +40,8 @@ class ReferenceListAdapter(private val itemClickListener: ReferenceItemClickList
     inner class ReferenceViewHolder(val binding: ItemReferenceBinding) :
         BaseViewHolder(binding) {
         override fun bind(position: Int) {
+
+
             binding.tvReferenceItemName.text = referencesList[position].title
 
             if (imgRegex.matches(referencesList[position].title)) {
@@ -53,7 +55,7 @@ class ReferenceListAdapter(private val itemClickListener: ReferenceItemClickList
                 binding.ivReferenceItemImg.setImageDrawable(
                     ContextCompat.getDrawable(
                         binding.root.context,
-                        R.drawable.ic_arrow_back
+                        R.drawable.ic_pdf
                     )
                 )
             } else if (hwpRegex.matches(referencesList[position].title)) {
@@ -67,7 +69,7 @@ class ReferenceListAdapter(private val itemClickListener: ReferenceItemClickList
                 binding.ivReferenceItemImg.setImageDrawable(
                     ContextCompat.getDrawable(
                         binding.root.context,
-                        R.drawable.ic_person_black_24dp
+                        R.drawable.ic_video_player
                     )
                 )
             }

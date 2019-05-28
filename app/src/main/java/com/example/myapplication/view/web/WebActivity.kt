@@ -30,6 +30,6 @@ class WebActivity:AppCompatActivity(){
         setting.domStorageEnabled = true
         setting.cacheMode = WebSettings.LOAD_NO_CACHE
 
-        webView.loadUrl("https://67bdee5b.ngrok.io/html.html")
+        webView.loadUrl("https://aa80f639.ngrok.io/html.html")
     }
 }
