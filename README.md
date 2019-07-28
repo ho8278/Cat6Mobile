@@ -15,8 +15,18 @@
 - Stetho : 내부 디비 확인
 - Glide : 이미지 로드
 - Lottie : 애니메이션 효과
-- Databinding : 
 
+# 스크린샷
+<div>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%B1%84%ED%8C%85.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%B4%88%EB%8C%80.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%ED%88%AC%ED%91%9C1.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%ED%88%AC%ED%91%9C2.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%9D%BC%EC%A0%951.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%9D%BC%EC%A0%952.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EA%B7%B8%EB%A3%B9.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80.png" width="25%" height="25%"></img>
+</div>
 
 # 기능별 진행 상황
 1. 회원관리
