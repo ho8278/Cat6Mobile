@@ -55,6 +55,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         }
     }
     var serviceIntent:Intent? = null
+    var isRotation = true
+
 
     override fun getViewModel(dataSource: DataSource): MainViewModel {
         return MainViewModel(dataSource, this)
@@ -174,6 +176,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
 
             iv_show_toolbox.setOnClickListener {
+                if(isRotation){
+                    it.animate().rotation(45f)
+                    isRotation = false
+                }else{
+                    it.animate().rotation(0f)
+                    isRotation = true
+                }
                 chatViewModel.showToolBox()
             }
 

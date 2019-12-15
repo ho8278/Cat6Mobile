@@ -119,7 +119,6 @@
                 <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_show_toolbox"
                         app:srcCompat="@drawable/ic_add"
-                        android:background="?attr/selectableItemBackground"
                         app:layout_constraintTop_toTopOf="@id/et_messagebox"
                         app:layout_constraintBottom_toBottomOf="@id/et_messagebox"
                         app:layout_constraintLeft_toLeftOf="parent"
