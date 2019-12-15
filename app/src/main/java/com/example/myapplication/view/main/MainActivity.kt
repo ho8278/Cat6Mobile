@@ -1,5 +1,6 @@
 package com.example.myapplication.view.main
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.IntentFilter
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
@@ -16,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.ChatRoom
@@ -33,6 +36,8 @@ import com.example.myapplication.view.vote.VoteActivity
 import com.example.myapplication.view.web.WebActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
@@ -150,7 +155,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     val uri = data?.data
                     Log.e(TAG, uri.toString())
                     if (uri != null) {
-                        val str = getFileName(uri)
+                        val str = FilePathProvider.getRealPathFromURI(applicationContext,uri)
                         chatViewModel.sendFile(str ?: "")
                     }
 
@@ -161,24 +166,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         }
     }
 
-    fun getFileName(uri: Uri): String? {
-        var result: String? = null
-        if (uri.scheme == "content") {
-            contentResolver.query(uri, arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null).use {
-                if (it != null && it.moveToFirst()) {
-                    result = it.getString(0)
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.path
-        }
-        return result
-    }
-
     private fun includeInit() {
         include_chat.apply {
-
             button_send.setOnClickListener {
                 chatViewModel.sendButtonClicked(et_messagebox.text.toString())
                 et_messagebox.text?.clear()
@@ -189,10 +178,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
 
             iv_document.setOnClickListener {
-                val fileChooser = Intent(Intent.ACTION_GET_CONTENT)
-                fileChooser.setType("*/*")
-                fileChooser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivityForResult(Intent.createChooser(fileChooser, "Open"), FILE_REQUEST_CODE)
+                TedPermission.with(applicationContext)
+                    .setPermissionListener(object:PermissionListener{
+                        override fun onPermissionGranted() {
+                            val fileChooser = Intent(Intent.ACTION_GET_CONTENT)
+                            fileChooser.setType("*/*")
+                            fileChooser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivityForResult(Intent.createChooser(fileChooser, "Open"), FILE_REQUEST_CODE)
+                        }
+
+                        override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                        }
+                    })
+                    .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .check()
             }
 
             iv_notice.setOnClickListener {

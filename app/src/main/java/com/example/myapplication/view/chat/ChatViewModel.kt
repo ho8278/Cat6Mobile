@@ -68,10 +68,18 @@ class ChatViewModel(dataManager: DataSource, val chatRoom: ChatRoom) : BaseViewM
     fun sendFile(path: String) {
         if (path.isEmpty())
             return
+
+
         getCompositeDisposable().add(
             getDataManager().uploadFile(path)
                 .subscribe({ body ->
-                    sendButtonClicked("")
+                    val splitStr = path.split(".")
+                    val imageRegex = "(png|jpg|jpeg|gif)".toRegex()
+                    val fileName = splitStr[0].split("/")
+                    if(imageRegex.matches(splitStr.last()))
+                        sendButtonClicked(path,MESSAGE_PHOTO)
+                    else
+                        sendButtonClicked(fileName.last()+"."+splitStr.last(),MESSAGE_FILE)
                 }, {
                     Log.e(TAG, it.message)
                 })

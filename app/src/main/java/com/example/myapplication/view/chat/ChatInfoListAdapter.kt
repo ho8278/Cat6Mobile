@@ -1,5 +1,6 @@
 package com.example.myapplication.view.chat
 
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,11 +9,12 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
+import com.example.myapplication.data.MockDataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
-import com.example.myapplication.databinding.ItemMychatBinding
-import com.example.myapplication.databinding.ItemTheirchatBinding
+import com.example.myapplication.databinding.*
 import com.example.myapplication.view.base.BaseViewHolder
 import com.example.myapplication.view.main.AppInitialize
 import java.text.SimpleDateFormat
@@ -30,11 +32,17 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     private val TAG = ChatInfoListAdapter::class.java.simpleName
     private lateinit var userId: String
 
-    val VIEW_TYPE_ME = 100
-    val VIEW_TYPE_YOU = 200
+
     val MESSAGE_TEXT = 0
     val MESSAGE_FILE = 1
     val MESSAGE_PHOTO = 2
+
+    val VIEW_TYPE_ME_TEXT = 111
+    val VIEW_TYPE_YOU_TEXT = 112
+    val VIEW_TYPE_ME_PHOTO = 113
+    val VIEW_TYPE_YOU_PHOTO = 114
+    val VIEW_TYPE_ME_FILE = 115
+    val VIEW_TYPE_YOU_FILE = 116
 
     init {
         userId = AppInitialize.dataSource.getItem(PreferenceHelperImpl.CURRENT_USER_ID)
@@ -49,7 +57,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        if (viewType == VIEW_TYPE_ME) {
+        if (viewType == VIEW_TYPE_ME_TEXT) {
             return DataBindingUtil.inflate<ItemMychatBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.item_mychat,
@@ -58,7 +66,25 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
             ).let {
                 MeViewHolder(it)
             }
-        } else {
+        }else if(viewType == VIEW_TYPE_ME_PHOTO){
+            return DataBindingUtil.inflate<ItemMyPhotoChatBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.item_my_photo_chat,
+                parent,
+                false
+            ).let {
+                MePhotoViewHolder(it)
+            }
+        } else if(viewType == VIEW_TYPE_ME_FILE) {
+            return DataBindingUtil.inflate<ItemMyFileChatBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.item_my_file_chat,
+                parent,
+                false
+            ).let {
+                MeFileViewHolder(it)
+            }
+        } else if(viewType == VIEW_TYPE_YOU_TEXT) {
             return DataBindingUtil.inflate<ItemTheirchatBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.item_theirchat,
@@ -66,6 +92,24 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
                 false
             ).let {
                 YouViewHolder(it)
+            }
+        } else if(viewType == VIEW_TYPE_YOU_PHOTO) {
+            return DataBindingUtil.inflate<ItemTheirPhotoChatBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.item_their_photo_chat,
+                parent,
+                false
+            ).let {
+                YouPhotoViewHolder(it)
+            }
+        } else {
+            return DataBindingUtil.inflate<ItemTheirFileChatBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.item_their_file_chat,
+                parent,
+                false
+            ).let {
+                YouFileViewHolder(it)
             }
         }
     }
@@ -75,15 +119,130 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (getItem(position).type == MESSAGE_PHOTO)
-            return MESSAGE_PHOTO
-        else if (getItem(position).type == MESSAGE_FILE)
-            return MESSAGE_FILE
-        else {
-            if (userId == getItem(position).send_user_id) {
-                return VIEW_TYPE_ME
-            } else {
-                return VIEW_TYPE_YOU
+        when(userId){
+            getItem(position).send_user_id ->{
+                when(getItem(position).type){
+                    MESSAGE_TEXT->return VIEW_TYPE_ME_TEXT
+                    MESSAGE_PHOTO->return VIEW_TYPE_ME_PHOTO
+                    MESSAGE_FILE->return VIEW_TYPE_ME_FILE
+                    else->return 0
+                }
+            }
+            else->{
+                when(getItem(position).type){
+                    MESSAGE_TEXT->return VIEW_TYPE_YOU_TEXT
+                    MESSAGE_PHOTO->return VIEW_TYPE_YOU_PHOTO
+                    MESSAGE_FILE->return VIEW_TYPE_YOU_FILE
+                    else->return 0
+                }
+            }
+        }
+    }
+
+    inner class MeFileViewHolder(val binding:ItemMyFileChatBinding):BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+            val calendar = Calendar.getInstance()
+            calendar.time = getItem(position).send_date
+            val date: String = when (calendar.get(Calendar.AM_PM)) {
+                Calendar.AM -> {
+                    val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                Calendar.PM -> {
+                    val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                else -> ""
+            }
+            binding.tvMessageClock.setText(date)
+            binding.tvFilename.setText(getItem(position).message)
+        }
+    }
+
+    inner class YouFileViewHolder(val binding:ItemTheirFileChatBinding):BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+            val calendar = Calendar.getInstance()
+            calendar.time = getItem(position).send_date
+            val date: String = when (calendar.get(Calendar.AM_PM)) {
+                Calendar.AM -> {
+                    val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                Calendar.PM -> {
+                    val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                else -> ""
+            }
+            AppInitialize.dataSource.getUser(getItem(position).send_user_id)
+                .subscribe({
+                    Log.e(TAG, "${it.nickname}")
+                    binding.tvTheirname.setText(it.nickname)
+                    binding.tvFilename.setText(getItem(position).message)
+                    binding.tvMessageClock.setText(date)
+                }, {
+                    Log.e(TAG, it.message)
+                })
+        }
+    }
+
+    inner class MePhotoViewHolder(val binding:ItemMyPhotoChatBinding):BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+            val calendar = Calendar.getInstance()
+            calendar.time = getItem(position).send_date
+            val date: String = when (calendar.get(Calendar.AM_PM)) {
+                Calendar.AM -> {
+                    val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                Calendar.PM -> {
+                    val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                else -> ""
+            }
+            binding.tvMessageClock.setText(date)
+            if(AppInitialize.dataSource is MockDataManager){
+                Glide.with(binding.root.context)
+                    .load(BitmapFactory.decodeFile(getItem(position).message))
+                    .override(500,500)
+                    .into(binding.ivPhoto)
+            }else{
+
+            }
+        }
+    }
+
+    inner class YouPhotoViewHolder(val binding:ItemTheirPhotoChatBinding):BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+            val calendar = Calendar.getInstance()
+            calendar.time = getItem(position).send_date
+            val date: String = when (calendar.get(Calendar.AM_PM)) {
+                Calendar.AM -> {
+                    val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                Calendar.PM -> {
+                    val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
+                    dateFormat.format(calendar.time)
+                }
+                else -> ""
+            }
+            if(AppInitialize.dataSource is MockDataManager){
+            }else{
+                Glide.with(binding.root.context)
+                    .load(getItem(position).message)
+                    .override(500,500)
+                    .into(binding.ivPhoto)
+
+                AppInitialize.dataSource.getUser(getItem(position).send_user_id)
+                    .subscribe({
+                        Log.e(TAG, "${it.nickname}")
+                        binding.tvTheirname.setText(it.nickname)
+                        binding.tvMessageClock.setText(date)
+                    }, {
+                        Log.e(TAG, it.message)
+                    })
             }
         }
     }

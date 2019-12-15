@@ -334,15 +334,15 @@ class MockDataManager : DataSource {
     }
 
     override fun uploadFile(path: String): Single<Int> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.create { it.onSuccess(1) }
     }
 
     override fun setNotice(text: String, chatRoomID: String): Single<Int> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.create { it.onSuccess(1) }
     }
 
     override fun loadNotice(chatRoomID: String): Single<Notice> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.create { it.onSuccess(Notice("1","","")) }
     }
 
     override fun createVote(vote: Vote, list: MutableList<String>): Observable<String> {

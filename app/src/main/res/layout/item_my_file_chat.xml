@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:paddingRight="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_message_clock"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/mcv_message_container"
+                    android:layout_marginRight="4dp"
+                    tools:text="오후 07:11"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_message_container"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/tv_message_clock"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_margin="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_document"
+                            android:layout_marginLeft="8dp"
+                            app:srcCompat="@drawable/ic_file"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_filename"
+                            tools:text="가나다라마바사아자차카타파"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textSize="16sp"
+                            android:layout_marginLeft="4dp"
+                            app:layout_constraintLeft_toRightOf="@id/iv_document"
+                            app:layout_constraintBottom_toTopOf="@id/tv_see_document"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:textColor="@color/colorBlack"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_see_document"
+                            android:text="자료실에서 확인할 수 있습니다."
+                            app:layout_constraintTop_toBottomOf="@id/iv_document"
+                            app:layout_constraintLeft_toRightOf="@id/iv_document"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:textSize="11sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>
