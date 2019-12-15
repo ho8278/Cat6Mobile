@@ -23,7 +23,8 @@ class ChatInfo(
     var send_date: Date,
     @Expose
     @SerializedName("message")
-    var message: String
+    var message: String,
+    val type:Int = 0
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

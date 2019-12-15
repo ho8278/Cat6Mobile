@@ -10,7 +10,7 @@ import okhttp3.ResponseBody
 
 
 interface DataSource{
-    fun sendMessage(chatInfo: ChatInfo)
+    fun sendMessage(chatInfo: ChatInfo):Single<ResponseBody>
     fun receiveMessage(chatInfo:ChatInfo)
     fun receiveMessage(): Observable<ChatInfo>
 

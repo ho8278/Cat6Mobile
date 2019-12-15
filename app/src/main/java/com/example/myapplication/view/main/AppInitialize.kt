@@ -3,6 +3,7 @@ package com.example.myapplication.view.main
 import android.app.Application
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.MockDataManager
 import com.facebook.stetho.Stetho
 
 class AppInitialize:Application(){
@@ -13,6 +14,6 @@ class AppInitialize:Application(){
     override fun onCreate() {
         super.onCreate()
         Stetho.initializeWithDefaults(this)
-        dataSource = DataManager.getInstance(applicationContext)
+        dataSource = MockDataManager.getInstance(applicationContext)
     }
 }

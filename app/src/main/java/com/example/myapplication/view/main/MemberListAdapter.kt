@@ -38,7 +38,7 @@ class MemberListAdapter(val listener: MemberClickListener) : RecyclerView.Adapte
         private val item : ItemGroupMemberBinding = itemView
 
         override fun bind(position: Int) {
-            val userTemp: String = memberList[position].name
+            val userTemp: String = memberList[position].nickname
             val url = memberList[position].profileLink ?: ""
             item.member = userTemp
             item.url = url

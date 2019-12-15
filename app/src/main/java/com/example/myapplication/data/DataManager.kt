@@ -62,7 +62,7 @@ class DataManager : DataSource {
 
     }
 
-    override fun sendMessage(chatInfo: ChatInfo) {
+    override fun sendMessage(chatInfo: ChatInfo):Single<ResponseBody> {
         val chatInfoJson = JsonObject().apply {
             addProperty("chatinfo_id", chatInfo.chatinfo_id)
             addProperty("message", chatInfo.message)
@@ -74,6 +74,7 @@ class DataManager : DataSource {
 
         prefHelper.saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.chatinfo_id)
         ChatSocketService.socket?.emit("send", chatInfoJson)
+        return Single.create {  }
     }
 
     override fun sendBroadCastMessage(chatRoomID: String): Single<ResponseBody> {

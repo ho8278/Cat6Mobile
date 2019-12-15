@@ -11,8 +11,10 @@ import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.view.base.BaseViewModel
 import java.util.*
 
-class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewModel(dataManager) {
-
+class ChatViewModel(dataManager: DataSource, val chatRoom: ChatRoom) : BaseViewModel(dataManager) {
+    val MESSAGE_TEXT = 0
+    val MESSAGE_FILE = 1
+    val MESSAGE_PHOTO = 2
     val TAG = ChatViewModel::class.java.simpleName
     val isLoading: ObservableField<Boolean> = ObservableField()
     val chatInfoList: ObservableArrayList<ChatInfo> = ObservableArrayList()
@@ -21,6 +23,7 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
     val isToolbox = ObservableBoolean()
     val chatName = ObservableField<String>()
     val isSending = ObservableBoolean()
+
     init {
         isLoading.set(true)
         isNotice.set(false)
@@ -29,13 +32,13 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
     }
 
     fun loadChatinfoList() {
-        if(chatRoom.id.isEmpty()){
+        if (chatRoom.id.isEmpty()) {
             chatName.set("새 대화 상대를 찾아보세요")
-            getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,"")
+            getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID, "")
             isLoading.set(false)
             return
         }
-        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID,chatRoom.id)
+        getDataManager().saveItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID, chatRoom.id)
         getCompositeDisposable().add(
             getDataManager().loadChatInfoList(chatRoom.id)
                 .subscribe({ result ->
@@ -48,22 +51,29 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
         )
     }
 
-    fun sendButtonClicked(message: String) {
+    fun sendButtonClicked(message: String, messageType: Int = MESSAGE_TEXT) {
         val userID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
         val chatInfoID = UUID.randomUUID().toString()
-        val chatInfo = ChatInfo(chatInfoID, userID, chatRoom.id, Calendar.getInstance().time, message)
-        getDataManager().sendMessage(chatInfo)
+        val chatInfo = ChatInfo(chatInfoID, userID, chatRoom.id, Calendar.getInstance().time, message, messageType)
+        getCompositeDisposable().add(
+            getDataManager().sendMessage(chatInfo)
+                .subscribe({
+                    chatInfoList.add(chatInfo)
+                }, {
+                    Log.e(TAG, it.message)
+                })
+        )
     }
 
-    fun sendFile(path:String){
-        if(path.isEmpty())
+    fun sendFile(path: String) {
+        if (path.isEmpty())
             return
         getCompositeDisposable().add(
             getDataManager().uploadFile(path)
                 .subscribe({ body ->
-                    sendButtonClicked("파일을 전송하였습니다.")
-                },{
-                    Log.e(TAG,it.message)
+                    sendButtonClicked("")
+                }, {
+                    Log.e(TAG, it.message)
                 })
         )
     }
@@ -72,7 +82,7 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
         getCompositeDisposable().add(
             getDataManager().receiveMessage()
                 .subscribe({
-                    if(it.chatroom_id==chatRoom.id)
+                    if (it.chatroom_id == chatRoom.id)
                         chatInfoList.add(it)
                     Log.e(TAG, it.chatinfo_id)
                 }, {
@@ -81,14 +91,14 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
         )
     }
 
-    fun setNotice(text:String){
+    fun setNotice(text: String) {
         getCompositeDisposable().add(
-            getDataManager().setNotice(text,chatRoom.id)
+            getDataManager().setNotice(text, chatRoom.id)
                 .subscribe({ data ->
                     isNotice.set(true)
                     notice.set(text)
-                },{
-                    Log.e(TAG,it.message)
+                }, {
+                    Log.e(TAG, it.message)
                 })
         )
     }
@@ -100,8 +110,8 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
             isToolbox.set(true)
     }
 
-    fun showNotice(){
-        if(isNotice.get()){
+    fun showNotice() {
+        if (isNotice.get()) {
             isNotice.set(false)
             return
         }
@@ -111,8 +121,8 @@ class ChatViewModel(dataManager: DataSource,val chatRoom: ChatRoom) : BaseViewMo
                     Log.e(TAG, data.toString())
                     isNotice.set(true)
                     notice.set(data.content)
-                },{
-                    Log.e(TAG,it.message)
+                }, {
+                    Log.e(TAG, it.message)
                 })
         )
     }

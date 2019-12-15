@@ -20,16 +20,21 @@ import java.util.*
 
 class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     ListAdapter<ChatInfo, BaseViewHolder>(object : DiffUtil.ItemCallback<ChatInfo>() {
-        override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean = oldItem.chatinfo_id == newItem.chatinfo_id
+        override fun areItemsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean =
+            oldItem.chatinfo_id == newItem.chatinfo_id
 
-        override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean  = oldItem.chatinfo_id == newItem.chatinfo_id
+        override fun areContentsTheSame(oldItem: ChatInfo, newItem: ChatInfo): Boolean =
+            oldItem.chatinfo_id == newItem.chatinfo_id
     }) {
 
     private val TAG = ChatInfoListAdapter::class.java.simpleName
     private lateinit var userId: String
 
-    val VIEW_TYPE_ME = 0
-    val VIEW_TYPE_YOU = 1
+    val VIEW_TYPE_ME = 100
+    val VIEW_TYPE_YOU = 200
+    val MESSAGE_TEXT = 0
+    val MESSAGE_FILE = 1
+    val MESSAGE_PHOTO = 2
 
     init {
         userId = AppInitialize.dataSource.getItem(PreferenceHelperImpl.CURRENT_USER_ID)
@@ -39,7 +44,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
         submitList(changeList.toMutableList())
     }
 
-    fun setViewModel(viewModel:ChatViewModel){
+    fun setViewModel(viewModel: ChatViewModel) {
         chatViewModel = viewModel
     }
 
@@ -70,10 +75,16 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (userId == getItem(position).send_user_id) {
-            return VIEW_TYPE_ME
-        } else {
-            return VIEW_TYPE_YOU
+        if (getItem(position).type == MESSAGE_PHOTO)
+            return MESSAGE_PHOTO
+        else if (getItem(position).type == MESSAGE_FILE)
+            return MESSAGE_FILE
+        else {
+            if (userId == getItem(position).send_user_id) {
+                return VIEW_TYPE_ME
+            } else {
+                return VIEW_TYPE_YOU
+            }
         }
     }
 
@@ -108,7 +119,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
                     val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                Calendar.PM->{
+                Calendar.PM -> {
                     val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
@@ -150,7 +161,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
                     val dateFormat = SimpleDateFormat("오전 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
-                Calendar.PM->{
+                Calendar.PM -> {
                     val dateFormat = SimpleDateFormat("오후 hh:mm", Locale.KOREA)
                     dateFormat.format(calendar.time)
                 }
@@ -158,12 +169,12 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
             }
             AppInitialize.dataSource.getUser(getItem(position).send_user_id)
                 .subscribe({
-                    Log.e(TAG,"${it.nickname}")
+                    Log.e(TAG, "${it.nickname}")
                     binding.tvTheirname.setText(it.nickname)
                     binding.tvMessageBody.setText(getItem(position).message)
                     binding.tvMessageClock.setText(date)
-                },{
-                    Log.e(TAG,it.message)
+                }, {
+                    Log.e(TAG, it.message)
                 })
         }
     }

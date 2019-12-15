@@ -87,6 +87,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     @Override
     public void OnError(ErrorCode code) {
-        Toast.makeText(this,"로그인 실패",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,code.getDescription(),Toast.LENGTH_LONG).show();
     }
 }

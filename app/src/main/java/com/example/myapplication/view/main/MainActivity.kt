@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -163,9 +164,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     fun getFileName(uri: Uri): String? {
         var result: String? = null
         if (uri.scheme == "content") {
-            contentResolver.query(uri, null, null, null, null).use {
+            contentResolver.query(uri, arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null).use {
                 if (it != null && it.moveToFirst()) {
-                    result = it.getString(it.getColumnIndex("filePath"))
+                    result = it.getString(0)
                 }
             }
         }
