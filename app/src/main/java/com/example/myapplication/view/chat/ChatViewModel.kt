@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.MockDataManager
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.data.model.ChatRoom
@@ -119,6 +121,10 @@ class ChatViewModel(dataManager: DataSource, val chatRoom: ChatRoom) : BaseViewM
     }
 
     fun showNotice() {
+        val isNotShow = notice.get()?.isEmpty() ?: true
+        if(isNotShow){
+            return
+        }
         if (isNotice.get()) {
             isNotice.set(false)
             return
@@ -128,7 +134,8 @@ class ChatViewModel(dataManager: DataSource, val chatRoom: ChatRoom) : BaseViewM
                 .subscribe({ data ->
                     Log.e(TAG, data.toString())
                     isNotice.set(true)
-                    notice.set(data.content)
+                    if(getDataManager() is DataManager)
+                        notice.set(data.content)
                 }, {
                     Log.e(TAG, it.message)
                 })

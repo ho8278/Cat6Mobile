@@ -20,20 +20,44 @@
                 android:layout_height="?attr/actionBarSize"/>
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_notice"
-                app:layout_constraintTop_toBottomOf="@id/view_actionbar"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:background="@color/colorGray"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:visibility="@{viewmodel.isNotice}"
-                android:text="@{viewmodel.notice}"
-                android:textSize="18sp"
-                android:textColor="@color/colorBlack"
+        <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/mcv_notice_container"
+                app:cardBackgroundColor="@color/colorNoticeConatiner"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintTop_toBottomOf="@id/view_actionbar"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:id="@+id/ll_notice_container"
+                    android:orientation="horizontal"
+                    android:visibility="@{viewmodel.isNotice}"
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_notice_icon"
+                        android:layout_weight="0.2"
+                        app:srcCompat="@drawable/ic_megaphone"
+                        android:layout_gravity="center"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        tools:text="TESTTESTTEST"
+                        android:text="@{viewmodel.notice}"
+                        android:layout_weight="0.8"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorWhite"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lav_chat_loading"
@@ -50,10 +74,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_chat"
-                app:layout_constraintTop_toBottomOf="@id/tv_notice"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toBottomOf="@id/view_actionbar"
                 app:layout_constraintBottom_toTopOf="@id/mcv_inputText"
                 android:layout_width="match_parent"
-                tools:listitem="@layout/item_my_file_chat"
+                tools:listitem="@layout/item_mychat"
                 android:layout_height="0dp"
                 bind_item="@{viewmodel.chatInfoList}"/>
 

@@ -25,7 +25,7 @@
                     android:id="@+id/tv_message_clock"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/mcv_message_container"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
                     tools:text="오후 07:11"
                     android:textSize="10sp"
                     android:layout_width="wrap_content"

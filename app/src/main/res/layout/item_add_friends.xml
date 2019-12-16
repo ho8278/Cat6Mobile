@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="name" type="String"/>
+        <variable name="nickname" type="String"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
                 android:id="@+id/tv_friends_name"
                 app:layout_constraintLeft_toRightOf="@id/cb_add"
                 tools:text="TEST"
-                android:text="@{name}"
+                android:text="@{nickname}"
                 android:paddingLeft="8dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"

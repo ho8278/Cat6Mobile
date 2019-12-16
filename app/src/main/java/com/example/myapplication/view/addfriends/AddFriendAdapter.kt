@@ -33,7 +33,7 @@ class AddFriendAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     inner class AddFriendsViewHolder(val binding: ItemAddFriendsBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
-            binding.name=userList[position].name
+            binding.nickname=userList[position].nickname
             binding.cbAdd.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
                     addUserList.add(userList[position])
