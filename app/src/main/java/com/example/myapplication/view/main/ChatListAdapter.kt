@@ -36,7 +36,7 @@ class ChatListAdapter(val listener:ChatRoomChangeListener) : RecyclerView.Adapte
 
     inner class ChatListViewHolder(val binding: ItemChatListBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
-            binding.tvChatName.setText(chatList[position].name)
+            binding.tvChatName.setText("# ${chatList[position].name}")
             binding.llContainer.setOnClickListener {
                 listener.chatRoomChagned(chatList[position])
             }

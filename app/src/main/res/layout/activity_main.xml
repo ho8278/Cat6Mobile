@@ -19,9 +19,6 @@
             tools:openDrawer="start">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -79,7 +76,6 @@
                     android:layout_height="match_parent">
 
                 <androidx.core.widget.NestedScrollView
-                        android:background="@drawable/background_drawer"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -88,38 +84,38 @@
                             android:layout_height="match_parent"
                             android:padding="16dp">
 
-                        <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="@dimen/nav_header_vertical_spacing"
-                                android:layout_marginTop="16dp"
-                                app:srcCompat="@drawable/cat6_logo"
-                                android:contentDescription="@string/nav_header_desc"
-                                android:id="@+id/iv_main_user_image"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/spinner_show_group"
-                                app:srcCompat="@drawable/ic_team"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginTop="16dp"
+                        <TextView
+                                android:id="@+id/tv_user_name"
+                                tools:text="윤형웅"
+                                android:text="@{mainviewmodel.userName}"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                app:layout_constraintTop_toBottomOf="@id/iv_show_group"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                android:textColor="@color/colorBlack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                         <TextView
-                                style="@style/DrawerItemDefault"
-                                android:id="@+id/tv_main_user_name"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textAlignment="center"
+                                android:id="@+id/tv_user_nickname"
+                                tools:text="닉네임"
                                 android:text="@{mainviewmodel.userNickName}"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/iv_main_user_image"/>
+                                android:layout_marginTop="4dp"
+                                app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+                                app:layout_constraintLeft_toLeftOf="@id/tv_user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_show_group"
+                                app:srcCompat="@drawable/ic_group"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        <!--
                         <TextView
                                 style="@style/DrawerItemDefault"
                                 android:id="@+id/btn_main_my_page"
@@ -130,27 +126,45 @@
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/tv_main_user_name"/>
-
+                                app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"/>
+                        -->
                         <!-- 메뉴 항목들 -->
+
+                        <View
+                                android:id="@+id/view_divider"
+                                android:layout_marginTop="8dp"
+                                app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
+                                android:background="@color/colorGray"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"/>
                         <TextView
                                 style="@style/DrawerItemDefault"
                                 android:id="@+id/btn_main_conference"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="회의"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/btn_main_my_page"/>
+                                android:textColor="@color/colorBlack"
+                                app:layout_constraintTop_toBottomOf="@id/view_divider"
+                                app:layout_constraintStart_toStartOf="parent"/>
                         <TextView
                                 style="@style/DrawerItemDefault"
                                 android:id="@+id/btn_main_schedule"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/nav_main_schedule"
-                                android:textStyle="bold"
+                                android:textColor="@color/colorBlack"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/btn_main_conference"/>
+
+                        <TextView
+                                style="@style/DrawerItemDefault"
+                                android:id="@+id/btn_main_references"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlack"
+                                android:text="@string/nav_main_references"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
 
                         <TextView
                                 style="@style/DrawerItemDefault"
@@ -158,7 +172,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/nav_main_chat"
-                                android:textStyle="bold"
+                                android:textColor="@color/colorBlack"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/btn_main_references"/>
 
@@ -170,22 +184,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
 
-                        <TextView
-                                style="@style/DrawerItemDefault"
-                                android:id="@+id/btn_main_references"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/nav_main_references"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/btn_main_schedule"/>
-
                         <androidx.appcompat.widget.AppCompatTextView
                                 style="@style/DrawerItemDefault"
                                 android:id="@+id/divider_main_menu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
+                                android:textColor="@color/colorBlack"
                                 android:text="그룹 인원"
                                 android:layout_marginTop="@dimen/nav_drawer_blank_height"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -196,7 +200,7 @@
                                 android:id="@+id/rcv_main_participants"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/nav_drawer_blank_height"
+                                android:layout_marginTop="8dp"
                                 bind_item="@{mainviewmodel.userList}"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"

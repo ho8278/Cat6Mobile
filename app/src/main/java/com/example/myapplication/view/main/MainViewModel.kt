@@ -18,9 +18,20 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
 
     val userList = ObservableArrayList<User>()
 
-    val currentUser = ObservableField<User>()
-
     val userNickName = ObservableField<String>()
+    val userName = ObservableField<String>()
+
+    init {
+        getCompositeDisposable().add(
+            getDataManager().getCurrentUser()
+                .subscribe({
+                    userName.set(it.name)
+                    userNickName.set(it.nickname)
+                },{
+                    Log.e(TAG, it.message)
+                })
+        )
+    }
 
     fun updateUI() {
         getCompositeDisposable().add(
@@ -65,9 +76,6 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
                 .subscribe({ list ->
                     userList.clear()
                     userList.addAll(list)
-                    val currentUser =
-                        userList.find { it.id == getDataManager().getItem(PreferenceHelperImpl.CURRENT_USER_ID) }
-                    userNickName.set(currentUser?.nickname)
                 }, {
                     Log.e(TAG, it.message)
                 })

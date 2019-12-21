@@ -90,7 +90,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         fragment = TeamListFragment()
 
-        spinner_show_group.setOnClickListener {
+        iv_show_group.setOnClickListener {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.apply {
                 replace(R.id.fragment_show_team, fragment)
@@ -140,12 +140,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     private fun initView() {
         binding.mainviewmodel = viewModel
-
+/*
         btn_main_my_page.setOnClickListener {
             val intent = Intent(this,MyPageActivity::class.java)
             startActivity(intent)
         }
-
+*/
         rcv_main_participants.adapter = MemberListAdapter(this)
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         btn_main_references.setOnClickListener { startActivity(Intent(this, ReferencesActivity::class.java)) }
