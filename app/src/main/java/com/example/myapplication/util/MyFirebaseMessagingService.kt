@@ -34,11 +34,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        val currentUserID = AppInitialize.dataSource.getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
+        /*
         val chatinfoID =
             AppInitialize.dataSource.getItem<String>(PreferenceHelperImpl.RECENT_CHATINFO_ID)
-
         val remoteInfoID = remoteMessage?.data?.get("chatinfo_id") ?: "null"
         if (chatinfoID == remoteInfoID)
+            return
+        */
+        val sendID = remoteMessage?.data?.get("send_user_id") ?: ""
+        if(sendID == currentUserID)
             return
 
         if (remoteMessage?.from == "/topics/main") {
@@ -57,6 +62,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             createNotification(chatInfo!!)
         }
     }
+    
     fun createNotification(chatInfo: ChatInfo) {
         val notiManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

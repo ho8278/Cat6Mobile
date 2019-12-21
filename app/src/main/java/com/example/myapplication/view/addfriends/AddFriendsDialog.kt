@@ -15,9 +15,8 @@ import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.main.ErrorCode
 import kotlinx.android.synthetic.main.dialog_add_friends.*
 
-class AddFriendsDialog : Dialog, AddNavigator {
+class AddFriendsDialog : Dialog, AddNavigator,AddUserChangeListener {
     constructor(context: Context) : super(context)
-    constructor(context: Context, resId: Int) : super(context, resId)
 
     lateinit var binding: DialogAddFriendsBinding
     lateinit var viewModel:AddFriendViewModel
@@ -31,7 +30,7 @@ class AddFriendsDialog : Dialog, AddNavigator {
         binding.viewmodel=viewModel
 
         binding.rvFriends.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.rvFriends.adapter = AddFriendAdapter()
+        binding.rvFriends.adapter = AddFriendAdapter(this)
 
         setCancelable(true)
         tv_cancel.setOnClickListener {
@@ -44,6 +43,10 @@ class AddFriendsDialog : Dialog, AddNavigator {
             viewModel.setUserList(adapter.addUserList)
             dismiss()
         }
+    }
+
+    override fun onChange(list: List<String>) {
+        viewModel.addUserChange(list)
     }
 
     override fun OnSaveFail(errorCode: ErrorCode) {

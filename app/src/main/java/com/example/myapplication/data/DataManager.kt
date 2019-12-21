@@ -62,6 +62,10 @@ class DataManager : DataSource {
 
     }
 
+    override fun loadChatClient(): Single<List<String>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun sendMessage(chatInfo: ChatInfo):Single<ResponseBody> {
         val chatInfoJson = JsonObject().apply {
             addProperty("chatinfo_id", chatInfo.chatinfo_id)

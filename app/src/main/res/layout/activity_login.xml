@@ -93,8 +93,7 @@
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
                             android:background="@android:color/holo_blue_dark"
-                            android:text="Login"
-                    />
+                            android:text="Login"/>
                     <Button
                             android:id="@+id/Join"
                             android:clickable="true"
@@ -107,9 +106,7 @@
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
                             android:background="@android:color/holo_blue_dark"
-                            android:text="Join"
-
-                    />
+                            android:text="Join"/>
                 </LinearLayout>
             </FrameLayout>
 

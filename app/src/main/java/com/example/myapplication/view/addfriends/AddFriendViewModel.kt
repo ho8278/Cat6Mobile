@@ -9,16 +9,24 @@ import com.example.myapplication.view.base.BaseViewModel
 
 class AddFriendViewModel(dataSource: DataSource, val listener:AddNavigator):BaseViewModel(dataSource){
     val userList = ObservableArrayList<User>()
-
+    val currentChatUsers = ObservableArrayList<String>()
+    val addUserList = ObservableArrayList<String>()
     init{
         getCompositeDisposable().add(
-            getDataManager().loadGroupClient()
+            getDataManager().loadChatClient()
+                .doOnSuccess { currentChatUsers.addAll(it) }
+                .flatMap { getDataManager().loadGroupClient() }
                 .subscribe({ list ->
                     userList.addAll(list)
                 },{
                     Log.e("AddFriendVieModel",it.message)
                 })
         )
+    }
+
+    fun addUserChange(list:List<String>){
+        addUserList.clear()
+        addUserList.addAll(list)
     }
 
     fun setUserList(list:MutableList<User>){

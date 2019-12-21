@@ -13,13 +13,13 @@
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#C1c1c1</color>
-    <color name="colorNoticeConatiner">#BDBDBD</color>
+    <color name="colorNoticeConatiner">#DDDDDD</color>
     <color name="colorBlack">#000000</color>
     <color name="colorClear">#00000000</color>
     <color name="colorLightPurple">#ca5cf2</color>
     <color name="colorSkyBlue">#59c1f2</color>
     <color name="colorAddScheduleSelectDate">#543210</color>
-    <color name="colorMyChat">#4CAF50</color>
+    <color name="colorMyChat">#8ed6ff</color>
     <color name="colorNotice">#9932CD32</color>
 
     <!-- Calendar Activity -->

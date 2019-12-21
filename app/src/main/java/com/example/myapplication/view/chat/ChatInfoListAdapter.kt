@@ -17,6 +17,7 @@ import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.databinding.*
 import com.example.myapplication.view.base.BaseViewHolder
 import com.example.myapplication.view.main.AppInitialize
+import com.example.myapplication.view.main.ChatClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +31,7 @@ class ChatInfoListAdapter(var chatViewModel: ChatViewModel) :
     }) {
 
     private val TAG = ChatInfoListAdapter::class.java.simpleName
-    private lateinit var userId: String
+    private var userId: String
 
 
     val MESSAGE_TEXT = 0

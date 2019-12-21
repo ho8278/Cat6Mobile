@@ -1,11 +1,16 @@
 package com.example.myapplication.util
 
+import android.animation.ValueAnimator
 import android.os.Handler
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
@@ -25,6 +30,10 @@ import com.example.myapplication.view.main.TeamListAdapter
 import com.example.myapplication.view.references.Reference
 import com.example.myapplication.view.references.ReferenceListAdapter
 import com.example.myapplication.view.vote.VoteListAdapter
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import kotlinx.android.synthetic.main.content_main.view.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -39,6 +48,63 @@ object BindingAdapter {
             .centerCrop()
             .placeholder(R.drawable.ic_person_black_24dp)
             .into(imageView)
+    }
+
+    @JvmStatic
+    @BindingAdapter("android:visibility")
+    fun animate_notice_container(view: MaterialCardView, isShow: Boolean) {
+        if(view.height == 0){
+            view.viewTreeObserver.addOnGlobalLayoutListener(object:ViewTreeObserver.OnGlobalLayoutListener{
+                override fun onGlobalLayout() {
+                    val height = view.height
+                    val margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,5f,view.context.resources.displayMetrics)
+                    val animation = view.animate().setDuration(200L)
+                    if(!isShow){
+                        animation.translationY(-height.toFloat() - margin)
+                            .start()
+                    }else{
+                        animation.translationY(height.toFloat() + margin)
+                            .start()
+                    }
+                    view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            })
+        }else{
+            val height = view.height
+            val margin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,5f,view.context.resources.displayMetrics)
+            val animation = view.animate().setDuration(200L)
+            if(!isShow){
+                animation.translationY(-height.toFloat() - margin)
+                    .start()
+            }else{
+                animation.translationY(height.toFloat() + margin)
+                    .start()
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("load_chat_user")
+    fun loadChatUser(chipGroup: ChipGroup, userList:List<String>){
+        chipGroup.removeAllViews()
+        userList.forEach {
+            val chip = Chip(chipGroup.context)
+            chip.text = it
+            //chip.setTextSize(TypedValue.COMPLEX_UNIT_SP,10f)
+            chipGroup.addView(chip)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("load_add_chat_user")
+    fun loadAddChatUser(chipGroup: ChipGroup, userList:List<String>){
+        chipGroup.removeAllViews()
+        userList.forEach {
+            val chip = Chip(chipGroup.context)
+            chip.text = it
+            //chip.setTextSize(TypedValue.COMPLEX_UNIT_SP,10f)
+            chipGroup.addView(chip)
+        }
     }
 
     @JvmStatic

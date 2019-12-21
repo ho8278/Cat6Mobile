@@ -1,19 +1,24 @@
 package com.example.myapplication.view.main
 
 import android.Manifest
+import android.animation.ValueAnimator
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Point
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
+import android.util.TypedValue
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +44,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
@@ -57,7 +63,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     var serviceIntent:Intent? = null
     var isRotation = true
 
-
     override fun getViewModel(dataSource: DataSource): MainViewModel {
         return MainViewModel(dataSource, this)
     }
@@ -74,6 +79,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         initView()
 
         includeInit()
+
 
         if(ChatSocketService.serviceIntent==null){
             serviceIntent = Intent(this,ChatSocketService::class.java)
@@ -221,8 +227,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 display.getSize(point)
 
                 val window = dialog.window
-                val x = point.x*0.6f
-                val y = point.y*0.4f
+                val x = point.x*0.8f
+                val y = point.y*0.7f
 
                 window.setLayout(x.toInt(),y.toInt())
             }
