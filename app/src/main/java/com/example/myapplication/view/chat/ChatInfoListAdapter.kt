@@ -17,7 +17,6 @@ import com.example.myapplication.data.model.ChatInfo
 import com.example.myapplication.databinding.*
 import com.example.myapplication.view.base.BaseViewHolder
 import com.example.myapplication.view.main.AppInitialize
-import com.example.myapplication.view.main.ChatClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 

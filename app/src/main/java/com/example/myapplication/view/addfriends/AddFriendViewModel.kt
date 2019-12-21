@@ -17,7 +17,11 @@ class AddFriendViewModel(dataSource: DataSource, val listener:AddNavigator):Base
                 .doOnSuccess { currentChatUsers.addAll(it) }
                 .flatMap { getDataManager().loadGroupClient() }
                 .subscribe({ list ->
-                    userList.addAll(list)
+                    val filteredList = list.filter {
+                        val user = it
+                        currentChatUsers.filter { it==user.nickname }.isEmpty()
+                    }
+                    userList.addAll(filteredList)
                 },{
                     Log.e("AddFriendVieModel",it.message)
                 })
