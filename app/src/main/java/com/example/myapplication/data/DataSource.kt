@@ -32,6 +32,7 @@ interface DataSource{
 
     fun insertTeam(team: Team)
     fun loadTeam(userID:String):Single<List<Team>>
+    fun getTeam(teamID:String):Single<Team>
     fun addUserToTeam(userID:String):Single<ErrorCode>
 
     fun login(id:String, pw:String): Single<ServerResponse<Team>>

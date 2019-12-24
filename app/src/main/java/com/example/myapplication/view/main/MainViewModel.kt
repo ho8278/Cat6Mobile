@@ -20,13 +20,18 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
 
     val userNickName = ObservableField<String>()
     val userName = ObservableField<String>()
+    val teamName = ObservableField<String>("")
 
     init {
         getCompositeDisposable().add(
             getDataManager().getCurrentUser()
-                .subscribe({
+                .doOnSuccess {
                     userName.set(it.name)
                     userNickName.set(it.nickname)
+                }
+                .flatMap { getDataManager().getTeam(getDataManager().getItem(PreferenceHelperImpl.CURRENT_GROUP_ID)) }
+                .subscribe({
+                    teamName.set(it.name)
                 },{
                     Log.e(TAG, it.message)
                 })
@@ -55,8 +60,16 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
     }
 
     fun init() {
+        val currentTeamID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         getCompositeDisposable().add(
-            getDataManager().loadChatRoom()
+            getDataManager().getTeam(currentTeamID)
+                .doOnSuccess { teamName.set(it.name) }
+                .flatMap { getDataManager().loadGroupClient() }
+                .doOnSuccess {
+                    userList.clear()
+                    userList.addAll(it)
+                }
+                .flatMap { getDataManager().loadChatRoom() }
                 .subscribe({ list ->
                     if (list.size == 0) {
                         listener.setChatViewModel(null)
@@ -67,15 +80,6 @@ class MainViewModel(dataManager: DataSource, val listener: MainNavigator) : Base
                     chatList.clear()
                     chatList.addAll(list)
                     getDataManager().subscribeTopic(list)
-                }, {
-                    Log.e(TAG, it.message)
-                })
-        )
-        getCompositeDisposable().add(
-            getDataManager().loadGroupClient()
-                .subscribe({ list ->
-                    userList.clear()
-                    userList.addAll(list)
                 }, {
                     Log.e(TAG, it.message)
                 })

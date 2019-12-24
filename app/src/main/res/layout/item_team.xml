@@ -19,7 +19,9 @@
                 android:text="@{viewmodel.teamName}"
                 android:id="@+id/tv_group_name"
                 android:layout_marginLeft="20dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:textStyle="@{viewmodel.isCurrentTeam}"
+                android:textColor="@color/colorBlack"
                 tools:text="TESTTEST"
                 android:gravity="center_vertical"
                 android:layout_weight="0.8"
@@ -27,13 +29,13 @@
                 android:layout_height="match_parent"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_add_user"
-                app:srcCompat="@drawable/ic_plus"
-                android:layout_gravity="center"
-                android:paddingRight="16dp"
-                android:layout_weight="0.2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/iv_add_user"
+            app:srcCompat="@drawable/ic_plus"
+            android:layout_gravity="center"
+            android:paddingRight="16dp"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

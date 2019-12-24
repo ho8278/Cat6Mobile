@@ -1,8 +1,11 @@
 package com.example.myapplication.view.main
 
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,13 +24,13 @@ class TeamListAdapter(val listener: GroupChangeListener) : RecyclerView.Adapter<
     private val TEAM_VIEWHOLDER = 2
     private var isCurrent = false
 
-    val groupList = mutableListOf<Team>()
+    val groupList = MutableList(1){Team("dummy","dummy")}
 
     fun setList(list: MutableList<Team>) {
         groupList.clear()
         groupList.addAll(list)
         groupList.add(Team("dummy", "dummy"))
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0,list.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -69,21 +72,12 @@ class TeamListAdapter(val listener: GroupChangeListener) : RecyclerView.Adapter<
 
         override fun bind(position: Int) {
             binding.viewmodel = TeamViewModel(AppInitialize.dataSource, groupList[position])
-            val currentGroupID = AppInitialize.dataSource.getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
-
+            binding.llContainer.setOnClickListener {
+                listener.groupChanged(groupList[position].id)
+            }
             binding.ivAddUser.setOnClickListener {
                 val intent = Intent(it.context,AddUserToTeamActivity::class.java)
                 it.context.startActivity(intent)
-
-            }
-
-            if (currentGroupID == groupList[position].id) {
-                binding.llContainer.setBackgroundColor(ContextCompat.getColor(binding.root.context,R.color.colorCurrentGroup))
-            }
-            else{
-                binding.llContainer.setOnClickListener {
-                    listener.groupChanged(groupList[position].id)
-                }
             }
         }
     }

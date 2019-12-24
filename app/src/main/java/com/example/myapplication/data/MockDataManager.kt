@@ -2,8 +2,6 @@ package com.example.myapplication.data
 
 import android.content.Context
 import android.util.Log
-import com.example.myapplication.data.local.db.DbHelper
-import com.example.myapplication.data.local.db.DbHelperImpl
 import com.example.myapplication.data.local.pref.PreferenceHelper
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.*
@@ -56,7 +54,7 @@ class MockDataManager : DataSource {
     }
 
 
-    override fun sendMessage(chatInfo: ChatInfo):Single<ResponseBody> {
+    override fun sendMessage(chatInfo: ChatInfo): Single<ResponseBody> {
         val json = JsonObject().apply {
             addProperty(
                 "to",
@@ -73,7 +71,7 @@ class MockDataManager : DataSource {
             }
             add("data", chatInfoJson)
         }
-        saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID,chatInfo.chatinfo_id)
+        saveItem(PreferenceHelperImpl.RECENT_CHATINFO_ID, chatInfo.chatinfo_id)
         return fcmApiHelper.sendTestMessage(json)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -103,7 +101,7 @@ class MockDataManager : DataSource {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     val chatInfoList = p0.children.map {
-                        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.KOREA)
+                        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                         ChatInfo(
                             it.key ?: UUID.randomUUID().toString(),
                             it.child("send_user_id").value as String,
@@ -183,11 +181,41 @@ class MockDataManager : DataSource {
     }
 
     override fun loadTeam(userID: String): Single<List<Team>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val teamDatabase = database.child("teams")
+        return Single.create {
+            teamDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val teamList = p0.children.map {
+                        Team(it.key ?: UUID.randomUUID().toString(), it.child("name").value as String)
+                    }
+                    it.onSuccess(teamList)
+                }
+            })
+        }
     }
 
     override fun addUserToTeam(userID: String): Single<ErrorCode> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getTeam(teamID: String): Single<Team> {
+        val teamDatabase = database.child("teams")
+        return Single.create {
+            teamDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val team = p0.children.find{ it.key == teamID }
+                    it.onSuccess(Team(teamID, team?.child("name")?.value as String))
+                }
+            })
+        }
     }
 
     override fun login(id: String, pw: String): Single<ServerResponse<Team>> {
@@ -202,7 +230,7 @@ class MockDataManager : DataSource {
                 override fun onDataChange(p0: DataSnapshot) {
                     val user = p0.children.find { it.key.equals(id) && pw.equals(it.child("password").value as String) }
                     if (user != null) {
-                        saveItem(PreferenceHelperImpl.CURRENT_USER_ID,id)
+                        saveItem(PreferenceHelperImpl.CURRENT_USER_ID, id)
                         val teamList = user.child("teams").children.map {
                             Team(
                                 it.key ?: UUID.randomUUID().toString(),
@@ -273,7 +301,7 @@ class MockDataManager : DataSource {
 
     override fun inviteChatRoom(clientID: String): Single<Int> {
         return sendBroadCastMessage(clientID, getItem(PreferenceHelperImpl.CURRENT_CHAT_ROOM_ID))
-            .map { response-> 1 }
+            .map { response -> 1 }
             .subscribeOn(Schedulers.io())
     }
 
@@ -317,10 +345,10 @@ class MockDataManager : DataSource {
     }
 
     override fun loadGroupClient(): Single<List<User>> {
-        val currentTeamdId =getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val currentTeamdId = getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         val teamDatabase = database.child("teams/$currentTeamdId/users")
         return Single.create {
-            teamDatabase.addListenerForSingleValueEvent(object:ValueEventListener{
+            teamDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
@@ -328,8 +356,8 @@ class MockDataManager : DataSource {
                 override fun onDataChange(p0: DataSnapshot) {
                     val currentUserId = getItem<String>(PreferenceHelperImpl.CURRENT_USER_ID)
                     val userList = p0.children.map {
-                        User(it.key ?: UUID.randomUUID().toString(),"","",it.value as String)
-                    }.filter { it.id !=  currentUserId}
+                        User(it.key ?: UUID.randomUUID().toString(), "", "", it.value as String)
+                    }.filter { it.id != currentUserId }
                     it.onSuccess(userList)
                 }
             })
@@ -341,7 +369,7 @@ class MockDataManager : DataSource {
         val currentGroupID = getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         val teamDatabase = database.child("teams/$currentGroupID/chatrooms/$currentChatRoomID/users")
         return Single.create {
-            teamDatabase.addListenerForSingleValueEvent(object:ValueEventListener{
+            teamDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
@@ -363,7 +391,7 @@ class MockDataManager : DataSource {
     }
 
     override fun loadNotice(chatRoomID: String): Single<Notice> {
-        return Single.create { it.onSuccess(Notice("1","","")) }
+        return Single.create { it.onSuccess(Notice("1", "", "")) }
     }
 
     override fun createVote(vote: Vote, list: MutableList<String>): Observable<String> {

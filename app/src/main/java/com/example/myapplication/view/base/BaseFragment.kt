@@ -11,6 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.view.main.AppInitialize
 
 abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment() {
     abstract val TAG: String;
@@ -22,7 +23,7 @@ abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment()
 
     fun init(inflater: LayoutInflater, container: ViewGroup?) {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        viewModel = getViewModel(DataManager.getInstance(activity!!.applicationContext))
+        viewModel = getViewModel(AppInitialize.dataSource)
     }
 
     override fun onAttach(context: Context) {

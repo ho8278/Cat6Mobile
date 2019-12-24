@@ -1,16 +1,17 @@
 package com.example.myapplication.util
 
-import android.animation.ValueAnimator
+import android.graphics.Typeface
 import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.animation.addListener
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
@@ -33,7 +34,6 @@ import com.example.myapplication.view.vote.VoteListAdapter
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import kotlinx.android.synthetic.main.content_main.view.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -48,6 +48,24 @@ object BindingAdapter {
             .centerCrop()
             .placeholder(R.drawable.ic_person_black_24dp)
             .into(imageView)
+    }
+
+    @JvmStatic
+    @BindingAdapter("animated_textview")
+    fun animateSetText(textview: TextView, teamName: String) {
+        textview.text = teamName
+        val animator = AlphaAnimation(0f,1f).apply {
+            duration = 500L
+            fillAfter = true
+        }
+        textview.startAnimation(animator)
+    }
+
+    @JvmStatic
+    @BindingAdapter("android:textStyle")
+    fun isCurrentTeam(view: AppCompatTextView, isCurrentTeam:Boolean) {
+        if(isCurrentTeam)
+            view.setTypeface(view.typeface, Typeface.BOLD)
     }
 
     @JvmStatic
@@ -102,7 +120,6 @@ object BindingAdapter {
         userList.forEach {
             val chip = Chip(chipGroup.context)
             chip.text = it
-            //chip.setTextSize(TypedValue.COMPLEX_UNIT_SP,10f)
             chipGroup.addView(chip)
         }
     }

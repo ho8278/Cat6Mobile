@@ -214,6 +214,10 @@ class DataManager : DataSource {
         dbHelper.insertTeam(team)
     }
 
+    override fun getTeam(teamID: String): Single<Team> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun loadTeam(userID: String): Single<List<Team>> {
         return apiHelper.loadTeams(userID)
             .map { response -> response.data }

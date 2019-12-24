@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable name="viewmodel"
                   type="com.example.myapplication.view.main.TeamListViewModel"/>
     </data>
@@ -20,9 +21,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+        <com.airbnb.lottie.LottieAnimationView
+                app:layout_constraintTop_toBottomOf="@id/iv_back_button"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}"
+                app:lottie_fileName="chat_loading.json"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_teamlist"
                 app:layout_constraintTop_toBottomOf="@id/iv_back_button"
+                android:visibility="@{viewmodel.isLoading ? View.INVISIBLE : View.VISIBLE}"
                 android:layout_marginTop="16dp"
                 bind_item="@{viewmodel.teamList}"
                 android:layout_width="match_parent"

@@ -16,6 +16,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AlphaAnimation
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.animation.addListener
@@ -25,7 +26,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
+import com.example.myapplication.data.DataManager
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.MockDataManager
 import com.example.myapplication.data.model.ChatRoom
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.util.ChatSocketService
@@ -60,6 +63,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             viewModel.updateUI()
         }
     }
+
     var serviceIntent:Intent? = null
     var isRotation = true
 
@@ -80,12 +84,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         includeInit()
 
-
-        if(ChatSocketService.serviceIntent==null){
-            serviceIntent = Intent(this,ChatSocketService::class.java)
-            startService(serviceIntent)
-        }else{
-            serviceIntent = ChatSocketService.serviceIntent
+        if(AppInitialize.dataSource is DataManager){
+            if(ChatSocketService.serviceIntent==null){
+                serviceIntent = Intent(this,ChatSocketService::class.java)
+                startService(serviceIntent)
+            }else{
+                serviceIntent = ChatSocketService.serviceIntent
+            }
         }
 
         fragment = TeamListFragment()
@@ -101,19 +106,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun onResume() {
         super.onResume()
-        registerReceiver(receiver, IntentFilter("updateChatList"))
+        if(AppInitialize.dataSource is DataManager){
+            registerReceiver(receiver, IntentFilter("updateChatList"))
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(receiver)
+        if(AppInitialize.dataSource is DataManager){
+            unregisterReceiver(receiver)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if(serviceIntent!=null){
-            stopService(serviceIntent)
-            serviceIntent=null
+        if(AppInitialize.dataSource is DataManager){
+            if(serviceIntent!=null){
+                stopService(serviceIntent)
+                serviceIntent=null
+            }
         }
     }
 
@@ -148,7 +159,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 */
         rcv_main_participants.adapter = MemberListAdapter(this)
         rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        btn_main_references.setOnClickListener { startActivity(Intent(this, ReferencesActivity::class.java)) }
 
         binding.rvChat.adapter = ChatListAdapter(this)
         binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -255,7 +265,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         }
 
         btn_main_references.setOnClickListener {
-            //TODO:자료실 화면 이동
+            startActivity(Intent(this, ReferencesActivity::class.java))
         }
 
         btn_main_conference.setOnClickListener {
@@ -300,9 +310,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setTextColor(ContextCompat.getColor(this, R.color.colorBlack))
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setTextColor(ContextCompat.getColor(this, R.color.colorBlack))
         }
         dialog.show()
     }
