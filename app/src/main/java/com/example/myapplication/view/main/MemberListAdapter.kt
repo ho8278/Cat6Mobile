@@ -28,9 +28,11 @@ class MemberListAdapter(val listener: MemberClickListener) : RecyclerView.Adapte
     }
 
     fun setList(list:MutableList<User>){
+        val size = memberList.size
         memberList.clear()
+        notifyItemRangeRemoved(0,size)
         memberList.addAll(list)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0,list.size)
     }
 
     inner class MemberViewHolder(itemView: ItemGroupMemberBinding) : BaseViewHolder(itemView) {
@@ -39,7 +41,7 @@ class MemberListAdapter(val listener: MemberClickListener) : RecyclerView.Adapte
 
         override fun bind(position: Int) {
             val userTemp: String = memberList[position].nickname
-            val url = memberList[position].profileLink ?: ""
+            val url = memberList[position].profileLink
             item.member = userTemp
             item.url = url
             item.clContainer.setOnClickListener {

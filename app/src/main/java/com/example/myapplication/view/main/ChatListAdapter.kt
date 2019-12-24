@@ -29,9 +29,11 @@ class ChatListAdapter(val listener:ChatRoomChangeListener) : RecyclerView.Adapte
     }
 
     fun setList(list:MutableList<ChatRoom>){
+        val size = chatList.size
         chatList.clear()
+        notifyItemRangeRemoved(0,size)
         chatList.addAll(list)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0,list.size)
     }
 
     inner class ChatListViewHolder(val binding: ItemChatListBinding) : BaseViewHolder(binding) {

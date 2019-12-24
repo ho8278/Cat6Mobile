@@ -46,6 +46,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
@@ -151,18 +152,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     private fun initView() {
         binding.mainviewmodel = viewModel
-/*
-        btn_main_my_page.setOnClickListener {
-            val intent = Intent(this,MyPageActivity::class.java)
-            startActivity(intent)
+        binding.rcvMainParticipants.run {
+            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+            adapter = MemberListAdapter(this@MainActivity)
+            itemAnimator = FadeInDownAnimator()
         }
-*/
-        rcv_main_participants.adapter = MemberListAdapter(this)
-        rcv_main_participants.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        binding.rvChat.adapter = ChatListAdapter(this)
-        binding.rvChat.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
+        binding.rvChat.run{
+            adapter = ChatListAdapter(this@MainActivity)
+            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+            itemAnimator = FadeInDownAnimator()
+        }
         viewModel.init()
     }
 
