@@ -156,8 +156,29 @@ class MockDataManager : DataSource {
         }
     }
 
-    override fun loadSchedule(groupId: String): Single<ErrorCode> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun loadSchedule(groupId: String): Single<List<Schedule>> {
+        val currentTeamID = getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val scheduleDatabase = database.child("teams/$currentTeamID/schedules")
+        return Single.create {
+            scheduleDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val scheduleList = p0.children.map {
+                        Schedule(
+                            it.key ?: UUID.randomUUID().toString(),
+                            it.child("start_date").value as String,
+                            it.child("end_date").value as String,
+                            it.child("name").value as String,
+                            currentTeamID
+                        )
+                    }
+                    it.onSuccess(scheduleList)
+                }
+            })
+        }
     }
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {
@@ -211,7 +232,7 @@ class MockDataManager : DataSource {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    val team = p0.children.find{ it.key == teamID }
+                    val team = p0.children.find { it.key == teamID }
                     it.onSuccess(Team(teamID, team?.child("name")?.value as String))
                 }
             })

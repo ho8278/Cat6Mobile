@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="viewmodel" type="com.example.myapplication.view.calendar.CalendarViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_date"
+                total_bind_item="@{viewmodel.scheduleList}"
+                android:overScrollMode="never"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

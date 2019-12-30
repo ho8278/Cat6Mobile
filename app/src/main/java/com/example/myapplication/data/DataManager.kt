@@ -140,7 +140,8 @@ class DataManager : DataSource {
         return dbHelper.getUser(userID)
     }
 
-    override fun loadSchedule(groupId: String): Single<ErrorCode> {
+    override fun loadSchedule(groupId: String): Single<List<Schedule>> {
+        /*
         return apiHelper.loadSchedules(groupId)
             .doOnSuccess {
                 Log.e(TAG, it.data.toString())
@@ -161,6 +162,11 @@ class DataManager : DataSource {
             }
             .doOnError { Log.e(TAG, it.message) }
             .subscribeOn(Schedulers.io())
+            */
+        return apiHelper.loadSchedules(groupId)
+            .map { it.data }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getSchedules(year: Int, month: Int, day: Int): Single<List<Schedule>> {

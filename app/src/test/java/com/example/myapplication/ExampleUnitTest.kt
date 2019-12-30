@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import org.joda.time.DateTime
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -11,6 +12,8 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val time = DateTime.now()
+        val plusTime = time.plusMonths(-1)
+        assertEquals(31, plusTime.dayOfMonth().maximumValue)
     }
 }

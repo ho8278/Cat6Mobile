@@ -4,67 +4,67 @@ import android.graphics.Color
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.data.DataSource
+import com.example.myapplication.R
 import com.example.myapplication.data.model.Schedule
-import com.example.myapplication.databinding.ItemScheduleBinding
-import com.example.myapplication.view.base.BaseViewHolder
-import com.example.myapplication.view.detailschedule.ScheduleChangeListener
-import com.example.myapplication.view.main.AppInitialize
+import kotlinx.android.synthetic.main.item_more_schedule.view.*
+import kotlinx.android.synthetic.main.item_schedule.view.*
 import java.util.*
 
-class ScheduleListAdapter(val listener: OnItemClickListener, val viewModel:CalendarViewModel) : RecyclerView.Adapter<BaseViewHolder>(),
-    ScheduleChangeListener {
-    val TAG=ScheduleListAdapter::class.java.simpleName
-    var scheduleList = mutableListOf<Schedule>()
+class ScheduleListAdapter : RecyclerView.Adapter<ScheduleListAdapter.ScheduleViewHolder>() {
+    val TAG = ScheduleListAdapter::class.java.simpleName
+    var scheduleList = listOf<Schedule>()
+    private val MORE_SCHEDULE = 0
+    private val SCHEDULE_ITEM = 1
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
+        val view = if (viewType == SCHEDULE_ITEM){
+            LayoutInflater.from(parent.context).inflate(R.layout.item_schedule, parent, false).apply {
+                val random = Random()
+                val drawable = ShapeDrawable(OvalShape())
+                drawable.paint.color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val binding = ItemScheduleBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-        val random = Random()
-        val drawable = ShapeDrawable(OvalShape())
-        drawable.paint.color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
+                view_dot.background = drawable
+            }
+        }
+        else{
+            LayoutInflater.from(parent.context).inflate(R.layout.item_more_schedule, parent, false).apply{
+                tv_more_count.text = "+ ${scheduleList.size - 3}"
+            }
+        }
 
-        binding.viewDot.background = drawable
-
-        return ScheduleViewHolder(binding, AppInitialize.dataSource)
+        return ScheduleViewHolder(view)
     }
 
-    fun setList(scheduleList: MutableList<Schedule>) {
+    fun setList(scheduleList: List<Schedule>) {
         this.scheduleList = scheduleList
         notifyDataSetChanged()
     }
 
+    override fun getItemViewType(position: Int): Int {
+        if (position == itemCount-1)
+            return MORE_SCHEDULE
+        else
+            return SCHEDULE_ITEM
+    }
+
     override fun getItemCount(): Int {
-        return scheduleList.size
+        if(scheduleList.isEmpty())
+            return 0
+        else if(scheduleList.size > 3)
+            return 4
+        else
+            return scheduleList.size
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        holder.bind(position)
+    override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
+        if(getItemViewType(position) == SCHEDULE_ITEM)
+            holder.itemView.findViewById<TextView>(R.id.tv_schedule_name).text = scheduleList[position].name
 
     }
 
-    override fun OnDelete(position: Int) {
-        scheduleList.removeAt(position)
-        viewModel.deleteSchedule(position)
-        notifyItemRemoved(position)
-    }
-
-    override fun OnUpdate(position: Int, schedule: Schedule) {
-        scheduleList[position] = schedule
-        notifyItemChanged(position)
-    }
-
-    inner class ScheduleViewHolder(val binding: ItemScheduleBinding, val dataSource: DataSource) :
-        BaseViewHolder(binding) {
-
-        override fun bind(position: Int) {
-            binding.viewmodel = ScheduleItemViewModel(dataSource, scheduleList[position])
-            binding.clScheduleContainer.setOnClickListener {
-                listener.OnClick(scheduleList, position)
-            }
-        }
+    inner class ScheduleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".presentation.view.CalendarActivity">
 
     <data>
@@ -10,105 +9,117 @@
                   type="com.example.myapplication.view.calendar.CalendarViewModel"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/abl_toolbarcontainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_sun"
+                android:text="일"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tv_mon"
+                app:layout_constraintBottom_toTopOf="@id/vp_calendar"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:id="@+id/ctl_collapsingbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:title="@{viewmodel.title}"
-                    app:contentScrim="@color/colorWhite"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mon"
+                android:text="월"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="@id/tv_sun"
+                app:layout_constraintLeft_toRightOf="@id/tv_sun"
+                app:layout_constraintRight_toLeftOf="@id/tv_tue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                        android:background="@color/colorCalendarBackground"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_tue"
+                android:text="화"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="@id/tv_mon"
+                app:layout_constraintLeft_toRightOf="@id/tv_mon"
+                app:layout_constraintRight_toLeftOf="@id/tv_wed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                    <View
-                            android:layout_width="match_parent"
-                            android:layout_height="?attr/actionBarSize"/>
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_wed"
+                android:text="수"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="@id/tv_tue"
+                app:layout_constraintLeft_toRightOf="@id/tv_tue"
+                app:layout_constraintRight_toLeftOf="@id/tv_thu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                    <TextView
-                            android:id="@+id/tv_year"
-                            android:paddingTop="5dp"
-                            android:layout_marginLeft="16dp"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="15sp"
-                            android:text="@{viewmodel.year}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_thu"
+                android:text="목"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="@id/tv_wed"
+                app:layout_constraintLeft_toRightOf="@id/tv_wed"
+                app:layout_constraintRight_toLeftOf="@id/tv_fri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                    <TextView
-                            android:id="@+id/tv_month"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:layout_marginLeft="16dp"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="20sp"
-                            android:text="@{viewmodel.month}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fri"
+                android:text="금"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="@id/tv_thu"
+                app:layout_constraintLeft_toRightOf="@id/tv_thu"
+                app:layout_constraintRight_toLeftOf="@id/tv_sat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                            android:id="@+id/mcv_calendar"
-                            app:mcv_tileHeight="30dp"
-                            android:background="@color/colorCalendarBackground"
-                            app:mcv_selectionColor="@color/colorSelectedDateBackground"
-                            app:mcv_weekDayTextAppearance="@style/CustomHeaderTextAppearance"
-                            app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_sat"
+                android:text="토"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="@id/tv_fri"
+                app:layout_constraintLeft_toRightOf="@id/tv_fri"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                </LinearLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:layout_collapseMode="pin"/>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_date"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                animated_textview="@{viewmodel.title}"
+                android:textSize="15sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         <com.airbnb.lottie.LottieAnimationView
-                android:layout_gravity="center"
+                android:id="@+id/lav_chat_loading"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:lottie_fileName="chat_loading.json"
-                app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                android:visibility="@{viewmodel.isLoading() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}"
+                app:lottie_autoPlay="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_schedule"
-                android:paddingTop="16dp"
-                app:layout_anchor="@id/abl_toolbarcontainer"
-                app:layout_anchorGravity="bottom"
-                bind_item="@{viewmodel.scheduleList}"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_calendar"
+                android:overScrollMode="never"
+                android:visibility="@{viewmodel.isLoading ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@id/tv_sun"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dp"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_addSchedule"
-                app:backgroundTint="@color/colorCalendarAdd"
-                app:srcCompat="@drawable/ic_add"
-                android:layout_gravity="bottom|right"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

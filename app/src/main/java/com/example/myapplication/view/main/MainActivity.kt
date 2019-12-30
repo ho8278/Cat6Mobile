@@ -51,8 +51,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.view.*
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
-    NavigationView.OnNavigationItemSelectedListener, GroupChangeListener, ChatRoomChangeListener, MemberClickListener,
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), GroupChangeListener, ChatRoomChangeListener, MemberClickListener,
     MainNavigator, MainViewRefresh {
     override val TAG: String
         get() = MainActivity::class.java.simpleName
@@ -78,7 +77,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initMenu()
 
         initView()
@@ -136,11 +134,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             super.onBackPressed()
         }
     }
-
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        TODO("Navigation item click event handle")
-    }
-
     override fun setChatViewModel(chatRoom: ChatRoom?) {
         chatViewModel = ChatViewModel(AppInitialize.dataSource,chatRoom ?: ChatRoom("",""))
         binding.chatviewmodel=chatViewModel
@@ -256,8 +249,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         toolbar.setNavigationIcon(R.drawable.ic_menu)
-
-        nav_view.setNavigationItemSelectedListener(this)
 
         btn_main_schedule.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)

@@ -2,8 +2,7 @@ package com.example.myapplication.view.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
@@ -15,8 +14,9 @@ import com.example.myapplication.view.detailschedule.ScheduleChangeListener
 import com.google.android.material.appbar.AppBarLayout
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import kotlinx.android.synthetic.main.activity_calendar.*
 
-class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel>(), OnItemClickListener {
+class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel>() {
     override val TAG: String
         get() = CalendarActivity::class.java.simpleName
 
@@ -28,6 +28,25 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
         return CalendarViewModel(dataSource)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.viewmodel = viewModel
+        viewModel.loadSchedule()
+        vp_calendar.adapter = MonthAdapter(viewModel)
+        vp_calendar.addOnPageChangeListener(object:ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                viewModel.OnMonthChanged(position)
+            }
+        })
+        vp_calendar.setCurrentItem(150)
+    }
+/*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewmodel = viewModel
@@ -76,12 +95,5 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
     private fun startAddActivity() {
         val intent = Intent(this, AddScheduleActivity::class.java)
         startActivity(intent)
-    }
-
-    override fun OnClick(list: MutableList<Schedule>, position:Int) {
-        val deleteListener = binding.rvSchedule.adapter as ScheduleChangeListener
-        val customDialog =
-            CustomDialog(this, list.toMutableList(), deleteListener, R.style.customStyle, position)
-        customDialog.show()
-    }
+    }*/
 }

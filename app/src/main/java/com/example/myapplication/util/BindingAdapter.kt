@@ -1,12 +1,13 @@
 package com.example.myapplication.util
 
+import android.animation.ValueAnimator
 import android.graphics.Typeface
 import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.animation.AlphaAnimation
+import android.view.animation.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -21,6 +22,8 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.data.model.*
 import com.example.myapplication.view.addfriends.AddFriendAdapter
+import com.example.myapplication.view.calendar.DateAdapter
+import com.example.myapplication.view.calendar.MonthAdapter
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
 import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
@@ -53,12 +56,7 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("animated_textview")
     fun animateSetText(textview: TextView, teamName: String) {
-        textview.text = teamName
-        val animator = AlphaAnimation(0f,1f).apply {
-            duration = 500L
-            fillAfter = true
-        }
-        textview.startAnimation(animator)
+        textview.animatedSetText(teamName)
     }
 
     @JvmStatic
@@ -137,10 +135,14 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("bind_item")
-    fun setScheduleItem(view: RecyclerView, item: MutableList<Schedule>?) {
-        val adapter = view.adapter as ScheduleListAdapter
-        adapter.setList(item ?: mutableListOf())
+    @BindingAdapter("total_bind_item")
+    fun setTotalScheduleItem(view: RecyclerView, item: List<Schedule>?) {
+        if(item?.isEmpty() ?: true)
+            return
+        else{
+            val adapter = view.adapter as DateAdapter
+            adapter.setList(item ?: listOf())
+        }
     }
 
     @JvmStatic

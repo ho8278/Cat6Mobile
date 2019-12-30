@@ -44,7 +44,7 @@
         <activity
                 android:name=".view.calendar.CalendarActivity"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme">
         </activity>
         <activity
                 android:name=".view.addschedule.AddScheduleActivity"

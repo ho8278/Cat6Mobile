@@ -8,61 +8,39 @@ import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.base.BaseViewModel
+import org.joda.time.DateTime
 
 class CalendarViewModel : BaseViewModel{
     val TAG=CalendarViewModel::class.java.simpleName
     constructor(dataSource: DataSource):super(dataSource)
-    private val alphabetMonth = arrayOf("JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER")
-    val isLoading=ObservableBoolean()
-    val year = ObservableField<String>()
-    val month = ObservableField<String>()
-    val scheduleList=ObservableArrayList<Schedule>()
+    val scheduleList= ObservableArrayList<Schedule>()
+    val isLoading = ObservableBoolean(true)
+    var currentTime = DateTime.now()
     val title=ObservableField<String>()
+    var prevPosition = 150
 
-    init{
-        isLoading.set(true)
-
-    }
-
-    fun offsetChange(offset:Int, layoutRange:Int){
-        if(offset>=layoutRange){
-            title.set(month.get())
-        }
-        else{
-            title.set("")
-        }
-    }
-
-    fun loadSchedule(year:Int, month:Int, day:Int){
+    fun loadSchedule(){
         getCompositeDisposable().also {
             val groupId=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
             it.add(getDataManager().loadSchedule(groupId)
                 .subscribe({
-                    Log.e(TAG,it.description)
+                    scheduleList.clear()
+                    scheduleList.addAll(it)
                     isLoading.set(false)
-                    OnDateChanged(year, month, day)
                 },{
                     Log.e(TAG,it.message)
                 }))
         }
     }
 
-    fun OnMonthChanged(year:Int, month:Int){
-        this.year.set(year.toString())
-        this.month.set(alphabetMonth[month-1])
+    fun OnMonthChanged(position:Int){
+        currentTime = currentTime.plusMonths(position - prevPosition)
+        title.set("${currentTime.year}년 ${currentTime.monthOfYear}월")
+        prevPosition = position
     }
 
-    fun OnDateChanged(year:Int, month:Int, day:Int){
-        getCompositeDisposable().also {
-            getDataManager().getSchedules(year,month,day)
-                .subscribe({ list->
-                    Log.e(TAG,list.toString())
-                    scheduleList.clear()
-                    scheduleList.addAll(list)
-                },{
-                    Log.e(TAG,it.message)
-                })
-        }
+    fun getSchedule(year:Int, month:Int, day:Int):List<Schedule>{
+        return scheduleList.filter { it.startDate.startsWith("$year-$month-$day ") }
     }
 
     fun deleteSchedule(position:Int){

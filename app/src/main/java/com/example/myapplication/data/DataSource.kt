@@ -24,7 +24,7 @@ interface DataSource{
     fun getCurrentUser():Single<User>
     fun getUser(userID:String):Single<User>
 
-    fun loadSchedule(groupId:String):Single<ErrorCode>
+    fun loadSchedule(groupId:String):Single<List<Schedule>>
     fun getSchedules(year:Int,month:Int,day:Int):Single<List<Schedule>>
     fun saveSchedule(schedule: Schedule):Single<String>
     fun deleteSchedule(id:String):Single<Int>
