@@ -1,10 +1,15 @@
 package com.example.myapplication.view.calendar
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -12,7 +17,7 @@ import com.example.myapplication.data.model.Schedule
 import kotlinx.android.synthetic.main.item_date.view.*
 import org.joda.time.DateTime
 
-class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: CalendarViewModel) :
+class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: CalendarViewModel,val listener:OnDateClick) :
     RecyclerView.Adapter<DateAdapter.DateViewHolder>() {
     val dateSize = 35
     val dateList = MutableList(dateSize) {
@@ -60,10 +65,14 @@ class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: C
                 viewModel.getSchedule(third,second,first)
             }
         )
+        holder.container.setOnClickListener {
+            listener.onDateClick((holder.recyclerView.adapter as ScheduleListAdapter).scheduleList.toMutableList(),position)
+        }
     }
 
     inner class DateViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView = view.findViewById<TextView>(R.id.tv_date)
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_schedule)
+        val container = view.findViewById<ConstraintLayout>(R.id.ll_scheduleContainer)
     }
 }

@@ -13,7 +13,7 @@ import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.LayoutDetailScheduleBinding
 import com.example.myapplication.view.main.AppInitialize
 
-class CustomDialog(context: Context, val list: MutableList<Schedule>, val listener: ScheduleChangeListener, style: Int, val position:Int) :
+class CustomDialog(context: Context, val list: MutableList<Schedule>, val listener: ScheduleChangeListener?, style: Int, val position:Int) :
     Dialog(context, style) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -12,7 +12,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="customStyle" parent="ThemeOverlay.AppCompat.Light">
+    <style name="customStyle" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
     </style>

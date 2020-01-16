@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@drawable/shape_roundbox"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="500dp">
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_delete"

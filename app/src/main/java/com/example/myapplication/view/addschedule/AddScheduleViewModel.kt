@@ -24,7 +24,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
 
     constructor(dataSource: DataSource, navigator: AddNavigator?, schedule: Schedule) : this(dataSource) {
         this.schedule=schedule
-        val parser=SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        val parser=SimpleDateFormat("yyyy-MM-dd hh:mm")
         val startTime=parser.parse(schedule.startDate)
         val endTime=parser.parse(schedule.endDate)
         title.set(schedule.name)

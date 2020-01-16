@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_calendar.view.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
-class MonthAdapter(val viewModel:CalendarViewModel) : PagerAdapter() {
+class MonthAdapter(val viewModel:CalendarViewModel, val listener:OnDateClick) : PagerAdapter() {
     val monthSize = 301
     val monthList = List(monthSize) { it - monthSize / 2 }
     val currentTime = DateTime.now()
@@ -31,7 +31,7 @@ class MonthAdapter(val viewModel:CalendarViewModel) : PagerAdapter() {
                 val positionTime = currentTime.plusMonths(monthList[position])
                 view.viewmodel = viewModel
                 view.rvDate.layoutManager = GridLayoutManager(container.context,7, RecyclerView.VERTICAL,false)
-                view.rvDate.adapter = DateAdapter(view.rvDate.height,positionTime,viewModel)
+                view.rvDate.adapter = DateAdapter(view.rvDate.height,positionTime,viewModel,listener)
                 view.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })

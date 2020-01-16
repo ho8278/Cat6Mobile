@@ -232,7 +232,9 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingConversion
-    fun convertDateTimeToString(dateTime: DateTime): String {
+    fun convertDateTimeToString(dateTime: DateTime?): String {
+        if(dateTime == null)
+            return ""
         if (dateTime.hourOfDay > 12) {
             val formatter = DateTimeFormat.forPattern("MM 월 dd 일   hh:mm")
             return dateTime.toString(formatter)

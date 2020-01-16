@@ -2,21 +2,19 @@ package com.example.myapplication.view.calendar
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityCalendarBinding
-import com.example.myapplication.view.addschedule.AddScheduleActivity
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.detailschedule.CustomDialog
-import com.example.myapplication.view.detailschedule.ScheduleChangeListener
-import com.google.android.material.appbar.AppBarLayout
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.android.synthetic.main.activity_calendar.*
 
-class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel>() {
+class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel>(),OnDateClick {
     override val TAG: String
         get() = CalendarActivity::class.java.simpleName
 
@@ -32,7 +30,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
         super.onCreate(savedInstanceState)
         binding.viewmodel = viewModel
         viewModel.loadSchedule()
-        vp_calendar.adapter = MonthAdapter(viewModel)
+        vp_calendar.adapter = MonthAdapter(viewModel,this)
         vp_calendar.addOnPageChangeListener(object:ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -46,7 +44,14 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
         })
         vp_calendar.setCurrentItem(150)
     }
-/*
+
+    override fun onDateClick(list: MutableList<Schedule>, position: Int) {
+        val customDialog =
+            CustomDialog(this, viewModel.scheduleList.toMutableList(), null, R.style.customStyle, position)
+        customDialog.show()
+    }
+
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewmodel = viewModel

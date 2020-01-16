@@ -14,7 +14,7 @@ import com.example.myapplication.view.addschedule.AddScheduleViewModel
 import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.updateschedule.UpdateScheduleActivity
 
-class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: ScheduleChangeListener) : PagerAdapter() {
+class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: ScheduleChangeListener?) : PagerAdapter() {
 
     val UPDATE_SCHEDULE="UPDATE_SCHEDULE"
 
@@ -35,13 +35,13 @@ class ScheduleViewPagerAdapter(val list: MutableList<Schedule>, val listener: Sc
         )
         val viewModel =
             AddScheduleViewModel(AppInitialize.dataSource, null, list[position])
-        binding.viewmodel = viewModel
+        //binding.viewmodel = viewModel
         binding.apply {
             tvDelete.setOnClickListener {
                 val dialog= AlertDialog.Builder(container.context)
                     .setMessage("정말 삭제하시겠습니까?")
                     .setPositiveButton("확인") { _, _ ->
-                        listener.OnDelete(position)
+                        listener?.OnDelete(position)
                         list.removeAt(position)
                         notifyDataSetChanged()
                     }
