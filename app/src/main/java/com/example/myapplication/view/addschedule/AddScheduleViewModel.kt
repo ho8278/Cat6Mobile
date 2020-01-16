@@ -1,6 +1,7 @@
 package com.example.myapplication.view.addschedule
 
 import android.util.Log
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
@@ -20,11 +21,13 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         this.navigator = navigator
         startDate.set(time)
         endDate.set(time)
+        isDelete.set(false)
     }
     constructor(dataSource: DataSource, navigator: AddNavigator,time:DateTime) : this(dataSource) {
         this.navigator = navigator
         startDate.set(time)
         endDate.set(time)
+        isDelete.set(false)
     }
 
     constructor(dataSource: DataSource, navigator: AddNavigator?, schedule: Schedule) : this(dataSource) {
@@ -35,6 +38,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         title.set(schedule.name)
         startDate.set(DateTime(startTime.time))
         endDate.set(DateTime(endTime.time))
+        isDelete.set(true)
     }
 
     lateinit var schedule:Schedule
@@ -44,6 +48,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     val endDate = ObservableField<DateTime>()
     val title = ObservableField<String>()
     var isClicked = true     //true=시작 false=종료
+    val isDelete = ObservableBoolean(false)
 
     fun OnTimeChanged(hour: Int, minute: Int) {
         when (isClicked) {
@@ -120,5 +125,9 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
                 title.get() ?: "",
                 currentGroupID
             ))
+    }
+
+    fun deleteSchedule(){
+
     }
 }
