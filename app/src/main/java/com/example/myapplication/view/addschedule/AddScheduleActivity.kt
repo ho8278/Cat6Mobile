@@ -9,11 +9,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityAddShceduleBinding
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import org.joda.time.DateTime
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddScheduleViewModel>(), AddNavigator {
     override val TAG: String
@@ -24,6 +27,12 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     }
 
     override fun getViewModel(dataSource: DataSource): AddScheduleViewModel {
+        intent.getSerializableExtra("SELECT_DAY")?.let {
+            return AddScheduleViewModel(dataSource, this, it as DateTime)
+        }
+        intent.getParcelableExtra<Schedule>("SELECT_ITEM")?.let {
+            return AddScheduleViewModel(dataSource, this, it)
+        }
         return AddScheduleViewModel(dataSource, this)
     }
 
@@ -93,13 +102,27 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     }
 
     private fun initCalendar() {
-        binding.mcvSelectSchedule.selectedDate = CalendarDay.today()
-        binding.mcvSelectSchedule.setOnMonthChangedListener { _, date ->
-            binding.mcvSelectSchedule.selectedDate = date
-            viewModel.OnDateChanged(date.year, date.month, date.day)
+        intent.getSerializableExtra("SELECT_DAY")?.let {
+            val date = it as DateTime
+            binding.mcvSelectSchedule.currentDate = CalendarDay.from(date.year, date.monthOfYear, date.dayOfMonth)
+            binding.mcvSelectSchedule.selectedDate = CalendarDay.from(date.year, date.monthOfYear, date.dayOfMonth)
         }
-        binding.mcvSelectSchedule.setOnDateChangedListener { _, date, _ ->
-            viewModel.OnDateChanged(date.year, date.month, date.day)
+        intent.getParcelableExtra<Schedule>("SELECT_ITEM")?.let {
+            val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.KOREA)
+            val currentDate = DateTime(formatter.parse(it.startDate).time)
+            binding.mcvSelectSchedule.currentDate =
+                CalendarDay.from(currentDate.year, currentDate.monthOfYear, currentDate.dayOfMonth)
+            binding.mcvSelectSchedule.selectedDate =
+                CalendarDay.from(currentDate.year, currentDate.monthOfYear, currentDate.dayOfMonth)
+        }
+        binding.mcvSelectSchedule.apply {
+            setOnMonthChangedListener { _, date ->
+                binding.mcvSelectSchedule.selectedDate = date
+                viewModel.OnDateChanged(date.year, date.month, date.day)
+            }
+            setOnDateChangedListener { _, date, _ ->
+                viewModel.OnDateChanged(date.year, date.month, date.day)
+            }
         }
     }
 

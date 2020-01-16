@@ -13,6 +13,7 @@ import com.example.myapplication.databinding.ActivityCalendarBinding
 import com.example.myapplication.view.base.BaseActivity
 import com.example.myapplication.view.detailschedule.CustomDialog
 import kotlinx.android.synthetic.main.activity_calendar.*
+import org.joda.time.DateTime
 
 class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel>(),OnDateClick {
     override val TAG: String
@@ -45,9 +46,10 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
         vp_calendar.setCurrentItem(150)
     }
 
-    override fun onDateClick(list: MutableList<Schedule>, position: Int) {
+    override fun onDateClick(list: MutableList<Schedule>, selectedItem:Triple<Int,Int,Int>) {
+        val dateTime = DateTime(selectedItem.third,selectedItem.second,selectedItem.first,0,0)
         val customDialog =
-            CustomDialog(this, viewModel.scheduleList.toMutableList(), null, R.style.customStyle, position)
+            CustomDialog(this, viewModel.scheduleList.toMutableList(), null, R.style.customStyle, dateTime, viewModel)
         customDialog.show()
     }
 
@@ -66,7 +68,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
 
     private fun initScheduleList() {
         binding.rvSchedule.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvSchedule.adapter = ScheduleListAdapter(this,viewModel)
+        binding.rvSchedule.adapter = DetailScheduleListAdapter(this,viewModel)
 
         binding.ablToolbarcontainer.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { layout: AppBarLayout, offset ->
             viewModel.offsetChange(Math.abs(offset), layout.totalScrollRange)

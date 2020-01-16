@@ -1,104 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
->
-
-    <data>
-        <variable name="viewmodel"
-                  type="com.example.myapplication.view.addschedule.AddScheduleViewModel"/>
-    </data>
-
+<layout>
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/shape_roundbox"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/cl_container"
+            android:background="?attr/selectableItemBackground"
+            android:paddingTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="500dp">
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_delete"
-                android:background="?attr/selectableItemBackground"
-                app:layout_constraintTop_toTopOf="@id/tv_update"
-                app:layout_constraintBottom_toBottomOf="@id/tv_update"
-                app:layout_constraintRight_toLeftOf="@id/tv_update"
-                android:layout_marginRight="8dp"
-                android:padding="8dp"
-                android:text="삭제"
-                android:textSize="16sp"
-                android:textColor="@color/colorBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_update"
-                android:background="?attr/selectableItemBackground"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:padding="8dp"
-                android:text="수정"
-                android:textSize="16sp"
-                android:textColor="@color/colorBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
                 android:id="@+id/tv_schedule_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_update"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@{viewmodel.title}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:textColor="@color/colorBlack"
-                android:textSize="18sp"
-                android:layout_width="match_parent"
+                tools:text="TESTTEST"
+                android:textSize="14sp"
+                android:layout_marginLeft="8dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_start"
+        <TextView
+                android:id="@+id/tv_period"
+                android:textSize="10sp"
+                tools:text="2020.02.02 11:00 ~ 2020.02.03 13:00"
                 app:layout_constraintTop_toBottomOf="@id/tv_schedule_name"
                 app:layout_constraintLeft_toLeftOf="@id/tv_schedule_name"
-                android:layout_marginTop="16dp"
-                android:text="시작"
-                android:textSize="15sp"
-                android:textColor="@color/colorBlack"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_startDate"
-                app:layout_constraintTop_toTopOf="@id/tv_start"
-                app:layout_constraintLeft_toRightOf="@id/tv_start"
-                app:layout_constraintBottom_toBottomOf="@id/tv_start"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="13sp"
-                android:text="@{viewmodel.startDate}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_end"
-            app:layout_constraintTop_toBottomOf="@id/tv_startDate"
-            app:layout_constraintLeft_toLeftOf="@id/tv_schedule_name"
-            android:layout_marginTop="16dp"
-            android:text="종료"
-            android:textSize="15sp"
-            android:textColor="@color/colorBlack"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_endDate"
-                app:layout_constraintTop_toTopOf="@id/tv_end"
-                app:layout_constraintLeft_toRightOf="@id/tv_end"
-                app:layout_constraintBottom_toBottomOf="@id/tv_end"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="13sp"
-                android:text="@{viewmodel.endDate}"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

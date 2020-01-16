@@ -5,5 +5,5 @@ import androidx.core.util.Pair
 import com.example.myapplication.data.model.Schedule
 
 interface OnDateClick {
-    fun onDateClick(list:MutableList<Schedule>, position:Int)
+    fun onDateClick(list:MutableList<Schedule>, selectedItem:Triple<Int,Int,Int>)
 }

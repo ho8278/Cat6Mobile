@@ -2,6 +2,7 @@ package com.example.myapplication.view.detailschedule
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,19 @@ import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.LayoutDetailScheduleBinding
-import com.example.myapplication.view.main.AppInitialize
+import com.example.myapplication.view.addschedule.AddScheduleActivity
+import com.example.myapplication.view.calendar.CalendarViewModel
+import org.joda.time.DateTime
 
-class CustomDialog(context: Context, val list: MutableList<Schedule>, val listener: ScheduleChangeListener?, style: Int, val position:Int) :
-    Dialog(context, style) {
+class CustomDialog(
+    context: Context,
+    val list: MutableList<Schedule>,
+    val listener: ScheduleChangeListener?,
+    style: Int,
+    val selectTime: DateTime,
+    val viewModel: CalendarViewModel
+) :
+    Dialog(context, style), ScheduleListViewPagerAdapter.OnFabClickListener, DetailScheduleListAdapter.OnScheduleItemClick {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +32,7 @@ class CustomDialog(context: Context, val list: MutableList<Schedule>, val listen
         initView()
     }
 
-    private fun initView(){
+    private fun initView() {
         val binding = DataBindingUtil.inflate<LayoutDetailScheduleBinding>(
             layoutInflater,
             R.layout.layout_detail_schedule,
@@ -30,15 +40,14 @@ class CustomDialog(context: Context, val list: MutableList<Schedule>, val listen
             false
         )
         binding.vpSchedule.apply {
-            pageMargin = 120
-            adapter = ScheduleViewPagerAdapter(list, listener)
-            currentItem=position
-            setPageTransformer(false,
+            pageMargin = 30
+            adapter = ScheduleListViewPagerAdapter(this@CustomDialog, this@CustomDialog, selectTime, viewModel)
+            currentItem = 150
+            setPageTransformer(
+                false,
                 ViewPagerAnimator(0.8f)
             )
         }
-
-        binding.viewmodel = CustomDialogViewModel(AppInitialize.dataSource, list)
 
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.apply {
@@ -51,8 +60,18 @@ class CustomDialog(context: Context, val list: MutableList<Schedule>, val listen
 
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         window.setBackgroundDrawableResource(R.color.colorClear)
+    }
 
+    override fun onItemClick(schedule: Schedule) {
+        val intent = Intent(context, AddScheduleActivity::class.java)
+        intent.putExtra("SELECT_ITEM",schedule)
+        context.startActivity(intent)
+    }
 
+    override fun onClick(dateTime: DateTime) {
+        val intent = Intent(context, AddScheduleActivity::class.java)
+        intent.putExtra("SELECT_DAY",selectTime)
+        context.startActivity(intent)
     }
 
     class ViewPagerAnimator(val smallerScale: Float) : ViewPager.PageTransformer {

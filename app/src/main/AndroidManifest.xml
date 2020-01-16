@@ -52,11 +52,6 @@
                 android:theme="@style/AppTheme">
         </activity>
         <activity
-                android:name=".view.updateschedule.UpdateScheduleActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
-        </activity>
-        <activity
                 android:name=".view.addteam.AddTeamActivity"
                 android:theme="@style/AddTeam">
         </activity>

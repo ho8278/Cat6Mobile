@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+>
+
+    <data>
+        <variable name="viewmodel"
+                  type="com.example.myapplication.view.calendar.CalendarViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@drawable/shape_roundbox"
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+        <TextView
+                android:id="@+id/tv_day"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="16dp"
+                tools:text="30일"
+                android:textSize="30sp"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tv_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_day"
+                tools:text="토요일"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintLeft_toLeftOf="@id/tv_day"
+                app:layout_constraintRight_toRightOf="@id/tv_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_schedule"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                tools:listitem="@layout/item_detail_schedule"
+                bind_item="@{viewmodel.scheduleList}"
+                android:overScrollMode="never"
+                android:maxHeight="450dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_schedule"
+                android:src="@drawable/ic_add"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:backgroundTint="@color/colorSelectedDateBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

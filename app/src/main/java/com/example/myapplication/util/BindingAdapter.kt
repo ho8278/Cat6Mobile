@@ -1,13 +1,11 @@
 package com.example.myapplication.util
 
-import android.animation.ValueAnimator
 import android.graphics.Typeface
 import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.animation.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -23,10 +21,9 @@ import com.example.myapplication.R
 import com.example.myapplication.data.model.*
 import com.example.myapplication.view.addfriends.AddFriendAdapter
 import com.example.myapplication.view.calendar.DateAdapter
-import com.example.myapplication.view.calendar.MonthAdapter
 import com.example.myapplication.view.calendar.ScheduleListAdapter
 import com.example.myapplication.view.chat.ChatInfoListAdapter
-import com.example.myapplication.view.detailschedule.ScheduleViewPagerAdapter
+import com.example.myapplication.view.detailschedule.DetailScheduleListAdapter
 import com.example.myapplication.view.detailvote.VoteItemListAdapter
 import com.example.myapplication.view.main.ChatListAdapter
 import com.example.myapplication.view.main.MemberListAdapter
@@ -147,9 +144,11 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("bind_item")
-    fun setScheduleItem(view: ViewPager, item: MutableList<Schedule>?) {
-        val adapter = view.adapter as ScheduleViewPagerAdapter
-        adapter.setList(item ?: mutableListOf())
+    fun setDetailScheduleList(view:RecyclerView, item:List<Schedule>?){
+        item?.let {
+            val adapter = view.adapter as DetailScheduleListAdapter
+            adapter.setList(it)
+        }
     }
 
     @JvmStatic

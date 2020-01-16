@@ -21,6 +21,11 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         startDate.set(time)
         endDate.set(time)
     }
+    constructor(dataSource: DataSource, navigator: AddNavigator,time:DateTime) : this(dataSource) {
+        this.navigator = navigator
+        startDate.set(time)
+        endDate.set(time)
+    }
 
     constructor(dataSource: DataSource, navigator: AddNavigator?, schedule: Schedule) : this(dataSource) {
         this.schedule=schedule

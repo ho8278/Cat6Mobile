@@ -66,7 +66,7 @@ class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: C
             }
         )
         holder.container.setOnClickListener {
-            listener.onDateClick((holder.recyclerView.adapter as ScheduleListAdapter).scheduleList.toMutableList(),position)
+            listener.onDateClick((holder.recyclerView.adapter as ScheduleListAdapter).scheduleList.toMutableList(),dateList[position])
         }
     }
 
