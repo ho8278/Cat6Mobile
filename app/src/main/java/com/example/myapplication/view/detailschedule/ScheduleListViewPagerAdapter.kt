@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import com.example.myapplication.R
@@ -11,12 +13,7 @@ import com.example.myapplication.databinding.ItemDetailScheduleListBinding
 import com.example.myapplication.view.calendar.CalendarViewModel
 import org.joda.time.DateTime
 
-class ScheduleListViewPagerAdapter(
-    val itemListener: DetailScheduleListAdapter.OnScheduleItemClick,
-    val listener: OnFabClickListener,
-    val selectedTime: DateTime,
-    val viewModel: CalendarViewModel
-) : PagerAdapter() {
+class ScheduleListViewPagerAdapter(val selectedTime: DateTime) : PagerAdapter() {
 
     val monthSize = 301
     val list = List(monthSize) { it - monthSize / 2 }
@@ -41,12 +38,11 @@ class ScheduleListViewPagerAdapter(
             tvDay.text = "${day.dayOfMonth}일"
             tvDate.text = "${day.dayOfWeek().asText}"
             fabAddSchedule.setOnClickListener {
-                listener.onClick(day)
+                //listener.onClick(day)
             }
             rvSchedule.layoutManager = LinearLayoutManager(container.context)
-            rvSchedule.adapter = DetailScheduleListAdapter(itemListener, viewModel, day)
+            rvSchedule.adapter = DetailScheduleListAdapter(day)
         }
-        binding.viewmodel = viewModel
         container.addView(binding.root)
         return binding.root
     }

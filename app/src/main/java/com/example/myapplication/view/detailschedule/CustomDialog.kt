@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Schedule
@@ -18,11 +19,11 @@ import org.joda.time.DateTime
 
 class CustomDialog(
     context: Context,
-    val list: MutableList<Schedule>,
     val listener: ScheduleChangeListener?,
     style: Int,
     val selectTime: DateTime,
-    val viewModel: CalendarViewModel
+    val viewModel: CalendarViewModel,
+    val lifecycleOwner: LifecycleOwner
 ) :
     Dialog(context, style), ScheduleListViewPagerAdapter.OnFabClickListener, DetailScheduleListAdapter.OnScheduleItemClick {
 
@@ -41,7 +42,7 @@ class CustomDialog(
         )
         binding.vpSchedule.apply {
             pageMargin = 30
-            adapter = ScheduleListViewPagerAdapter(this@CustomDialog, this@CustomDialog, selectTime, viewModel)
+            //adapter = ScheduleListViewPagerAdapter(this@CustomDialog, this@CustomDialog, selectTime, viewModel, lifecycleOwner)
             currentItem = 150
             setPageTransformer(
                 false,

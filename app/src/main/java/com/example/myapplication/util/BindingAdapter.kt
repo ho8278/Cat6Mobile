@@ -52,8 +52,10 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("animated_textview")
-    fun animateSetText(textview: TextView, teamName: String) {
-        textview.animatedSetText(teamName)
+    fun animateSetText(textview: TextView, teamName: String?) {
+        teamName?.let {
+            textview.animatedSetText(teamName)
+        }
     }
 
     @JvmStatic

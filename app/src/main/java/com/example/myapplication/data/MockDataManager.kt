@@ -186,7 +186,16 @@ class MockDataManager : DataSource {
     }
 
     override fun saveSchedule(schedule: Schedule): Single<String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val currentTeamID = getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val scheduleDatabase = database.child("teams/$currentTeamID/schedules")
+        return Single.create {
+            val emitter = it
+            val map = mapOf("start_date" to schedule.startDate, "end_date" to schedule.endDate, "name" to schedule.name)
+            scheduleDatabase.push().setValue(map)
+                .addOnSuccessListener {
+                    emitter.onSuccess("ㄱㄱ")
+                }
+        }
     }
 
     override fun deleteSchedule(id: String): Single<Int> {

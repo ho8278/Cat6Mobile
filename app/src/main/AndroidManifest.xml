@@ -59,6 +59,9 @@
         <activity android:name=".view.addusertoteam.AddUserToTeamActivity"
                   android:theme="@style/AddTeam">
         </activity>
+        <activity android:name=".view.detailschedule.DetailScheduleActivity"
+                android:theme="@style/AppTheme.PopupOverlay"/>
+
         <activity android:name=".view.addvote.AddVoteActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppTheme">

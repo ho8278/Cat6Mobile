@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Schedule
@@ -13,7 +14,7 @@ import org.joda.time.DateTime
 class CalendarViewModel : BaseViewModel{
     val TAG=CalendarViewModel::class.java.simpleName
     constructor(dataSource: DataSource):super(dataSource)
-    val scheduleList= ObservableArrayList<Schedule>()
+    var scheduleList: ObservableArrayList<Schedule> = ObservableArrayList()
     val isLoading = ObservableBoolean(true)
     var currentTime = DateTime.now()
     val title=ObservableField<String>()
@@ -24,8 +25,7 @@ class CalendarViewModel : BaseViewModel{
             val groupId=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
             it.add(getDataManager().loadSchedule(groupId)
                 .subscribe({
-                    scheduleList.clear()
-                    scheduleList.addAll(it)
+                    scheduleList.addAll(it.toMutableList())
                     isLoading.set(false)
                 },{
                     Log.e(TAG,it.message)
@@ -40,12 +40,12 @@ class CalendarViewModel : BaseViewModel{
     }
 
     fun getSchedule(year:Int, month:Int, day:Int):List<Schedule>{
-        return scheduleList.filter { it.startDate.startsWith("$year-$month-$day ") }
+        return scheduleList.filter { it.startDate.startsWith("$year-$month-$day ") } ?: listOf()
     }
 
     fun deleteSchedule(position:Int){
         getCompositeDisposable().add(
-            getDataManager().deleteSchedule(scheduleList[position].id)
+            getDataManager().deleteSchedule(scheduleList.get(position)?.id ?: "")
                 .subscribe({
                     Log.e(TAG,it.toString())
                 },{
