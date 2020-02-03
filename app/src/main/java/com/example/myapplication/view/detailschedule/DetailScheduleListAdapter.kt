@@ -14,7 +14,7 @@ import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DetailScheduleListAdapter(val selectedTime:DateTime) :
+class DetailScheduleListAdapter(val selectedTime:DateTime, val listener:OnScheduleItemClick) :
     ListAdapter<Schedule, DetailScheduleListAdapter.DetailScheduleViewHolder>(object : DiffUtil.ItemCallback<Schedule>() {
         override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule): Boolean = oldItem.id == newItem.id
 
@@ -38,9 +38,10 @@ class DetailScheduleListAdapter(val selectedTime:DateTime) :
     fun setList(list: List<Schedule>) {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.KOREA)
         val filteredList = list.filter {
-            val jodaTime = DateTime(dateFormat.parse(it.startDate).time)
-
-            it.startDate.startsWith("${selectedTime.year}-${selectedTime.monthOfYear}-${selectedTime.dayOfMonth}")
+            val time = dateFormat.run {
+                DateTime(parse(it.startDate).time)
+            }
+            time.year == selectedTime.year && time.monthOfYear == selectedTime.monthOfYear && time.dayOfMonth == selectedTime.dayOfMonth
         }
         submitList(filteredList)
     }
@@ -54,7 +55,7 @@ class DetailScheduleListAdapter(val selectedTime:DateTime) :
             name.text = item.name
             period.text = "${item.startDate} ~ ${item.endDate}"
             container.setOnClickListener{
-                //listener.onItemClick(item)
+                listener.onItemClick(item)
             }
         }
     }

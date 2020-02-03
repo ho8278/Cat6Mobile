@@ -28,7 +28,8 @@ class CalendarViewModel : BaseViewModel{
             val groupId=getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
             it.add(getDataManager().loadSchedule(groupId)
                 .subscribe({
-                    scheduleList.addAll(it.toMutableList())
+                    scheduleList.clear()
+                    scheduleList.addAll(it)
                     isLoading.set(false)
                 },{
                     Log.e(TAG,it.message)

@@ -44,7 +44,7 @@ class ScheduleListAdapter : RecyclerView.Adapter<ScheduleListAdapter.ScheduleVie
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == itemCount-1)
+        if (itemCount == 4 && position == itemCount-1)
             return MORE_SCHEDULE
         else
             return SCHEDULE_ITEM

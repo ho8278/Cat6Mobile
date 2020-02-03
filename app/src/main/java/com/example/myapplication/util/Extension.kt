@@ -20,5 +20,7 @@ fun TextView.animatedSetText(text:String){
     animationSet.addAnimation(translateAnimator)
     animationSet.addAnimation(animator)
     animationSet.fillAfter = true
-    this.startAnimation(animationSet)
+    post{
+        startAnimation(animationSet)
+    }
 }

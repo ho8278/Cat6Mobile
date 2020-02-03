@@ -91,7 +91,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     }
 
     fun saveSchedule() {
-        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")
         val currentGroupID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         getCompositeDisposable().add(
             getDataManager().saveSchedule(
@@ -115,7 +115,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
     }
 
     fun updateSchedule(){
-        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+        val formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")
         val currentGroupID = getDataManager().getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
         getDataManager().updateSchedulers(
             Schedule(
