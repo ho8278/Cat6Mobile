@@ -1,19 +1,13 @@
 package com.example.myapplication.view.calendar
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityCalendarBinding
 import com.example.myapplication.view.base.BaseActivity
-import com.example.myapplication.view.detailschedule.CustomDialog
-import com.example.myapplication.view.detailschedule.DetailScheduleActivity
+import com.example.myapplication.view.detailschedule.DetailScheduleFragment
 import kotlinx.android.synthetic.main.activity_calendar.*
 import org.joda.time.DateTime
 
@@ -50,9 +44,17 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
 
     override fun onDateClick(list: MutableList<Schedule>, selectedItem:Triple<Int,Int,Int>) {
         val dateTime = DateTime(selectedItem.third,selectedItem.second,selectedItem.first,0,0)
-        val intent = Intent(this, DetailScheduleActivity::class.java)
+
+        supportFragmentManager.beginTransaction().run {
+            add(R.id.fl_fragment,DetailScheduleFragment(viewModel,dateTime))
+            addToBackStack(null)
+            commit()
+        }
+
+
+        /*val intent = Intent(this, DetailScheduleActivity::class.java)
         intent.putExtra("TEST",dateTime)
-        startActivity(intent)
+        startActivity(intent)*/
 
 
         /*

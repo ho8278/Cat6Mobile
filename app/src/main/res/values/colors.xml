@@ -25,6 +25,7 @@
 
     <!-- Calendar Activity -->
     <color name="colorCalendarBackground">#99999999</color>
+    <color name="colorDialogStyle">#80323232</color>
     <color name="colorSelectedDateBackground">#8018A558</color>
     <color name="colorWeekend">#FFFFFF</color>
     <color name="colorSelectedDateText">#50FF50</color>

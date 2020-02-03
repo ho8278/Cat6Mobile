@@ -10,6 +10,9 @@ import com.example.myapplication.data.local.pref.PreferenceHelperImpl
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.view.base.BaseViewModel
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CalendarViewModel : BaseViewModel{
     val TAG=CalendarViewModel::class.java.simpleName
@@ -40,7 +43,12 @@ class CalendarViewModel : BaseViewModel{
     }
 
     fun getSchedule(year:Int, month:Int, day:Int):List<Schedule>{
-        return scheduleList.filter { it.startDate.startsWith("$year-$month-$day ") } ?: listOf()
+        return scheduleList.filter {
+            val time = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.KOREA).run {
+                DateTime(parse(it.startDate).time)
+            }
+            time.year == year && time.monthOfYear == month && time.dayOfMonth == day
+        }
     }
 
     fun deleteSchedule(position:Int){
