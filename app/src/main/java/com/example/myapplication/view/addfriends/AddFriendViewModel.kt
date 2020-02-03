@@ -2,6 +2,7 @@ package com.example.myapplication.view.addfriends
 
 import android.util.Log
 import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
 import com.example.myapplication.data.DataSource
 import com.example.myapplication.data.model.User
 import com.example.myapplication.view.addschedule.AddNavigator
@@ -11,6 +12,7 @@ class AddFriendViewModel(dataSource: DataSource, val listener:AddNavigator):Base
     val userList = ObservableArrayList<User>()
     val currentChatUsers = ObservableArrayList<String>()
     val addUserList = ObservableArrayList<String>()
+    val isLoading = ObservableBoolean(true)
     init{
         getCompositeDisposable().add(
             getDataManager().loadChatClient()
@@ -22,6 +24,7 @@ class AddFriendViewModel(dataSource: DataSource, val listener:AddNavigator):Base
                         currentChatUsers.filter { it==user.nickname }.isEmpty()
                     }
                     userList.addAll(filteredList)
+                    isLoading.set(false)
                 },{
                     Log.e("AddFriendVieModel",it.message)
                 })
