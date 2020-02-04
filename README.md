@@ -13,9 +13,9 @@ ROOM, Retrofit2, RxJava2, FCM, Firebase Crashlytics, Stetho, Glide, Lottie, Data
 
 # 스크린샷
 <div>
-    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%B1%84%ED%8C%85.png" width="25%" height="25%"></img>
-    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%B4%88%EB%8C%80.png" width="25%" height="25%"></img>
-    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%ED%88%AC%ED%91%9C1.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/채팅.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/공지.png" width="25%" height="25%"></img>
+    <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/채팅 초대.png" width="25%" height="25%"></img>
     <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%ED%88%AC%ED%91%9C2.png" width="25%" height="25%"></img>
     <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%9D%BC%EC%A0%951.png" width="25%" height="25%"></img>
     <img src="https://github.com/ho8278/Cat6Mobile/blob/develop/docs/%EC%9D%BC%EC%A0%952.png" width="25%" height="25%"></img>

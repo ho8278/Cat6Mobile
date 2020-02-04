@@ -68,6 +68,7 @@ class MockDataManager : DataSource {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
                 addProperty("send_date", dateFormat.format(chatInfo.send_date))
                 addProperty("send_user_id", chatInfo.send_user_id)
+                addProperty("type",chatInfo.type)
             }
             add("data", chatInfoJson)
         }
@@ -107,9 +108,11 @@ class MockDataManager : DataSource {
                             it.child("send_user_id").value as String,
                             roomId,
                             date.parse(it.child("send_date").value as String),
-                            it.child("message").value as String
+                            it.child("message").value as String,
+                            (it.child("type").value as Long).toInt()
                         )
                     }
+
                     it.onSuccess(chatInfoList)
                 }
             })

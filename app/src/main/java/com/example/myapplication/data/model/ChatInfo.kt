@@ -24,6 +24,8 @@ class ChatInfo(
     @Expose
     @SerializedName("message")
     var message: String,
+    @Expose
+    @SerializedName("type")
     val type:Int = 0
 ) {
     override fun equals(other: Any?): Boolean {
@@ -37,6 +39,7 @@ class ChatInfo(
         if (chatroom_id != other.chatroom_id) return false
         if (send_date != other.send_date) return false
         if (message != other.message) return false
+        if (type != other.type) return false
 
         return true
     }
