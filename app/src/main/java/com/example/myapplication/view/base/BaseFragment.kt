@@ -17,7 +17,7 @@ abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment()
     abstract val TAG: String;
     protected lateinit var binding: V
     protected lateinit var viewModel: M
-
+    var isViewModelFinish:Boolean = true
     abstract fun getViewModel(dataManager: DataSource): M
     abstract fun getLayoutId(): Int
 
@@ -49,7 +49,8 @@ abstract class BaseFragment<V : ViewDataBinding, M : BaseViewModel> : Fragment()
 
     override fun onDestroy() {
         Log.d(TAG, "OnDestroy")
-        viewModel.onDestroy()
+        if(isViewModelFinish)
+            viewModel.onDestroy()
         super.onDestroy()
     }
 

@@ -14,10 +14,9 @@ import kotlinx.android.synthetic.main.item_calendar.view.*
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
-class MonthAdapter(val viewModel:CalendarViewModel, val listener:OnDateClick) : PagerAdapter() {
+class MonthAdapter(val viewModel:CalendarViewModel, val listener:OnDateClick, val currentTime:DateTime = DateTime.now()) : PagerAdapter() {
     val monthSize = 301
     val monthList = List(monthSize) { it - monthSize / 2 }
-    val currentTime = DateTime.now()
 
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view == (`object` as ItemCalendarBinding).root

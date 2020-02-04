@@ -126,6 +126,8 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
         }
     }
 
+
+
     override fun OnSaveFail(errorCode: ErrorCode) {
         Toast.makeText(this, errorCode.description, Toast.LENGTH_SHORT).show()
     }

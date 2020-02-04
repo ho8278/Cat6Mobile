@@ -1,23 +1,26 @@
 package com.example.myapplication.view.calendar
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Schedule
 import kotlinx.android.synthetic.main.item_date.view.*
 import org.joda.time.DateTime
+import java.text.SimpleDateFormat
+import java.util.*
 
-class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: CalendarViewModel,val listener:OnDateClick) :
+class DateAdapter(
+    val height: Int,
+    val monthCalendar: DateTime,
+    val viewModel: CalendarViewModel,
+    val listener: OnDateClick
+) :
     RecyclerView.Adapter<DateAdapter.DateViewHolder>() {
     val dateSize = 35
     val dateList = MutableList(dateSize) {
@@ -28,21 +31,33 @@ class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: C
         else
             monthCalendar.dayOfMonth().withMinimumValue().plusDays(-firstDate)
         startTime.plusDays(it).run {
-            Triple(dayOfMonth,monthOfYear,year)
+            Triple(dayOfMonth, monthOfYear, year)
         }
     }
     private val CURRENT_MONTH = 1
     private val NOT_CURRENT_MONTH = 2
 
     override fun getItemViewType(position: Int): Int {
-        if(dateList[position].second == monthCalendar.monthOfYear)
+        if (dateList[position].second == monthCalendar.monthOfYear)
             return CURRENT_MONTH
         else
             return NOT_CURRENT_MONTH
     }
 
-    fun setList(list:List<Schedule>){
-        notifyDataSetChanged()
+    fun setList(list: List<Schedule>) {
+        val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.KOREA)
+        val filteredList = list.filter {
+            val time = DateTime(formatter.parse(it.startDate).time)
+            time.year == monthCalendar.year && time.monthOfYear == monthCalendar.monthOfYear
+        }
+        if(!filteredList.isEmpty()){
+            filteredList.forEach{
+                val time = DateTime(formatter.parse(it.startDate).time)
+                val firstDate = time.dayOfMonth().withMinimumValue().dayOfWeek%7
+                val position = time.dayOfMonth+firstDate-1
+                notifyItemChanged(position)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {
@@ -52,7 +67,7 @@ class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: C
             view.setBackgroundColor(ContextCompat.getColor(parent.context, R.color.colorCalendarBackground))
         }
         view.rv_schedule.adapter = ScheduleListAdapter()
-        view.rv_schedule.layoutManager = LinearLayoutManager(parent.context,RecyclerView.VERTICAL,false)
+        view.rv_schedule.layoutManager = LinearLayoutManager(parent.context, RecyclerView.VERTICAL, false)
         return DateViewHolder(view)
     }
 
@@ -62,11 +77,14 @@ class DateAdapter(val height: Int, val monthCalendar: DateTime, val viewModel: C
         holder.textView.text = dateList[position].first.toString()
         (holder.recyclerView.adapter as ScheduleListAdapter).setList(
             dateList[position].run {
-                viewModel.getSchedule(third,second,first)
+                viewModel.getSchedule(third, second, first)
             }
         )
         holder.container.setOnClickListener {
-            listener.onDateClick((holder.recyclerView.adapter as ScheduleListAdapter).scheduleList.toMutableList(),dateList[position])
+            listener.onDateClick(
+                (holder.recyclerView.adapter as ScheduleListAdapter).scheduleList.toMutableList(),
+                dateList[position]
+            )
         }
     }
 

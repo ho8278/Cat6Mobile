@@ -31,7 +31,7 @@ class DetailScheduleFragment(val viewmodel: CalendarViewModel, val time: DateTim
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-
+        isViewModelFinish = false
     }
 
     override fun onItemClick(schedule: Schedule) {

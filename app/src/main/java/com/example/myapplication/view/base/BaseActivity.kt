@@ -56,7 +56,7 @@ abstract class BaseActivity<T : ViewDataBinding, M : BaseViewModel> :
 
     override fun onDestroy() {
         Log.d(TAG, "OnDestroy")
-        viewModel.onDestroy()
         super.onDestroy()
+        viewModel.onDestroy()
     }
 }

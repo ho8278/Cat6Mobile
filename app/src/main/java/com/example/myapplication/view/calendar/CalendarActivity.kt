@@ -37,10 +37,20 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding, CalendarViewModel
             }
 
             override fun onPageSelected(position: Int) {
+                if(position == 150 && mcv_move_now_time.alpha != 0f){
+                    mcv_move_now_time.animate()
+                        .alpha(0f)
+                        .start()
+                }else{
+                    mcv_move_now_time.animate()
+                        .alpha(1f)
+                        .start()
+                }
                 viewModel.OnMonthChanged(position)
             }
         })
         vp_calendar.setCurrentItem(150)
+        mcv_move_now_time.setOnClickListener{vp_calendar.setCurrentItem(150)}
     }
 
     override fun onDateClick(list: MutableList<Schedule>, selectedItem:Triple<Int,Int,Int>) {
