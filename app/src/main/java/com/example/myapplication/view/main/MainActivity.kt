@@ -218,10 +218,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), GroupCh
             }
 
             iv_vote.setOnClickListener {
-                Toast.makeText(this@MainActivity,"서버상의 문제로 현재는 실행 할 수 없습니다.죄송합니다 ",Toast.LENGTH_LONG).show()
-                /*
-                val intent = Intent(context,VoteActivity::class.java)
-                startActivity(intent)*/
+                if(AppInitialize.dataSource is MockDataManager){
+                    Toast.makeText(this@MainActivity,"서버상의 문제로 현재는 실행 할 수 없습니다.죄송합니다 ",Toast.LENGTH_LONG).show()
+                }else{
+                    val intent = Intent(context,VoteActivity::class.java)
+                    startActivity(intent)
+                }
             }
 
             iv_add_friend.setOnClickListener {
@@ -263,10 +265,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), GroupCh
         }
 
         btn_main_conference.setOnClickListener {
-            Toast.makeText(this,"서버상의 문제로 현재는 실행 할 수 없습니다.죄송합니다 ",Toast.LENGTH_LONG).show()
-            /*
-            val intent = Intent(this,WebActivity::class.java)
-            startActivity(intent)*/
+            if(AppInitialize.dataSource is MockDataManager){
+                Toast.makeText(this,"서버상의 문제로 현재는 실행 할 수 없습니다.죄송합니다 ",Toast.LENGTH_LONG).show()
+            }
+            else{
+                val intent = Intent(this,WebActivity::class.java)
+                startActivity(intent)
+            }
         }
 
     }
@@ -289,6 +294,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), GroupCh
     }
 
     override fun memberClicked(client_ID: String) {
+        if(AppInitialize.dataSource is MockDataManager){
+            Toast.makeText(this,"현재 리팩토링 진행중입니다.", Toast.LENGTH_LONG).show()
+            return
+        }
         val view = layoutInflater.inflate(R.layout.dialog_add_chatroom,null)
         val dialog = AlertDialog.Builder(this)
             .setCancelable(true)

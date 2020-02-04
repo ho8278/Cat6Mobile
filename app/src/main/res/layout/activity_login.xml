@@ -41,7 +41,7 @@
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
                             android:ems="10"
-                            android:hint="Username"
+                            android:text="admin"
                             android:inputType="textPersonName"
                             android:singleLine="false"/>
 
@@ -56,7 +56,7 @@
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
                             android:ems="10"
-                            android:hint="password"
+                            android:text="admin"
                             android:inputType="textPassword"
                     />
 
@@ -76,12 +76,14 @@
                                 android:layout_height="wrap_content"/>
                         <CheckBox
                                 android:id="@+id/checkbox_auto_login"
+                                android:buttonTint="@android:color/holo_blue_dark"
+                                android:checked="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                             android:id="@+id/Login"
                             android:clickable="true"
                             android:layout_width="212dp"
@@ -92,9 +94,9 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
-                            android:background="@android:color/holo_blue_dark"
+                            android:backgroundTint="@android:color/holo_blue_dark"
                             android:text="Login"/>
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                             android:id="@+id/Join"
                             android:clickable="true"
                             android:layout_width="212dp"
@@ -105,7 +107,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
-                            android:background="@android:color/holo_blue_dark"
+                            android:backgroundTint="@android:color/holo_blue_dark"
                             android:text="Join"/>
                 </LinearLayout>
             </FrameLayout>
