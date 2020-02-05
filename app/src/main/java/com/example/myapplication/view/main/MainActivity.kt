@@ -219,7 +219,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), GroupCh
 
             iv_vote.setOnClickListener {
                 if(AppInitialize.dataSource is MockDataManager){
-                    Toast.makeText(this@MainActivity,"서버상의 문제로 현재는 실행 할 수 없습니다.죄송합니다 ",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity,"서버상의 문제로 현재는 실행 할 수 없습니다. 죄송합니다 ",Toast.LENGTH_LONG).show()
                 }else{
                     val intent = Intent(context,VoteActivity::class.java)
                     startActivity(intent)
@@ -261,12 +261,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), GroupCh
         }
 
         btn_main_references.setOnClickListener {
-            startActivity(Intent(this, ReferencesActivity::class.java))
+            if(AppInitialize.dataSource is MockDataManager){
+                Toast.makeText(this,"서버상의 문제로 현재는 실행 할 수 없습니다. 죄송합니다 ",Toast.LENGTH_LONG).show()
+            }
+            else {
+                startActivity(Intent(this, ReferencesActivity::class.java))
+            }
         }
 
         btn_main_conference.setOnClickListener {
             if(AppInitialize.dataSource is MockDataManager){
-                Toast.makeText(this,"서버상의 문제로 현재는 실행 할 수 없습니다.죄송합니다 ",Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"서버상의 문제로 현재는 실행 할 수 없습니다. 죄송합니다 ",Toast.LENGTH_LONG).show()
             }
             else{
                 val intent = Intent(this,WebActivity::class.java)

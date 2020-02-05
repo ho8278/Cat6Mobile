@@ -202,11 +202,19 @@ class MockDataManager : DataSource {
     }
 
     override fun deleteSchedule(id: String): Single<Int> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val currentTeamID = getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val scheduleDatabase = database.child("teams/$currentTeamID/schedules/$id")
+        return Single.create{
+            scheduleDatabase.removeValue()
+            it.onSuccess(1)
+        }
     }
 
     override fun updateSchedulers(schedule: Schedule) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val currentTeamID = getItem<String>(PreferenceHelperImpl.CURRENT_GROUP_ID)
+        val scheduleDatabase = database.child("teams/$currentTeamID/schedules/${schedule.id}")
+        val map = mutableMapOf<String,Any>("start_date" to schedule.startDate, "end_date" to schedule.endDate, "name" to schedule.name)
+        scheduleDatabase.updateChildren(map)
     }
 
     override fun insertTeam(team: Team) {

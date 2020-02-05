@@ -45,19 +45,8 @@ class DateAdapter(
     }
 
     fun setList(list: List<Schedule>) {
-        val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.KOREA)
-        val filteredList = list.filter {
-            val time = DateTime(formatter.parse(it.startDate).time)
-            time.year == monthCalendar.year && time.monthOfYear == monthCalendar.monthOfYear
-        }
-        if(!filteredList.isEmpty()){
-            filteredList.forEach{
-                val time = DateTime(formatter.parse(it.startDate).time)
-                val firstDate = time.dayOfMonth().withMinimumValue().dayOfWeek%7
-                val position = time.dayOfMonth+firstDate-1
-                notifyItemChanged(position)
-            }
-        }
+
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {

@@ -9,11 +9,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 import com.example.myapplication.data.DataSource
+import com.example.myapplication.data.MockDataManager
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ActivityAddShceduleBinding
 import com.example.myapplication.view.base.BaseActivity
+import com.example.myapplication.view.main.AppInitialize
 import com.example.myapplication.view.main.ErrorCode
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import kotlinx.android.synthetic.main.activity_add_shcedule.*
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,7 +47,14 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> finish()
-            R.id.save_schedule -> viewModel.saveSchedule()
+            R.id.save_schedule -> {
+                if(intent.getSerializableExtra("SELECT_DAY") != null){
+                    viewModel.saveSchedule()
+                }
+                else if(intent.getParcelableExtra<Schedule>("SELECT_ITEM") != null){
+                    viewModel.updateSchedule()
+                }
+            }
             else -> {
                 Log.e(TAG, this.toString())
             }
@@ -64,6 +74,7 @@ class AddScheduleActivity : BaseActivity<ActivityAddShceduleBinding, AddSchedule
         initTimePicker()
 
         initCalendar()
+
     }
 
     private fun initStartEndContainer() {

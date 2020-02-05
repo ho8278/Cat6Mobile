@@ -13,7 +13,7 @@ import com.example.myapplication.view.base.BaseFragment
 import com.example.myapplication.view.calendar.CalendarViewModel
 import org.joda.time.DateTime
 
-class DetailScheduleFragment(val viewmodel: CalendarViewModel, val time: DateTime) :
+class DetailScheduleFragment(val viewmodel: CalendarViewModel, var time: DateTime) :
     BaseFragment<LayoutDetailScheduleBinding, CalendarViewModel>(), DetailScheduleListAdapter.OnScheduleItemClick,
     ScheduleListViewPagerAdapter.OnFabClickListener {
     override val TAG: String
@@ -56,6 +56,18 @@ class DetailScheduleFragment(val viewmodel: CalendarViewModel, val time: DateTim
                 false,
                 ViewPagerAnimator(0.8f)
             )
+            addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+                override fun onPageScrollStateChanged(state: Int) {
+
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    time = time.plusDays(position-301/2)
+                }
+            })
         }
     }
 

@@ -9,16 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.model.Schedule
 import com.example.myapplication.databinding.ItemDetailScheduleBinding
-import com.example.myapplication.view.calendar.CalendarViewModel
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DetailScheduleListAdapter(val selectedTime:DateTime, val listener:OnScheduleItemClick) :
-    ListAdapter<Schedule, DetailScheduleListAdapter.DetailScheduleViewHolder>(object : DiffUtil.ItemCallback<Schedule>() {
-        override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule): Boolean = oldItem.id == newItem.id
+class DetailScheduleListAdapter(val selectedTime: DateTime, val listener: OnScheduleItemClick) :
+    ListAdapter<Schedule, DetailScheduleListAdapter.DetailScheduleViewHolder>(object :
+        DiffUtil.ItemCallback<Schedule>() {
+        override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule): Boolean =
+            oldItem.id == newItem.id && oldItem.name == newItem.name && oldItem.startDate == newItem.startDate && oldItem.endDate == newItem.endDate
 
-        override fun areContentsTheSame(oldItem: Schedule, newItem: Schedule): Boolean = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Schedule, newItem: Schedule): Boolean =
+            oldItem.id == newItem.id && oldItem.name == newItem.name && oldItem.startDate == newItem.startDate && oldItem.endDate == newItem.endDate
     }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailScheduleViewHolder {
         val binding = DataBindingUtil.inflate<ItemDetailScheduleBinding>(
@@ -50,11 +52,11 @@ class DetailScheduleListAdapter(val selectedTime:DateTime, val listener:OnSchedu
         val name = binding.tvScheduleName
         val period = binding.tvPeriod
         val container = binding.clContainer
-        fun bind(position:Int){
+        fun bind(position: Int) {
             val item = getItem(position)
             name.text = item.name
             period.text = "${item.startDate} ~ ${item.endDate}"
-            container.setOnClickListener{
+            container.setOnClickListener {
                 listener.onItemClick(item)
             }
         }

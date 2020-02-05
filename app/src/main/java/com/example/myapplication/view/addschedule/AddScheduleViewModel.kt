@@ -39,6 +39,7 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
         startDate.set(DateTime(startTime.time))
         endDate.set(DateTime(endTime.time))
         isDelete.set(true)
+        this.navigator = navigator
     }
 
     lateinit var schedule:Schedule
@@ -125,9 +126,17 @@ class AddScheduleViewModel(dataSource: DataSource) : BaseViewModel(dataSource) {
                 title.get() ?: "",
                 currentGroupID
             ))
+        navigator?.OnSaveSuccess()
     }
 
     fun deleteSchedule(){
-
+        getCompositeDisposable().add(
+            getDataManager().deleteSchedule(schedule.id)
+                .subscribe ({
+                    navigator?.OnSaveSuccess()
+                },{
+                    navigator?.OnSaveFail(ErrorCode.UNKNOWN)
+                })
+        )
     }
 }

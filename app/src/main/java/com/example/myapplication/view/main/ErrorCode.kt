@@ -8,6 +8,7 @@ enum class ErrorCode(val code: Int, val description: String) {
     NOT_SELECTED(104, "검색 된 유저가 없습니다."),
     EMPTY_TEAM_LIST(105,"Team List is Empty. Please Enter the team."),
     LOGIN_DENY(106,"아이디 비밀번호가 틀렸습니다."),
+    UNKNOWN(107,"오류가 발생하였습니다."),
     SUCCESS(200, "Success");
 
     companion object {
