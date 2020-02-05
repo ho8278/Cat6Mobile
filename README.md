@@ -1,3 +1,6 @@
+
+## [데모 실행해보기](https://appetize.io/app/aet7zee6pzb76mh7dme396ecnr)
+
 # Cat6 Mobile
 - 주제: 회의용 메신저
 - 개발환경: 안드로이드 스튜디오
@@ -8,8 +11,6 @@
 
 # 사용 라이브러리
 ROOM, Retrofit2, RxJava2, FCM, Firebase Crashlytics, Stetho, Glide, Lottie, Databinding
-    
-### [데모 실행](https://appetize.io/app/aet7zee6pzb76mh7dme396ecnr)
 
 # 스크린샷
 <div>
